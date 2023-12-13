@@ -3,11 +3,19 @@
 
 inputBuffSize = 256
 
-oneByteInstructionArraySize = 81
+oneByteInstructionArraySize1 = 51
+oneByteInstructionArraySize2 = 39
 twoByteInstructionArraySize = 2
 
 
+hexCodePos = 20
+MnemocPos = 40
 .data
+    testMsg1 db "TEST1 ------ $"
+    testMsg2 db "TEST2 ------ $"
+    testMsg3 db "TEST3 ------ $"
+
+
     infoMsg db "usage: [inputFile] [outputFile]$"
     inputFileErrorMsg db "failed to open input file$"
     outputFileErrorMsg db "failed to create output file$"
@@ -22,19 +30,106 @@ twoByteInstructionArraySize = 2
     outputFileHandle dw ?
     outputBuff db 70 dup (?)
     outputBuffPos dw 0
-    codeBytePos dw 100h
+    codeBytePos dw 100h ; FIXME
+
+    ;;;;;;;;;;;;;;;;;;; SUTVARKYTI(DIDEJIMO TVARKA) INSTRUKCIJOMS ATSPINDINTI REIKALINGI MASYVAI  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
     ; Visos 1 baito instrukcijos, jų šešioliktainė reikšmė ir mnemonika
-    oneByteInstructionArray db 6H, "PUSH ES", 0, 7H, "POP ES", 0, 0EH, "PUSH CS", 0, 16H, "PUSH SS", 0, 17H, "POP SS", 0, 1EH, "PUSH DS", 0, 1FH, "POP DS", 0, 27H, "DAA", 0, 2FH, "DAS", 0, 37H, "AAA", 0, 3FH, "AAS", 0, 40H, "INC AX", 0, 41H, "INC CX", 0, 42H, "INC DX", 0, 43H, "INC BX", 0, 44H, "INC SP", 0, 45H, "INC BP", 0, 46H, "INC SI", 0, 47H, "INC DI", 0, 48H, "DEC AX", 0, 49H, "DEC CX", 0, 4AH, "DEC DX", 0, 4BH, "DEC BX", 0, 4CH, "DEC SP", 0, 4DH, "DEC BP", 0, 4EH, "DEC SI", 0, 4FH, "DEC DI", 0, 50H, "PUSH AX", 0, 51H, "PUSH CX", 0, 52H, "PUSH DX", 0, 53H, "PUSH BX", 0, 54H, "PUSH SP", 0, 55H, "PUSH BP", 0, 56H, "PUSH SI", 0, 57H, "PUSH DI", 0, 58H, "POP AX", 0, 59H, "POP CX", 0, 5AH, "POP DX", 0, 5BH, "POP BX", 0, 5CH, "POP SP", 0, 5DH, "POP BP", 0, 5EH,"POP SI",0, 5FH, "POP DI",0, 98H, "CBW", 0, 99H, "CWD", 0, 9BH, "WAIT", 0, 9CH, "PUSHF", 0, 9DH, "POPF", 0, 9EH, "SAHF", 0, 9FH, "LAHF", 0, 0A4H, "MOVSB", 0, 0A5H, "MOVSW", 0, 0A6H, "CMPSB", 0, 0A7H, "CMPSW", 0, 0AAH, "STOSB", 0, 0ABH, "STOSW", 0, 0ACH, "LODSB", 0, 0ADH, "LODSW", 0, 0AEH, "SCASB", 0, 0AFH, "SCASW", 0, 0C3H, "RET", 0, 0CBH, "RET", 0, 0CCH, "INT 3H", 0, 0CEH, "INTO", 0, 0CFH, "IRET", 0, 0D7H, "XLAT", 0, 0ECH, "IN AL, DX", 0, 0EDH, "IN AX, DX", 0, 0EEH, "OUT DX, AL", 0, 0EFH, "OUT DX, AX", 0, 0F0H, "LOCK", 0, 0F2H, "REPNZ", 0, 0F3H, "REP", 0, 0F4H, "HLT", 0, 0F5H, "CMC", 0, 0F8H, "CLC", 0, 0F9H, "STC", 0, 0FAH, "CLI", 0, 0FBH, "STI", 0, 0FCH, "CLD", 0, 0FDH, "STD", 0
+    oneByteInstructionArray1 db 6H, "PUSH ES", 0, 7H, "POP ES", 0, 0EH, "PUSH CS", 0, 16H, "PUSH SS", 0, 17H, "POP SS", 0, 1EH, "PUSH DS", 0, 1FH, "POP DS", 0, 27H, "DAA", 0, 2FH, "DAS", 0, 37H, "AAA", 0, 3FH, "AAS", 0, 40H, "INC AX", 0, 41H, "INC CX", 0, 42H, "INC DX", 0, 43H, "INC BX", 0, 44H, "INC SP", 0, 45H, "INC BP", 0, 46H, "INC SI", 0, 47H, "INC DI", 0, 48H, "DEC AX", 0, 49H, "DEC CX", 0, 4AH, "DEC DX", 0, 4BH, "DEC BX", 0, 4CH, "DEC SP", 0, 4DH, "DEC BP", 0, 4EH, "DEC SI", 0, 4FH, "DEC DI", 0, 50H, "PUSH AX", 0, 51H, "PUSH CX", 0, 52H, "PUSH DX", 0, 53H, "PUSH BX", 0, 54H, "PUSH SP", 0, 55H, "PUSH BP", 0, 56H, "PUSH SI", 0, 57H, "PUSH DI", 0, 58H, "POP AX", 0, 59H, "POP CX", 0, 5AH, "POP DX", 0, 5BH, "POP BX", 0, 5CH, "POP SP", 0, 5DH, "POP BP", 0, 5EH, "POP SI", 0, 5FH, "POP DI", 0, 90h, "NOP", 0, 91h, "CXHG AX, CX", 0, 92h, "CXHG AX, DX", 0, 93h, "CXHG AX, BX", 0, 94h, "CXHG AX, SP", 0, 95h, "CXHG AX, BP", 0, 96h, "CXHG AX, SI", 0, 97h, "CXHG AX, DI", 0
+    oneByteInstructionArray2 db 98H, "CBW", 0, 99H, "CWD", 0, 9BH, "WAIT", 0, 9CH, "PUSHF", 0, 9DH, "POPF", 0, 9EH, "SAHF", 0, 9FH, "LAHF", 0, 0A4H, "MOVSB", 0, 0A5H, "MOVSW", 0, 0A6H, "CMPSB", 0, 0A7H, "CMPSW", 0, 0AAH, "STOSB", 0, 0ABH, "STOSW", 0, 0ACH, "LODSB", 0, 0ADH, "LODSW", 0, 0AEH, "SCASB", 0, 0AFH, "SCASW", 0, 0C3H, "RET", 0, 0CBH, "RET", 0, 0CCH, "INT 3H", 0, 0CEH, "INTO", 0, 0CFH, "IRET", 0, 0D7H, "XLAT", 0, 0ECH, "IN AL, DX", 0, 0EDH, "IN AX, DX", 0, 0EEH, "OUT DX, AL", 0, 0EFH, "OUT DX, AX", 0, 0F0H, "LOCK", 0, 0F2H, "REPNZ", 0, 0F3H, "REP", 0, 0F4H, "HLT", 0, 0F5H, "CMC", 0, 0F8H, "CLC", 0, 0F9H, "STC", 0, 0FAH, "CLI", 0, 0FBH, "STI", 0, 0FCH, "CLD", 0, 0FDH, "STD", 0
     ; Visos 2 baitų instrukcijos, nereikalaujančios papildomų veiksmų, jų pirmo baito šešioliktainė reikšmė ir mnemonika
-    twoByteInstructionArray DB 0D4H, "AAM", 0, 0D5H, "AAD", 0, 
+    twoByteInstructionArray DB 0D4H, "AAM", 0, 0D5H, "AAD", 0
+    
 
+    insUnknown db "NEPAZISTAMA",0
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
     d db 0
     w db 0
-
-    insUnknown db "NEPAZISTAMA$"
+    instructionHex db 0
+    
 .code
+
+
+
+TESTING1 macro
+    mov ah, 9
+    lea dx, [testmsg1]
+    int 21h
+endm 
+
+TESTING2 macro
+    mov ah, 9
+    lea dx, [testmsg2]
+    int 21h
+endm 
+
+TESTING3 macro
+    mov ah, 9
+    lea dx, [testmsg3]
+    int 21h
+endm 
+
+; Macro padedanti ieskoti instrukcijos masyvuose pagal pirma instrukcijos baita
+SEARCH_FOR_INSTRUCTION macro instructionArraySize, instructionArray, maxInstructionDifference, nextOperation
+    local searching_instructions, continue_searching, end_searching
+
+    mov cx, instructionArraySize
+    lea bx, instructionArray
+    
+    searching_instructions:
+        cmp al, [bx]
+        jb end_searching
+        mov dh, [bx]
+        add dh, maxInstructionDifference
+        cmp al, dh
+        ja continue_searching
+        TESTING2
+        mov dh, [bx]
+        mov [instructionhex], dh ; issaugoti hex
+
+        inc bx
+        call copy_array_element_to_output
+
+        jmp nextOperation
+        
+        continue_searching:
+            call get_next_element
+        
+        loop searching_instructions
+    end_searching:
+
+endm
+
+; PARAM: dx(adress to the start of string)
+proc copy_array_element_to_output
+    push ax bx dx
+    copy_array_loop:
+        mov al, [bx]
+        cmp al, 0
+        je end_copying_element
+        call append_char
+        inc bx
+        
+        
+        jne copy_array_loop
+        
+    end_copying_element:
+
+    pop dx bx ax
+    ret
+copy_array_element_to_output endp
+
+; Gaunamas naujas masyvo elementas
+; PARAM: bx(andresas i kazkur instrukciju masyva)
+proc get_next_element
+    nex_element_loop:
+    inc bx
+    cmp byte ptr [bx], 0
+    jne nex_element_loop
+    inc bx ; dabar bx rodo i 0, tai padidinti vienu, jog rodytu sesiokliktaine reiksme
+    ret
+get_next_element endp
 
 ; Atspausdina info ir terminuoja programą, kai pirmi 2 komandos eilutės eilutės batai \?
 proc check_help 
@@ -191,9 +286,13 @@ read_input_byte endp
 ; Pridėti baitą al į išvesties bufferi
 ; PARAM: al(baitas, kurį norime atspausdinti)
 proc append_char 
+    push bx
+
     mov bx, [outputBuffPos]
     mov [outputBuff + bx], al
     inc [outputBuffPos]
+
+    pop bx
     ret
 append_char endp
 
@@ -218,14 +317,14 @@ proc terminate_program
     int 21h
 terminate_program endp
 
-; Konvertuoja al i hex ascii ir prideda i output buferi
-;PARAM: al
+; Konvertuoja ah i hex ascii ir prideda i output buferi
+; PARAM: ah
 proc convertToHex
-    push cx dx
+    push ax cx dx
     mov cx, 2
     
     hex_convert_loop:
-        xor al,al
+        xor al, al
         rol ax, 4
 
         cmp al, 9
@@ -241,13 +340,14 @@ proc convertToHex
             call append_char
         
         loop hex_convert_loop
-        pop dx cx
+        pop dx cx ax
     ret 
 convertToHex endp
 
 ; Prideda posicija i buferi su formatu
 proc append_pos
     push ax
+
 
     mov al, 'c'
     call append_char
@@ -258,14 +358,14 @@ proc append_pos
 
     mov ax, [codeBytePos]
     call convertToHex
-    mov al, ah
+    mov ah, al
     call convertToHex
 
     mov al, ':'
     call append_char
     mov al, ' '
     call append_char
-    
+
     pop ax
     ret
 append_pos endp
@@ -323,13 +423,31 @@ main:
     ;;;;;;;;;;;;;;;;;;;;;;; NAUJOS KOMANDOS ANALIZE ;;;;;;;;;;;;;;;;;
     main_loop:
         call append_pos
+        
 
         call read_input_byte
+        
+        inc [codebytepos]
         call get_dw
 
+        ; Check all 1 byte instructions
+        SEARCH_FOR_INSTRUCTION oneByteInstructionArraySize1, oneByteInstructionArray1, 0, print_output
+        SEARCH_FOR_INSTRUCTION oneByteInstructionArraySize2, oneByteInstructionArray2, 0, print_output
+
+        ; 2+ byte instructions from now on:
+        ;SEARCH_FOR_INSTRUCTION twoByteInstructionArraySize, twoByteInstructionArray, 0, compare_2_bytes ;FIXME
+        
+
+        unknown_instruction:
+            lea bx, [insunknown]
+            call copy_array_element_to_output
+            jmp print_output
+
+        compare_2_bytes:
 
 
-        call fprint_line ; buferio išvestis į failą
+        print_output:
+            call fprint_line ; output buferio išvestis į failą
 
         jmp main_loop
         
