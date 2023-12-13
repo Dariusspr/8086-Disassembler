@@ -3,13 +3,16 @@
 
 inputBuffSize = 256
 
+; Masyvu dydziai
 oneByteInstructionArraySize1 = 51
 oneByteInstructionArraySize2 = 39
 twoByteInstructionArraySize = 2
 
 
-hexCodePos = 20
-MnemocPos = 40
+; HEX MNEMONIC pozicijos
+hexCodePos = 10
+mnemonicPos = 20
+
 .data
     testMsg1 db "TEST1 ------ $"
     testMsg2 db "TEST2 ------ $"
@@ -26,6 +29,10 @@ MnemocPos = 40
     inputBuffPos dw 0
     inputBuffbytesleft dw 0
     
+    ; Laikinas mnemonikos buferis
+    mnemonicBuff db 40 dup (?)
+    mnemonicBuffPos dw 0
+
     outputFileName db 40 dup (?)
     outputFileHandle dw ?
     outputBuff db 70 dup (?)
@@ -70,6 +77,35 @@ TESTING3 macro
     int 21h
 endm 
 
+; macro vienam tarpui padeti output buferyje
+APPEND_SPACE_OUTPUT macro
+    push ax
+    mov al, ' '
+    call append_char_output
+    pop ax
+endm 
+
+; Macro tarpu dejimui iki endpos ouput buferyje
+APPEND_SPACES_OUTPUT macro endPos
+    local append_loop
+    push cx ax
+    mov cx, endPos
+    sub cx, [outputbuffpos]
+    mov al, ' '
+    append_loop:
+        call append_char_output
+        loop append_loop
+    pop ax cx
+endm 
+
+; Macro appendConvertedHex pridejimui
+APPEND_INSTRUCTION_BYTE macro value
+    push ax
+    mov ah, value
+    call append_converted_hex
+    pop ax
+endm
+
 ; Macro padedanti ieskoti instrukcijos masyvuose pagal pirma instrukcijos baita
 SEARCH_FOR_INSTRUCTION macro instructionArraySize, instructionArray, maxInstructionDifference, nextOperation
     local searching_instructions, continue_searching, end_searching
@@ -84,12 +120,14 @@ SEARCH_FOR_INSTRUCTION macro instructionArraySize, instructionArray, maxInstruct
         add dh, maxInstructionDifference
         cmp al, dh
         ja continue_searching
-        TESTING2
         mov dh, [bx]
         mov [instructionhex], dh ; issaugoti hex
 
+        APPEND_INSTRUCTION_BYTE dh
+        APPEND_SPACE_OUTPUT
+
         inc bx
-        call copy_array_element_to_output
+        call copy_string_mnemonic
 
         jmp nextOperation
         
@@ -101,24 +139,39 @@ SEARCH_FOR_INSTRUCTION macro instructionArraySize, instructionArray, maxInstruct
 
 endm
 
-; PARAM: dx(adress to the start of string)
-proc copy_array_element_to_output
+; PARAM: bx(adress to the start of string)
+proc copy_string_mnemonic
     push ax bx dx
-    copy_array_loop:
+    copy_array_loop_mnemonic:
         mov al, [bx]
         cmp al, 0
         je end_copying_element
-        call append_char
+        call append_char_mnemonic
         inc bx
         
         
-        jne copy_array_loop
+        jne copy_array_loop_mnemonic
         
     end_copying_element:
 
     pop dx bx ax
     ret
-copy_array_element_to_output endp
+copy_string_mnemonic endp
+
+; PARAM: bx(adress to the start of string), cx (size of array)
+proc copy_string_output
+    push ax bx dx cx
+    copy_array_loop_ouput:
+        mov al, [bx]
+        cmp al, 0
+
+        call append_char_output
+        inc bx 
+        loop copy_array_loop_ouput
+        
+    pop cx dx bx ax
+    ret
+copy_string_output endp
 
 ; Gaunamas naujas masyvo elementas
 ; PARAM: bx(andresas i kazkur instrukciju masyva)
@@ -285,7 +338,7 @@ read_input_byte endp
 
 ; Pridėti baitą al į išvesties bufferi
 ; PARAM: al(baitas, kurį norime atspausdinti)
-proc append_char 
+proc append_char_output
     push bx
 
     mov bx, [outputBuffPos]
@@ -294,14 +347,27 @@ proc append_char
 
     pop bx
     ret
-append_char endp
+append_char_output endp
+
+; Pridėti baitą al į mnemonikos bufferi
+; PARAM: al(baitas, kurį norime atspausdinti)
+proc append_char_mnemonic
+    push bx
+
+    mov bx, [mnemonicbuffpos]
+    mov [mnemonicbuff + bx], al
+    inc [mnemonicbuffpos]
+
+    pop bx
+    ret
+append_char_mnemonic endp
 
 ; Atspausdina į išvesties failą išvesties buferio turinį
 proc fprint_line
     mov al,  0dh ; carriage return
-    call append_char
+    call append_char_output
     mov al,  0ah ; line feed
-    call append_char
+    call append_char_output
     mov ah, 40h
     mov bx, [outputfilehandle]
     mov cx, [outputBuffPos]
@@ -309,6 +375,7 @@ proc fprint_line
     int 21h
 
     mov [outputBuffPos], 0
+    mov [mnemonicbuffpos], 0
     ret
 fprint_line endp
 
@@ -319,7 +386,7 @@ terminate_program endp
 
 ; Konvertuoja ah i hex ascii ir prideda i output buferi
 ; PARAM: ah
-proc convertToHex
+proc append_converted_hex
     push ax cx dx
     mov cx, 2
     
@@ -337,12 +404,12 @@ proc convertToHex
             add al, '0'  ; 0123456789
         
         append_hex_ascii:
-            call append_char
+            call append_char_output
         
         loop hex_convert_loop
         pop dx cx ax
     ret 
-convertToHex endp
+append_converted_hex endp
 
 ; Prideda posicija i buferi su formatu
 proc append_pos
@@ -350,21 +417,21 @@ proc append_pos
 
 
     mov al, 'c'
-    call append_char
+    call append_char_output
     mov al, 's'
-    call append_char
+    call append_char_output
     mov al, ':'
-    call append_char
+    call append_char_output
 
     mov ax, [codeBytePos]
-    call convertToHex
+    call append_converted_hex
     mov ah, al
-    call convertToHex
+    call append_converted_hex
 
     mov al, ':'
-    call append_char
+    call append_char_output
     mov al, ' '
-    call append_char
+    call append_char_output
 
     pop ax
     ret
@@ -423,7 +490,7 @@ main:
     ;;;;;;;;;;;;;;;;;;;;;;; NAUJOS KOMANDOS ANALIZE ;;;;;;;;;;;;;;;;;
     main_loop:
         call append_pos
-        
+        APPEND_SPACES_OUTPUT hexCodePos
 
         call read_input_byte
         
@@ -439,14 +506,20 @@ main:
         
 
         unknown_instruction:
+            APPEND_INSTRUCTION_BYTE al
+           
             lea bx, [insunknown]
-            call copy_array_element_to_output
+            call copy_string_mnemonic
             jmp print_output
 
         compare_2_bytes:
 
 
         print_output:
+            APPEND_SPACES_OUTPUT mnemonicPos
+            lea bx, [mnemonicbuff]
+            mov cx, [mnemonicBuffPos]
+            call copy_string_output
             call fprint_line ; output buferio išvestis į failą
 
         jmp main_loop
