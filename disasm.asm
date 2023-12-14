@@ -184,9 +184,11 @@ SEARCH_FOR_INSTRUCTION macro instructionArraySize, instructionArray, maxInstruct
         APPEND_SPACE_OUTPUT
 
         inc bx
-        call copy_string_mnemonic
+        call copy_string_mnemonic ; issaugtoi mneomonic
 
-        jmp nextOperation
+        call nextOperation ; testi instrukcijos skaityma
+
+        jmp print_output
         
         continue_searching:
             call get_next_element
@@ -381,7 +383,7 @@ proc read_input_byte
         mov al, inputBuff[bx]
         dec [inputBuffBytesleft]
         inc [inputBuffPos]
-
+        inc [codebytepos]
     ret
               
     file_end:      
@@ -505,6 +507,11 @@ proc get_dw
     ret
 get_dw endp
 
+; Naudojama kai nuskaitomos 1 baito instrukcijos - daugiau nieko daryti nereikia
+proc skip_proc
+    ret
+skip_proc endp
+
 main:
     mov ax, @data
     mov ds, ax
@@ -551,16 +558,14 @@ main:
 
         call read_input_byte
         
-        inc [codebytepos]
+        
         call get_dw
 
-        ; Check all 1 byte instructions
-        SEARCH_FOR_INSTRUCTION oneByteInstructionArraySize1, oneByteInstructionArray1, 0, print_output
-        SEARCH_FOR_INSTRUCTION oneByteInstructionArraySize2, oneByteInstructionArray2, 0, print_output
-
-        ; 2+ byte instructions from now on:
-        ;SEARCH_FOR_INSTRUCTION twoByteInstructionArraySize, twoByteInstructionArray, 0, compare_2_bytes ;FIXME
-        
+        ; Visos 1 baito instrukcijos
+        SEARCH_FOR_INSTRUCTION oneByteInstructionArraySize1, oneByteInstructionArray1, 0, skip_proc
+        SEARCH_FOR_INSTRUCTION oneByteInstructionArraySize2, oneByteInstructionArray2, 0, skip_proc
+        ; 2 baitu nereikalaujancios papildomo darbo
+        SEARCH_FOR_INSTRUCTION twoByteInstructionArraySize, twoByteInstructionArray, 0, read_input_byte ; skip 1 byte
 
         unknown_instruction:
             APPEND_INSTRUCTION_BYTE al
