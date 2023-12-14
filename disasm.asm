@@ -23,8 +23,8 @@ jump4OpArraySize = 2
 returnsArraySize = 2
 
 ; HEX MNEMONIC pradzios pozicijos isvesties buferyje
-hexCodePos = 10
-mnemonicPos = 20
+hexCodePos = 12
+mnemonicPos = 26
 
 .data
     testMsg1 db "TEST1 ------ $"
@@ -48,11 +48,11 @@ mnemonicPos = 20
 
     outputFileName db 40 dup (?)
     outputFileHandle dw ?
-    outputBuff db 70 dup (?)
+    outputBuff db 100 dup (?)
     outputBuffPos dw 0
     codeBytePos dw 100h ; FIXME
 
-    ;;;;;;;;;;;;;;;;;;; SUTVARKYTI(DIDEJIMO TVARKA) INSTRUKCIJOMS ATSPINDINTI REIKALINGI MASYVAI  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;;;;;;;;; SUTVARKYTI(DIDEJIMO TVARKA) INSTRUKCIJOMS ATSPAUSDINTI REIKALINGI MASYVAI  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     ; Instrukcijų pirmo baito šešioliktainė reikšmė ir mnemonika
 
     ; Visos 1 baito instrukcijos
@@ -106,6 +106,12 @@ mnemonicPos = 20
     ;insEsc db 
      
     insUnknown db "NEPAZISTAMA",0
+
+    register8Array db "AL", 0, "CL", 0, "DL", 0, "BL", 0, "AH", 0, "CH", 0, "DH", 0, "BH", 0
+    register16Array db "AX", 0, "CX", 0, "DX", 0, "BX", 0, "SP", 0, "BP", 0, "SI", 0, "DI", 0
+    segmentArray db "ES", 0, "CS", 0, "SS", 0, "DS", 0
+    modArray db 000B, "BX+SI", 0, 001B, "BX+DI", 0, 010B, "BP+SI", 0, 011B, "BP+DI", 0, 100B, "SI", 0, 101B, "DI", 0, 110B, "BP", 0, 111B, "BX", 0
+
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
     d db 0
@@ -134,11 +140,28 @@ TESTING3 macro
     int 21h
 endm 
 
+
+APPEND_REGISTER_MNEMONIC macro registerArray, index
+    push ax bx
+    lea bx, [registerArray + index]
+    call copy_string_mnemonic
+    pop bx ax
+endm
+
+; macro vienam kableliu padeti output buferyje
+APPEND_COMMA_MNEMONIC macro
+    push ax
+    mov al, ','
+    call append_char_mnemonic
+    APPEND_SPACE_MNEMONIC
+    pop ax
+endm 
+
 ; macro vienam tarpui padeti output buferyje
-APPEND_SPACE_OUTPUT macro
+APPEND_SPACE_MNEMONIC macro
     push ax
     mov al, ' '
-    call append_char_output
+    call append_char_mnemonic
     pop ax
 endm 
 
@@ -155,12 +178,32 @@ APPEND_SPACES_OUTPUT macro endPos
     pop ax cx
 endm 
 
-; Macro appendConvertedHex pridejimui
-APPEND_INSTRUCTION_BYTE macro value
-    push ax
+
+; macro baito isvertimui i ascii hex ir pridejimui i output arba mnemonic buff
+APPEND_HEX_BYTE macro value, appendProcedure
+    local hex_convert_loop, hex_letter, append_hex_ascii
+    push ax cx
     mov ah, value
-    call append_converted_hex
-    pop ax
+    mov cx, 2
+    
+    hex_convert_loop:
+        xor al, al
+        rol ax, 4
+
+        cmp al, 9
+        jbe hex_letter
+        
+        add al, 'A' - 10    ;  ABCDEF 
+        jmp append_hex_ascii
+        
+        hex_letter:
+            add al, '0'  ; 0123456789
+        
+        append_hex_ascii:
+            call appendProcedure
+        
+        loop hex_convert_loop
+        pop cx ax
 endm
 
 ; Macro padedanti ieskoti instrukcijos masyvuose pagal pirma instrukcijos baita
@@ -180,8 +223,7 @@ SEARCH_FOR_INSTRUCTION macro instructionArraySize, instructionArray, maxInstruct
         mov dh, [bx]
         mov [instructionhex], dh ; issaugoti hex
 
-        APPEND_INSTRUCTION_BYTE dh
-        APPEND_SPACE_OUTPUT
+        APPEND_HEX_BYTE al, append_char_output
 
         inc bx
         call copy_string_mnemonic ; issaugtoi mneomonic
@@ -207,8 +249,7 @@ proc copy_string_mnemonic
         je end_copying_element
         call append_char_mnemonic
         inc bx
-        
-        
+         
         jne copy_array_loop_mnemonic
         
     end_copying_element:
@@ -443,33 +484,6 @@ proc terminate_program
     int 21h
 terminate_program endp
 
-; Konvertuoja ah i hex ascii ir prideda i output buferi
-; PARAM: ah
-proc append_converted_hex
-    push ax cx dx
-    mov cx, 2
-    
-    hex_convert_loop:
-        xor al, al
-        rol ax, 4
-
-        cmp al, 9
-        jbe hex_letter
-        
-        add al, 'A' - 10    ;  ABCDEF 
-        jmp append_hex_ascii
-        
-        hex_letter:
-            add al, '0'  ; 0123456789
-        
-        append_hex_ascii:
-            call append_char_output
-        
-        loop hex_convert_loop
-        pop dx cx ax
-    ret 
-append_converted_hex endp
-
 ; Prideda posicija i buferi su formatu
 proc append_pos
     push ax
@@ -483,9 +497,9 @@ proc append_pos
     call append_char_output
 
     mov ax, [codeBytePos]
-    call append_converted_hex
+    APPEND_HEX_BYTE ah, append_char_output
     mov ah, al
-    call append_converted_hex
+    APPEND_HEX_BYTE ah, append_char_output
 
     mov al, ':'
     call append_char_output
@@ -511,6 +525,51 @@ get_dw endp
 proc skip_proc
     ret
 skip_proc endp
+
+; Naudojama kai nuskaitomos 2 baito instrukcijos nereikalaujancios papildomu zingsniu
+proc skip_byte
+    call read_input_byte
+    APPEND_HEX_BYTE al, append_char_output
+    ret
+skip_byte endp
+
+
+APPEND_CORRECT_REGISTER macro index
+    local reg8, reg16, end
+    cmp w, 0
+    je reg8
+    reg16:
+        APPEND_REGISTER_MNEMONIC register16Array, index
+        jmp end
+    reg8:
+        APPEND_REGISTER_MNEMONIC register8Array, index
+        jmp end 
+    end:
+endm
+
+; suformatuoja likusią in/out instrukcijų dalį
+proc in_out_analysis     
+    push ax
+    call read_input_byte
+    mov [instructionhex], al
+    APPEND_HEX_BYTE instructionhex, append_char_output
+    pop ax
+   
+    cmp al, 0E6H ; is out? 
+    jae is_out
+    is_in:
+        APPEND_HEX_BYTE instructionhex, append_char_mnemonic
+        APPEND_COMMA_MNEMONIC
+        APPEND_CORRECT_REGISTER 0
+        ret
+
+    is_out:
+        APPEND_CORRECT_REGISTER 0
+        APPEND_COMMA_MNEMONIC
+        APPEND_HEX_BYTE instructionhex, append_char_mnemonic
+        ret
+in_out_analysis endp
+
 
 main:
     mov ax, @data
@@ -559,23 +618,22 @@ main:
         call read_input_byte
         
         
-        call get_dw
+        call get_DW
 
         ; Visos 1 baito instrukcijos
         SEARCH_FOR_INSTRUCTION oneByteInstructionArraySize1, oneByteInstructionArray1, 0, skip_proc
         SEARCH_FOR_INSTRUCTION oneByteInstructionArraySize2, oneByteInstructionArray2, 0, skip_proc
         ; 2 baitu nereikalaujancios papildomo darbo
-        SEARCH_FOR_INSTRUCTION twoByteInstructionArraySize, twoByteInstructionArray, 0, read_input_byte ; skip 1 byte
+        SEARCH_FOR_INSTRUCTION twoByteInstructionArraySize, twoByteInstructionArray, 0, skip_byte
 
+        SEARCH_FOR_INSTRUCTION inOutArraySize, inOutArray, 1 in_out_analysis
+        
         unknown_instruction:
-            APPEND_INSTRUCTION_BYTE al
+            APPEND_HEX_BYTE al, append_char_output
            
             lea bx, [insunknown]
             call copy_string_mnemonic
             jmp print_output
-
-        compare_2_bytes:
-
 
         print_output:
             APPEND_SPACES_OUTPUT mnemonicPos
