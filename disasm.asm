@@ -7,9 +7,22 @@ inputBuffSize = 256
 oneByteInstructionArraySize1 = 51
 oneByteInstructionArraySize2 = 39
 twoByteInstructionArraySize = 2
+inOutArraySize = 2
+modRegRMArraySize = 3
+wOpOpArraySize = 9
+wModRegRMArraySize = 2
+dWModRegRMArraySize = 9
+threeBitsWModRegRMArraySize = 7
+threeBitsVWModRMArraySize = 7
+threeBitsSWModRMArraySize = 8
+jumpsOffsetArraySize = 21
+threeBitsModRMArraySize = 5
+threeBitswModRMArraySize = 2
+jump2BOpArraySize = 2
+jump4OpArraySize = 2
+returnsArraySize = 2
 
-
-; HEX MNEMONIC pozicijos
+; HEX MNEMONIC pradzios pozicijos isvesties buferyje
 hexCodePos = 10
 mnemonicPos = 20
 
@@ -40,14 +53,58 @@ mnemonicPos = 20
     codeBytePos dw 100h ; FIXME
 
     ;;;;;;;;;;;;;;;;;;; SUTVARKYTI(DIDEJIMO TVARKA) INSTRUKCIJOMS ATSPINDINTI REIKALINGI MASYVAI  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ; Instrukcijų pirmo baito šešioliktainė reikšmė ir mnemonika
 
-    ; Visos 1 baito instrukcijos, jų šešioliktainė reikšmė ir mnemonika
+    ; Visos 1 baito instrukcijos
     oneByteInstructionArray1 db 6H, "PUSH ES", 0, 7H, "POP ES", 0, 0EH, "PUSH CS", 0, 16H, "PUSH SS", 0, 17H, "POP SS", 0, 1EH, "PUSH DS", 0, 1FH, "POP DS", 0, 27H, "DAA", 0, 2FH, "DAS", 0, 37H, "AAA", 0, 3FH, "AAS", 0, 40H, "INC AX", 0, 41H, "INC CX", 0, 42H, "INC DX", 0, 43H, "INC BX", 0, 44H, "INC SP", 0, 45H, "INC BP", 0, 46H, "INC SI", 0, 47H, "INC DI", 0, 48H, "DEC AX", 0, 49H, "DEC CX", 0, 4AH, "DEC DX", 0, 4BH, "DEC BX", 0, 4CH, "DEC SP", 0, 4DH, "DEC BP", 0, 4EH, "DEC SI", 0, 4FH, "DEC DI", 0, 50H, "PUSH AX", 0, 51H, "PUSH CX", 0, 52H, "PUSH DX", 0, 53H, "PUSH BX", 0, 54H, "PUSH SP", 0, 55H, "PUSH BP", 0, 56H, "PUSH SI", 0, 57H, "PUSH DI", 0, 58H, "POP AX", 0, 59H, "POP CX", 0, 5AH, "POP DX", 0, 5BH, "POP BX", 0, 5CH, "POP SP", 0, 5DH, "POP BP", 0, 5EH, "POP SI", 0, 5FH, "POP DI", 0, 90h, "NOP", 0, 91h, "CXHG AX, CX", 0, 92h, "CXHG AX, DX", 0, 93h, "CXHG AX, BX", 0, 94h, "CXHG AX, SP", 0, 95h, "CXHG AX, BP", 0, 96h, "CXHG AX, SI", 0, 97h, "CXHG AX, DI", 0
     oneByteInstructionArray2 db 98H, "CBW", 0, 99H, "CWD", 0, 9BH, "WAIT", 0, 9CH, "PUSHF", 0, 9DH, "POPF", 0, 9EH, "SAHF", 0, 9FH, "LAHF", 0, 0A4H, "MOVSB", 0, 0A5H, "MOVSW", 0, 0A6H, "CMPSB", 0, 0A7H, "CMPSW", 0, 0AAH, "STOSB", 0, 0ABH, "STOSW", 0, 0ACH, "LODSB", 0, 0ADH, "LODSW", 0, 0AEH, "SCASB", 0, 0AFH, "SCASW", 0, 0C3H, "RET", 0, 0CBH, "RET", 0, 0CCH, "INT 3H", 0, 0CEH, "INTO", 0, 0CFH, "IRET", 0, 0D7H, "XLAT", 0, 0ECH, "IN AL, DX", 0, 0EDH, "IN AX, DX", 0, 0EEH, "OUT DX, AL", 0, 0EFH, "OUT DX, AX", 0, 0F0H, "LOCK", 0, 0F2H, "REPNZ", 0, 0F3H, "REP", 0, 0F4H, "HLT", 0, 0F5H, "CMC", 0, 0F8H, "CLC", 0, 0F9H, "STC", 0, 0FAH, "CLI", 0, 0FBH, "STI", 0, 0FCH, "CLD", 0, 0FDH, "STD", 0
-    ; Visos 2 baitų instrukcijos, nereikalaujančios papildomų veiksmų, jų pirmo baito šešioliktainė reikšmė ir mnemonika
-    twoByteInstructionArray DB 0D4H, "AAM", 0, 0D5H, "AAD", 0
-    
+    ; Visos 2 baitų instrukcijos, nereikalaujančios papildomų veiksmų
+    twoByteInstructionArray Db 0D4H, "AAM", 0, 0D5H, "AAD", 0
+    ; In/Out instrukcijos
+    inOutArray db 0E4H, "IN ", 0, 0E6H, "OUT ", 0
+    ; mod reg r/m instrukcijos
+    modRegRMArray db 8DH, "LEA ", 0, 0C4H, "LES ", 0, 0C5H, "LDS ", 0
+    ; w op op instrukcijos
+    wOpOpArray db 4H, "ADD ", 0, 0CH, "OR ", 0, 14H, "ADC ", 0, 1CH, "SBB ", 0, 24H, "AND ", 0, 2CH, "SUB ", 0, 34H, "XOR ", 0, 3CH, "CMP ", 0, 0A8H, "TEST ", 0
+    ; w mod reg r/m  instrukcijos
+    wModRegRMArray db 84H, "TEST ", 0, 86H, "XCHG ", 0
+    ; dw mod reg r/m instrukcijos
+    dWModRegRMArray db 0H, "ADD ", 0, 08H, "OR ", 0, 10H, "ADC ", 0, 18H, "SBB ", 0, 20H, "AND ", 0, 28H, "SUB ", 0, 30H, "XOR ", 0, 38H, "CMP ", 0, 88H, "MOV ", 0
+    ; 1111 011 w mod xxx r/m instrukcijos
+    threeBitsWModRegRMArray db 000B, "TEST", 0, 010B, "NOT ", 0, 011B, "NEG ", 0, 100B, "MUL ", 0, 101B, "IMUL ", 0, 110B, "DIV ", 0, 111B, "IDIV ", 0
+    ; 1101 00 vw mod xxx r/m instrukcijos
+    threeBitsVWModRMArray db 000B, "ROL ", 0, 001B, "ROR ", 0, 010B, "RCL ", 0, 011B, "RCR ", 0, 100B, "SHL ", 0, 101B, "SHR ", 0, 111B, "SAR ", 0
+    ; 1000 00 sw mod xxx r/m instrukcijos
+    threeBitsSWModRMArray db 000B, "ADD ", 0, 001B, "OR ", 0, 010B, "ADC ", 0, 011B, "SBB ", 0, 100B, "AND ", 0, 101B, "SUB ", 0, 110B, "XOR ", 0, 111B, "CMP ", 0
+    ; jumps + offset instrukcijos
+    jumpsOffsetArray db 70H, "JO ", 0, 71H, "JNO ", 0, 72H, "JB ", 0, 73H, "JNB ", 0, 74H, "JE ", 0, 75H, "JNE ", 0, 76H, "JNA ", 0, 77H, "JA ", 0, 78H, "JS ", 0, 79H, "JNS ", 0, 7AH, "JP ", 0, 7BH, "JNP ", 0, 7CH, "JL ", 0, 7DH, "JNL ", 0, 7EH, "JLE ", 0, 7FH, "JG ", 0, 0E0H, "LOOPNE ", 0, 0E1H, "LOOPE ", 0, 0E2H, "LOOP ", 0, 0E3H, "JCXZ ", 0, 0EBH, "JMP ", 0 
+    ; 1111 1111 mod xxx r/m instrukcijos
+    threeBitsModRMArray db 010B, "CALL ", 0, 011B, "CALL ", 0, 100B, "JMP ", 0, 101B, "JMP ", 0, 110B, "PUSH ", 0
+    ; 1111 111w mod xxx r/m
+    threeBitswModRMArray db 000B, "INC ", 0, 001B, "DEC ", 0
+    ; Jump/call 2 bytes op
+    jump2BOpArray db 0E8H, "CALL ", 0, 0E9H, "JMP ", 0
+    ; Jumps/call 4 bytes op
+    jump4OpArray db 9AH, "CALL ", 0, 0EAH, "JMP ", 0
+    ; returns op op
+    returnsArray db 0C2H, "RET ", 0, 0CAH, "RET ", 0
 
+    ; MOV w mod r/m op op 
+    insWModRMOpOpMov db 0C6H, "MOV ", 0
+    ; MOV w reg op op 
+    insWRegOpOpMov db 0B0H, "MOV ", 0
+    ; MOV w adr adr
+    insWAdrAdrMov db 0A0H, "MOV ", 0
+    ; MOV d mod sreg r/m  ??????
+    insDModSregRMMov db 8CH, "MOV ", 0
+    ; POP mod r/m 
+    insModRMPop db 8FH, "POP ", 0
+    ; int byte number
+    insInt db 0CDH, "INT ", 0
+    
+    ; xxx mod yyy r/m 
+    ;insEsc db 
+     
     insUnknown db "NEPAZISTAMA",0
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
