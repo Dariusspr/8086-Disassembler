@@ -22,9 +22,10 @@ jump2BOpArraySize = 2
 jump4OpArraySize = 2
 returnsArraySize = 2
 
+modArraySize = 8
 ; HEX MNEMONIC pradzios pozicijos isvesties buferyje
 hexCodePos = 12
-mnemonicPos = 26
+mnemonicPos = 40
 
 .data
     testMsg1 db "TEST1 ------ $"
@@ -116,6 +117,10 @@ mnemonicPos = 26
 
     d db 0
     w db 0
+    modd db 0
+    reg db 0
+    rm db 0
+    needWordBytePtr db 0
     instructionHex db 0
     
 .code
@@ -140,28 +145,35 @@ TESTING3 macro
     int 21h
 endm 
 
-
-APPEND_REGISTER_MNEMONIC macro registerArray, index
+APPEND_ARRAY_MNEMONIC macro array, index
     push ax bx
-    lea bx, [registerArray + index]
+    lea bx, [array + index]
     call copy_string_mnemonic
     pop bx ax
 endm
 
-; macro vienam kableliu padeti output buferyje
+; macro vienam kableliu su tarpu padeti output buferyje
 APPEND_COMMA_MNEMONIC macro
     push ax
     mov al, ','
     call append_char_mnemonic
-    APPEND_SPACE_MNEMONIC
+    PUT_CHAR_MNEMONIC ' '
     pop ax
 endm 
 
-; macro vienam tarpui padeti output buferyje
-APPEND_SPACE_MNEMONIC macro
+; macro vienam char padeti mnemonic buferyje
+PUT_CHAR_MNEMONIC macro char
     push ax
-    mov al, ' '
+    mov al, char
     call append_char_mnemonic
+    pop ax
+endm 
+
+; macro vienam char padeti output buferyje
+PUT_CHAR_OUTPUT macro char
+    push ax
+    mov al, char
+    call append_char_output
     pop ax
 endm 
 
@@ -178,6 +190,33 @@ APPEND_SPACES_OUTPUT macro endPos
     pop ax cx
 endm 
 
+; Macro pasirinkti tinkamam(8 ar 16 bitu) registrui ir ji prideti
+APPEND_CORRECT_REGISTER macro index
+    local reg8, reg16, end
+    cmp w, 0
+    je reg8
+    reg16:
+        APPEND_ARRAY_MNEMONIC register16Array, index
+        jmp end
+    reg8:
+        APPEND_ARRAY_MNEMONIC register8Array, index
+        jmp end 
+    end:
+endm
+
+READ_APPEND_HEX_WORD macro appendProcedure
+    call read_input_byte
+    mov [instructionhex], al
+    call read_input_byte
+    APPEND_HEX_BYTE al, appendProcedure
+    APPEND_HEX_BYTE instructionhex, appendProcedure
+    PUT_CHAR_MNEMONIC 'h'
+endm 
+
+READ_APPEND_HEX_BYTE macro appendProcedure
+    call read_input_byte
+    APPEND_HEX_BYTE al, appendProcedure
+endm 
 
 ; macro baito isvertimui i ascii hex ir pridejimui i output arba mnemonic buff
 APPEND_HEX_BYTE macro value, appendProcedure
@@ -203,7 +242,7 @@ APPEND_HEX_BYTE macro value, appendProcedure
             call appendProcedure
         
         loop hex_convert_loop
-        pop cx ax
+    pop cx ax
 endm
 
 ; Macro padedanti ieskoti instrukcijos masyvuose pagal pirma instrukcijos baita
@@ -223,8 +262,6 @@ SEARCH_FOR_INSTRUCTION macro instructionArraySize, instructionArray, maxInstruct
         mov dh, [bx]
         mov [instructionhex], dh ; issaugoti hex
 
-        APPEND_HEX_BYTE al, append_char_output
-
         inc bx
         call copy_string_mnemonic ; issaugtoi mneomonic
 
@@ -240,6 +277,7 @@ SEARCH_FOR_INSTRUCTION macro instructionArraySize, instructionArray, maxInstruct
 
 endm
 
+; copy string until 0
 ; PARAM: bx(adress to the start of string)
 proc copy_string_mnemonic
     push ax bx dx
@@ -258,13 +296,12 @@ proc copy_string_mnemonic
     ret
 copy_string_mnemonic endp
 
+; copy string until end (cx = 0)
 ; PARAM: bx(adress to the start of string), cx (size of array)
 proc copy_string_output
     push ax bx dx cx
     copy_array_loop_ouput:
         mov al, [bx]
-        cmp al, 0
-
         call append_char_output
         inc bx 
         loop copy_array_loop_ouput
@@ -273,8 +310,27 @@ proc copy_string_output
     ret
 copy_string_output endp
 
+; sudanda mod masyve, bx - i masyvo elemento mnemonic
+proc search_mod
+    push cx ax
+    lea bx, modArray
+    mov cx, modArraySize
+    searching_mod:
+        mov al, [bx]
+        cmp al, rm
+        jne continue_searching_mod
+        inc bx
+        pop ax cx
+        ret
+        continue_searching_mod:
+            call get_next_element
+        loop searching_mod
+    pop  ax cx
+    ret
+search_mod endp
+
 ; Gaunamas naujas masyvo elementas
-; PARAM: bx(andresas i kazkur instrukciju masyva)
+; PARAM: bx(andresas i kazkuri masyva)
 proc get_next_element
     nex_element_loop:
     inc bx
@@ -425,6 +481,7 @@ proc read_input_byte
         dec [inputBuffBytesleft]
         inc [inputBuffPos]
         inc [codebytepos]
+        APPEND_HEX_BYTE al, append_char_output
     ret
               
     file_end:      
@@ -486,27 +543,21 @@ terminate_program endp
 
 ; Prideda posicija i buferi su formatu
 proc append_pos
-    push ax
-
-
-    mov al, 'c'
-    call append_char_output
-    mov al, 's'
-    call append_char_output
-    mov al, ':'
-    call append_char_output
+    push ax cx bx
+    
+    mov cx, 2
+    lea bx, [segmentarray+3]
+    call copy_string_output
+    PUT_CHAR_OUTPUT ':'
 
     mov ax, [codeBytePos]
     APPEND_HEX_BYTE ah, append_char_output
-    mov ah, al
-    APPEND_HEX_BYTE ah, append_char_output
+    APPEND_HEX_BYTE al, append_char_output
 
-    mov al, ':'
-    call append_char_output
-    mov al, ' '
-    call append_char_output
+    PUT_CHAR_OUTPUT ':'
+    PUT_CHAR_OUTPUT ' '
 
-    pop ax
+    pop bx cx ax
     ret
 append_pos endp
 
@@ -529,36 +580,22 @@ skip_proc endp
 ; Naudojama kai nuskaitomos 2 baito instrukcijos nereikalaujancios papildomu zingsniu
 proc skip_byte
     call read_input_byte
-    APPEND_HEX_BYTE al, append_char_output
     ret
 skip_byte endp
 
 
-APPEND_CORRECT_REGISTER macro index
-    local reg8, reg16, end
-    cmp w, 0
-    je reg8
-    reg16:
-        APPEND_REGISTER_MNEMONIC register16Array, index
-        jmp end
-    reg8:
-        APPEND_REGISTER_MNEMONIC register8Array, index
-        jmp end 
-    end:
-endm
-
 ; suformatuoja likusią in/out instrukcijų dalį
-proc in_out_analysis     
+proc inOut_analysis     
     push ax
-    call read_input_byte
+    READ_APPEND_HEX_BYTE append_char_output
     mov [instructionhex], al
-    APPEND_HEX_BYTE instructionhex, append_char_output
     pop ax
    
     cmp al, 0E6H ; is out? 
     jae is_out
     is_in:
         APPEND_HEX_BYTE instructionhex, append_char_mnemonic
+        PUT_CHAR_MNEMONIC 'h'
         APPEND_COMMA_MNEMONIC
         APPEND_CORRECT_REGISTER 0
         ret
@@ -567,9 +604,114 @@ proc in_out_analysis
         APPEND_CORRECT_REGISTER 0
         APPEND_COMMA_MNEMONIC
         APPEND_HEX_BYTE instructionhex, append_char_mnemonic
-        ret
-in_out_analysis endp
+        PUT_CHAR_MNEMONIC 'h'
+        
+        jmp print_output
+inOut_analysis endp
 
+
+proc get_mod
+    mov modd, al
+    shr modd, 6
+    and modd, 00000011b ; no point in this case because remaining are zero cuz of shr
+    ret
+get_mod endp
+
+proc get_reg 
+    mov reg, al
+    shr reg, 3
+    and reg, 00000111b 
+    ret
+get_reg endp
+
+proc get_rm
+    mov rm, al
+    and rm, 00000111b
+    ret
+get_rm endp
+
+proc get_reg_index
+    xor ax, ax
+    mov al, [reg]
+    mov bl, 3
+    mul bl
+    mov bx, ax
+    ret
+get_reg_index endp
+
+proc append_rm
+    cmp modd, 11b
+    je rm_reg
+    cmp modd, 00b
+    je efficient_add_1
+    jmp efficient_add_2
+    rm_reg:
+        mov bh, rm
+        mov reg, bh
+        call get_reg_index
+        APPEND_CORRECT_REGISTER bx
+    ret  
+
+    efficient_add_1:
+        cmp needwordbyteptr, 0
+        je rm2_no_ptr
+        ;TODO COPY word/byte ptr
+        rm2_no_ptr:
+        PUT_CHAR_MNEMONIC '['
+        cmp rm, 110b
+        jne not_direct_address
+        cmp modd, 00b
+        jne not_direct_address
+        READ_APPEND_HEX_WORD append_char_mnemonic
+        jmp append_rm_end
+
+        not_direct_address:
+            call search_mod
+            call copy_string_mnemonic
+            jmp append_rm_end
+    
+    efficient_add_2:
+        cmp [needwordbyteptr], 0
+        je rm1_no_ptr
+        ;TODO COPY word/byte ptr
+        rm1_no_ptr:
+            PUT_CHAR_MNEMONIC '['
+            call search_mod
+            call copy_string_mnemonic
+            PUT_CHAR_MNEMONIC '+'
+            cmp modd, 01b
+            je read_offset_byte
+            READ_APPEND_HEX_WORD append_char_mnemonic
+            jmp append_rm_end
+            read_offset_byte:
+            READ_APPEND_HEX_BYTE append_char_mnemonic
+            PUT_CHAR_MNEMONIC 'h'
+            jmp append_rm_end
+    
+    append_rm_end:
+    PUT_CHAR_MNEMONIC ']'
+    ret
+append_rm endp
+
+proc modRegRM_analysis
+    
+    mov w, 1
+
+    call read_input_byte
+
+    call get_mod
+    call get_reg
+    call get_rm
+
+    call get_reg_index
+    APPEND_CORRECT_REGISTER bx
+    APPEND_COMMA_MNEMONIC
+
+    mov needWordBytePtr, 0
+    call append_rm
+
+    jmp print_output
+modRegRM_analysis endp
 
 main:
     mov ax, @data
@@ -620,16 +762,16 @@ main:
         
         call get_DW
 
-        ; Visos 1 baito instrukcijos
         SEARCH_FOR_INSTRUCTION oneByteInstructionArraySize1, oneByteInstructionArray1, 0, skip_proc
         SEARCH_FOR_INSTRUCTION oneByteInstructionArraySize2, oneByteInstructionArray2, 0, skip_proc
-        ; 2 baitu nereikalaujancios papildomo darbo
+
         SEARCH_FOR_INSTRUCTION twoByteInstructionArraySize, twoByteInstructionArray, 0, skip_byte
 
-        SEARCH_FOR_INSTRUCTION inOutArraySize, inOutArray, 1 in_out_analysis
+        SEARCH_FOR_INSTRUCTION inOutArraySize, inOutArray, 1 inOut_analysis
+        SEARCH_FOR_INSTRUCTION modRegRMArraySize, modRegRMArray, 0, modRegRM_analysis
         
         unknown_instruction:
-            APPEND_HEX_BYTE al, append_char_output
+            
            
             lea bx, [insunknown]
             call copy_string_mnemonic
