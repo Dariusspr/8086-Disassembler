@@ -16,8 +16,7 @@ threeBitsWModRMArraySize = 7
 threeBitsVWModRMArraySize = 7
 threeBitsSWModRMArraySize = 8
 jumpsOffsetArraySize = 21
-threeBitsModRMArraySize = 5
-;threeBitswModRMArraySize = 2
+threeBitsModRMArraySize = 7
 jump2BOpArraySize = 2
 jump4OpArraySize = 2
 returnsArraySize = 2
@@ -80,9 +79,7 @@ mnemonicPos = 40
     ; jumps + offset instrukcijos
     jumpsOffsetArray db 70H, "JO ", 0, 71H, "JNO ", 0, 72H, "JB ", 0, 73H, "JNB ", 0, 74H, "JE ", 0, 75H, "JNE ", 0, 76H, "JNA ", 0, 77H, "JA ", 0, 78H, "JS ", 0, 79H, "JNS ", 0, 7AH, "JP ", 0, 7BH, "JNP ", 0, 7CH, "JL ", 0, 7DH, "JNL ", 0, 7EH, "JLE ", 0, 7FH, "JG ", 0, 0E0H, "LOOPNE ", 0, 0E1H, "LOOPE ", 0, 0E2H, "LOOP ", 0, 0E3H, "JCXZ ", 0, 0EBH, "JMP ", 0 
     ; 1111 1111 mod xxx r/m instrukcijos
-    threeBitsModRMArray db 010B, "CALL ", 0, 011B, "CALL ", 0, 100B, "JMP ", 0, 101B, "JMP ", 0, 110B, "PUSH ", 0
-    ; 1111 111w mod xxx r/m
-    ;threeBitswModRMArray db 000B, "INC ", 0, 001B, "DEC ", 0
+    threeBitsModRMArray db 000B, "INC ", 0, 001B, "DEC ", 0, 010B, "CALL ", 0, 011B, "CALL ", 0, 100B, "JMP ", 0, 101B, "JMP ", 0, 110B, "PUSH ", 0
     ; Jump/call 2 bytes op
     jump2BOpArray db 0E8H, "CALL ", 0, 0E9H, "JMP ", 0
     ; Jumps/call 4 bytes op
@@ -117,7 +114,7 @@ mnemonicPos = 40
     bytePtr db "BYTE PTR ", 0
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-    d db 0
+    d db 0 ; d = s = v
     w db 0
     modd db 0
     reg db 0
@@ -625,7 +622,7 @@ proc inOut_analysis
         APPEND_HEX_BYTE instructionhex, append_char_mnemonic
         PUT_CHAR_MNEMONIC 'h'
         
-        jmp print_output
+        ret
 inOut_analysis endp
 
 
@@ -718,7 +715,6 @@ proc append_rm
 append_rm endp
 
 proc modRegRM_analysis
-    
     mov w, 1
 
     call read_input_byte
@@ -734,7 +730,7 @@ proc modRegRM_analysis
     mov needWordBytePtr, 0
     call append_rm
 
-    jmp print_output
+    ret
 modRegRM_analysis endp
 
 proc threeBitsWModRM_analysis
@@ -744,6 +740,7 @@ proc threeBitsWModRM_analysis
    
     call append_rm
     ret
+
     threeBitsWModRM_test:
         call append_rm
         APPEND_COMMA_MNEMONIC
@@ -762,6 +759,50 @@ proc append_immediate_data
         ret
 append_immediate_data endp
 
+proc threeBitsVWModRM_analysis
+    mov needwordbyteptr, 1
+    call append_rm
+    APPEND_COMMA_MNEMONIC
+    cmp d, 1 ; d = v
+    je v_cl
+    PUT_CHAR_MNEMONIC '1'
+    ret
+    v_cl:
+    APPEND_ARRAY_MNEMONIC register8Array, 4
+    ret
+threeBitsVWModRM_analysis endp
+
+proc threeBitsSWModRM_analysis
+    mov needwordbyteptr, 1
+    call append_rm
+    APPEND_COMMA_MNEMONIC
+    
+    cmp w, 1
+    je threeBitsSWModRM_exception
+    
+    call append_immediate_data
+    ret
+    
+    threeBitsSWModRM_exception:
+    cmp d, 1
+    je threeBitsSWModRM_expanded8bits
+    call append_immediate_data
+    ret
+
+    threeBitsSWModRM_expanded8bits:
+    call read_input_byte
+    cbw
+    APPEND_HEX_BYTE ah, append_char_mnemonic
+    APPEND_HEX_BYTE al, append_char_mnemonic
+    PUT_CHAR_MNEMONIC 'h'
+    ret
+threeBitsSWModRM_analysis endp
+    
+proc threeBitsModRM_analysis
+    mov needwordbyteptr, 1 
+    call append_rm
+    ret
+threeBitsModRM_analysis endp
 main:
     mov ax, @data
     mov ds, ax
@@ -820,10 +861,13 @@ main:
         SEARCH_FOR_INSTRUCTION inOutArraySize, inOutArray, 1 inOut_analysis
         SEARCH_FOR_INSTRUCTION modRegRMArraySize, modRegRMArray, 0, modRegRM_analysis
         THREE_BYTES_SEARCH 0F6h, 1, threeBitsWModRMArraySize, threeBitsWModRMArray, 0, threeBitsWModRM_analysis
+        THREE_BYTES_SEARCH 0D0h, 3, threeBitsVWModRMArraySize, threeBitsVWModRMArray, 0,  threeBitsVWModRM_analysis
+        THREE_BYTES_SEARCH 80h, 3, threeBitsSWModRMArraySize, threeBitsSWModRMArray, 0,  threeBitsSWModRM_analysis
+        THREE_BYTES_SEARCH 0FFh, 0, threeBitsModRMArraySize, threeBitsModRMArray, 0,  threeBitsModRM_analysis
+        
+        
         
         unknown_instruction:
-            
-           
             lea bx, [insunknown]
             call copy_string_mnemonic
             jmp print_output
