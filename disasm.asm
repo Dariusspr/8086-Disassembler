@@ -12,12 +12,12 @@ modRegRMArraySize = 3
 wOpOpArraySize = 9
 wModRegRMArraySize = 2
 dWModRegRMArraySize = 9
-threeBitsWModRegRMArraySize = 7
+threeBitsWModRMArraySize = 7
 threeBitsVWModRMArraySize = 7
 threeBitsSWModRMArraySize = 8
 jumpsOffsetArraySize = 21
 threeBitsModRMArraySize = 5
-threeBitswModRMArraySize = 2
+;threeBitswModRMArraySize = 2
 jump2BOpArraySize = 2
 jump4OpArraySize = 2
 returnsArraySize = 2
@@ -72,7 +72,7 @@ mnemonicPos = 40
     ; dw mod reg r/m instrukcijos
     dWModRegRMArray db 0H, "ADD ", 0, 08H, "OR ", 0, 10H, "ADC ", 0, 18H, "SBB ", 0, 20H, "AND ", 0, 28H, "SUB ", 0, 30H, "XOR ", 0, 38H, "CMP ", 0, 88H, "MOV ", 0
     ; 1111 011 w mod xxx r/m instrukcijos
-    threeBitsWModRegRMArray db 000B, "TEST", 0, 010B, "NOT ", 0, 011B, "NEG ", 0, 100B, "MUL ", 0, 101B, "IMUL ", 0, 110B, "DIV ", 0, 111B, "IDIV ", 0
+    threeBitsWModRMArray db 000B, "TEST ", 0, 010B, "NOT ", 0, 011B, "NEG ", 0, 100B, "MUL ", 0, 101B, "IMUL ", 0, 110B, "DIV ", 0, 111B, "IDIV ", 0
     ; 1101 00 vw mod xxx r/m instrukcijos
     threeBitsVWModRMArray db 000B, "ROL ", 0, 001B, "ROR ", 0, 010B, "RCL ", 0, 011B, "RCR ", 0, 100B, "SHL ", 0, 101B, "SHR ", 0, 111B, "SAR ", 0
     ; 1000 00 sw mod xxx r/m instrukcijos
@@ -82,7 +82,7 @@ mnemonicPos = 40
     ; 1111 1111 mod xxx r/m instrukcijos
     threeBitsModRMArray db 010B, "CALL ", 0, 011B, "CALL ", 0, 100B, "JMP ", 0, 101B, "JMP ", 0, 110B, "PUSH ", 0
     ; 1111 111w mod xxx r/m
-    threeBitswModRMArray db 000B, "INC ", 0, 001B, "DEC ", 0
+    ;threeBitswModRMArray db 000B, "INC ", 0, 001B, "DEC ", 0
     ; Jump/call 2 bytes op
     jump2BOpArray db 0E8H, "CALL ", 0, 0E9H, "JMP ", 0
     ; Jumps/call 4 bytes op
@@ -113,6 +113,8 @@ mnemonicPos = 40
     segmentArray db "ES", 0, "CS", 0, "SS", 0, "DS", 0
     modArray db 000B, "BX+SI", 0, 001B, "BX+DI", 0, 010B, "BP+SI", 0, 011B, "BP+DI", 0, 100B, "SI", 0, 101B, "DI", 0, 110B, "BP", 0, 111B, "BX", 0
 
+    wordPtr db "WORD PTR ", 0
+    bytePtr db "BYTE PTR ", 0
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
     d db 0
@@ -206,10 +208,11 @@ endm
 
 READ_APPEND_HEX_WORD macro appendProcedure
     call read_input_byte
-    mov [instructionhex], al
+    push ax
     call read_input_byte
     APPEND_HEX_BYTE al, appendProcedure
-    APPEND_HEX_BYTE instructionhex, appendProcedure
+    pop ax
+    APPEND_HEX_BYTE al, appendProcedure
     PUT_CHAR_MNEMONIC 'h'
 endm 
 
@@ -245,6 +248,25 @@ APPEND_HEX_BYTE macro value, appendProcedure
     pop cx ax
 endm
 
+; Macro paziurinti ar instrukcija priklauso masyvui, kurio instrukcijos pirmas baitas vienodas
+THREE_BYTES_SEARCH macro firstByte, firstByteDiff, instructionArraySize, instructionArray, maxInstructionDifference, nextOperation
+    local skip_this
+    cmp al, firstByte
+    jb skip_this
+    mov dl, firstByte
+    add dl, firstByteDiff
+    cmp al, dl
+    ja skip_this
+    call read_input_byte
+
+    call get_mod
+    call get_reg
+    call get_rm
+    mov al, reg
+    SEARCH_FOR_INSTRUCTION instructionArraySize, instructionArray, maxInstructionDifference, nextOperation
+    skip_this:
+endm
+
 ; Macro padedanti ieskoti instrukcijos masyvuose pagal pirma instrukcijos baita
 SEARCH_FOR_INSTRUCTION macro instructionArraySize, instructionArray, maxInstructionDifference, nextOperation
     local searching_instructions, continue_searching, end_searching
@@ -259,11 +281,8 @@ SEARCH_FOR_INSTRUCTION macro instructionArraySize, instructionArray, maxInstruct
         add dh, maxInstructionDifference
         cmp al, dh
         ja continue_searching
-        mov dh, [bx]
-        mov [instructionhex], dh ; issaugoti hex
-
         inc bx
-        call copy_string_mnemonic ; issaugtoi mneomonic
+        call copy_string_mnemonic ; issaugoti mneomonic
 
         call nextOperation ; testi instrukcijos skaityma
 
@@ -655,7 +674,7 @@ proc append_rm
     efficient_add_1:
         cmp needwordbyteptr, 0
         je rm2_no_ptr
-        ;TODO COPY word/byte ptr
+        APPEND_ARRAY_MNEMONIC bytePtr, 0
         rm2_no_ptr:
         PUT_CHAR_MNEMONIC '['
         cmp rm, 110b
@@ -673,7 +692,12 @@ proc append_rm
     efficient_add_2:
         cmp [needwordbyteptr], 0
         je rm1_no_ptr
-        ;TODO COPY word/byte ptr
+        cmp modd, 01b
+        je rm_append_bytePtr
+        APPEND_ARRAY_MNEMONIC wordPtr, 0
+        jmp rm1_no_ptr
+        rm_append_bytePtr:
+            APPEND_ARRAY_MNEMONIC bytePtr, 0
         rm1_no_ptr:
             PUT_CHAR_MNEMONIC '['
             call search_mod
@@ -712,6 +736,31 @@ proc modRegRM_analysis
 
     jmp print_output
 modRegRM_analysis endp
+
+proc threeBitsWModRM_analysis
+    mov needwordbyteptr, 1
+    cmp reg, 000b
+    je threeBitsWModRM_test
+   
+    call append_rm
+    ret
+    threeBitsWModRM_test:
+        call append_rm
+        APPEND_COMMA_MNEMONIC
+        call append_immediate_data
+    ret
+threeBitsWModRM_analysis endp
+
+proc append_immediate_data
+    cmp w, 1
+    je imm_word
+        READ_APPEND_HEX_BYTE append_char_mnemonic
+        PUT_CHAR_MNEMONIC 'h'
+        ret
+    imm_word:
+        READ_APPEND_HEX_WORD append_char_mnemonic
+        ret
+append_immediate_data endp
 
 main:
     mov ax, @data
@@ -762,6 +811,7 @@ main:
         
         call get_DW
 
+        mov [instructionhex], al
         SEARCH_FOR_INSTRUCTION oneByteInstructionArraySize1, oneByteInstructionArray1, 0, skip_proc
         SEARCH_FOR_INSTRUCTION oneByteInstructionArraySize2, oneByteInstructionArray2, 0, skip_proc
 
@@ -769,6 +819,7 @@ main:
 
         SEARCH_FOR_INSTRUCTION inOutArraySize, inOutArray, 1 inOut_analysis
         SEARCH_FOR_INSTRUCTION modRegRMArraySize, modRegRMArray, 0, modRegRM_analysis
+        THREE_BYTES_SEARCH 0F6h, 1, threeBitsWModRMArraySize, threeBitsWModRMArray, 0, threeBitsWModRM_analysis
         
         unknown_instruction:
             
