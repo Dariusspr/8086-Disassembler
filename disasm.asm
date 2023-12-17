@@ -76,7 +76,7 @@ mnemonicPos = 40
     threeBitsVWModRMArray db 000B, "ROL ", 0, 001B, "ROR ", 0, 010B, "RCL ", 0, 011B, "RCR ", 0, 100B, "SHL ", 0, 101B, "SHR ", 0, 111B, "SAR ", 0
     ; 1000 00 sw mod xxx r/m instrukcijos DONE
     threeBitsSWModRMArray db 000B, "ADD ", 0, 001B, "OR ", 0, 010B, "ADC ", 0, 011B, "SBB ", 0, 100B, "AND ", 0, 101B, "SUB ", 0, 110B, "XOR ", 0, 111B, "CMP ", 0
-    ; jumps + offset instrukcijos
+    ; jumps + offset instrukcijos DONE
     jumpsOffsetArray db 70H, "JO ", 0, 71H, "JNO ", 0, 72H, "JB ", 0, 73H, "JNB ", 0, 74H, "JE ", 0, 75H, "JNE ", 0, 76H, "JNA ", 0, 77H, "JA ", 0, 78H, "JS ", 0, 79H, "JNS ", 0, 7AH, "JP ", 0, 7BH, "JNP ", 0, 7CH, "JL ", 0, 7DH, "JNL ", 0, 7EH, "JLE ", 0, 7FH, "JG ", 0, 0E0H, "LOOPNE ", 0, 0E1H, "LOOPE ", 0, 0E2H, "LOOP ", 0, 0E3H, "JCXZ ", 0, 0EBH, "JMP ", 0 
     ; 1111 1111 mod xxx r/m instrukcijos DONE
     threeBitsModRMArray db 000B, "INC ", 0, 001B, "DEC ", 0, 010B, "CALL ", 0, 011B, "CALL ", 0, 100B, "JMP ", 0, 101B, "JMP ", 0, 110B, "PUSH ", 0
@@ -814,7 +814,7 @@ wOpOp_analysis endp
 
 proc wModRegRM_analysis
     mov needWordBytePtr, 1 
-    READ_APPEND_HEX_BYTE append_char_output
+    call read_input_byte
     call get_mod
     call get_reg
     call get_rm
@@ -828,7 +828,7 @@ wModRegRM_analysis endp
 
 proc dWModRegRM_analysis
     mov needWordBytePtr, 1
-    READ_APPEND_HEX_BYTE append_char_output
+    call read_input_byte
     call get_mod
     call get_reg
     call get_rm
@@ -847,6 +847,30 @@ proc dWModRegRM_analysis
     APPEND_CORRECT_REGISTER bx
     ret
 dWModRegRM_analysis endp
+
+proc jumpsOffset_analysis
+    xor ax, ax
+    call read_input_byte
+    cmp ax, 127 ; [-128, 127]
+    ja jumpsOffset_before
+    add ax, codeBytePos
+    APPEND_HEX_BYTE ah append_char_mnemonic
+    APPEND_HEX_BYTE al append_char_mnemonic
+    PUT_CHAR_MNEMONIC 'h'
+    ret
+    jumpsOffset_before: ; calculate negative offset
+        not ax
+        inc ax
+        mov dx, ax
+        mov ax, codeBytePos
+        sub ax, 100h
+        sub ax, dx
+        APPEND_HEX_BYTE ah append_char_mnemonic
+        APPEND_HEX_BYTE al append_char_mnemonic
+        PUT_CHAR_MNEMONIC 'h'
+        ret
+jumpsOffset_analysis endp
+
 main:
     mov ax, @data
     mov ds, ax
@@ -907,6 +931,7 @@ main:
         SEARCH_FOR_INSTRUCTION wOpOpArraySize, wOpOpArray, 1, wOpOp_analysis
         SEARCH_FOR_INSTRUCTION wModRegRMArraySize, wModRegRMArray, 1, wModRegRM_analysis 
         SEARCH_FOR_INSTRUCTION dWModRegRMArraySize, dWModRegRMArray, 3, dWModRegRM_analysis
+        SEARCH_FOR_INSTRUCTION jumpsOffsetArraySize, jumpsOffsetArray, 0 jumpsOffset_analysis
 
         THREE_BYTES_SEARCH 0F6h, 1, threeBitsWModRMArraySize, threeBitsWModRMArray, 0, threeBitsWModRM_analysis
         THREE_BYTES_SEARCH 0D0h, 3, threeBitsVWModRMArraySize, threeBitsVWModRMArray, 0,  threeBitsVWModRM_analysis
