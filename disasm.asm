@@ -15,11 +15,12 @@ dWModRegRMArraySize = 9
 threeBitsWModRMArraySize = 7
 threeBitsVWModRMArraySize = 7
 threeBitsSWModRMArraySize = 8
-jumpsOffsetArraySize = 21
+jumps1ByteArraySize = 21
 threeBitsModRMArraySize = 7
-jump2BytesOpArraySize = 2
-jump4ytesOpArraySize = 2
+jump2BytesArraySize = 2
+jump4BytesArraySize = 2
 returnsArraySize = 2
+insWAdrAdrArraySize = 2
 
 modArraySize = 8
 ; HEX MNEMONIC pradzios pozicijos isvesties buferyje
@@ -76,30 +77,30 @@ mnemonicPos = 40
     threeBitsVWModRMArray db 000B, "ROL ", 0, 001B, "ROR ", 0, 010B, "RCL ", 0, 011B, "RCR ", 0, 100B, "SHL ", 0, 101B, "SHR ", 0, 111B, "SAR ", 0
     ; 1000 00 sw mod xxx r/m instrukcijos DONE
     threeBitsSWModRMArray db 000B, "ADD ", 0, 001B, "OR ", 0, 010B, "ADC ", 0, 011B, "SBB ", 0, 100B, "AND ", 0, 101B, "SUB ", 0, 110B, "XOR ", 0, 111B, "CMP ", 0
-    ; jumps + offset instrukcijos DONE
-    jumpsOffsetArray db 70H, "JO ", 0, 71H, "JNO ", 0, 72H, "JB ", 0, 73H, "JNB ", 0, 74H, "JE ", 0, 75H, "JNE ", 0, 76H, "JNA ", 0, 77H, "JA ", 0, 78H, "JS ", 0, 79H, "JNS ", 0, 7AH, "JP ", 0, 7BH, "JNP ", 0, 7CH, "JL ", 0, 7DH, "JNL ", 0, 7EH, "JLE ", 0, 7FH, "JG ", 0, 0E0H, "LOOPNE ", 0, 0E1H, "LOOPE ", 0, 0E2H, "LOOP ", 0, 0E3H, "JCXZ ", 0, 0EBH, "JMP ", 0 
     ; 1111 1111 mod xxx r/m instrukcijos DONE
     threeBitsModRMArray db 000B, "INC ", 0, 001B, "DEC ", 0, 010B, "CALL ", 0, 011B, "CALL ", 0, 100B, "JMP ", 0, 101B, "JMP ", 0, 110B, "PUSH ", 0
-    ; Jump/call 2 bytes op
-    jump2BytesOpArray db 0E8H, "CALL ", 0, 0E9H, "JMP ", 0
-    ; Jumps/call 4 bytes op
-    jump4BytesOpArray db 9AH, "CALL ", 0, 0EAH, "JMP ", 0
-    ; returns op op
+    ; jumps 1 byte instrukcijos DONE
+    jumps1ByteArray db 70H, "JO ", 0, 71H, "JNO ", 0, 72H, "JB ", 0, 73H, "JNB ", 0, 74H, "JE ", 0, 75H, "JNE ", 0, 76H, "JNA ", 0, 77H, "JA ", 0, 78H, "JS ", 0, 79H, "JNS ", 0, 7AH, "JP ", 0, 7BH, "JNP ", 0, 7CH, "JL ", 0, 7DH, "JNL ", 0, 7EH, "JLE ", 0, 7FH, "JG ", 0, 0E0H, "LOOPNE ", 0, 0E1H, "LOOPE ", 0, 0E2H, "LOOP ", 0, 0E3H, "JCXZ ", 0, 0EBH, "JMP ", 0 
+    ; Jump/call 2 bytes op DONE
+    jump2BytesArray db 0E8H, "CALL ", 0, 0E9H, "JMP ", 0
+    ; Jumps/call 4 bytes DONE
+    jump4BytesArray db 9AH, "CALL ", 0, 0EAH, "JMP ", 0
+    ; returns op op DONE
     returnsArray db 0C2H, "RET ", 0, 0CAH, "RET ", 0
+    ; w adr adr DONE
+    insWAdrAdrArray db 0A0H, "MOV ", 0, 0A2H, "MOV ", 0
 
-    ; MOV w mod r/m op op 
+    ; MOV w mod r/m op op  DONE
     insWModRMOpOpMov db 0C6H, "MOV ", 0
-    ; MOV w reg op op 
+    ; MOV w reg op op  DONE
     insWRegOpOpMov db 0B0H, "MOV ", 0
-    ; MOV w adr adr
-    insWAdrAdrMov db 0A0H, "MOV ", 0
-    ; MOV d mod sreg r/m  ??????
+    ; MOV d mod sreg r/m  DONE
     insDModSregRMMov db 8CH, "MOV ", 0
-    ; POP mod r/m 
+    ; POP mod r/m DONE
     insModRMPop db 8FH, "POP ", 0
-    ; int byte number
+    ; int byte number DONE
     insInt db 0CDH, "INT ", 0
-    
+
     ; xxx mod yyy r/m 
     ;insEsc db 
      
@@ -117,7 +118,7 @@ mnemonicPos = 40
     d db 0 ; d = s = v
     w db 0
     modd db 0
-    reg db 0
+    reg db 0 ; reg = sreg
     rm db 0
     needWordBytePtr db 0
     instructionHex db 0
@@ -203,6 +204,10 @@ APPEND_CORRECT_REGISTER macro index
     end:
 endm
 
+APPEND_SREG macro index
+    APPEND_ARRAY_MNEMONIC segmentArray, index
+endm
+
 READ_APPEND_HEX_WORD macro appendProcedure
     call read_input_byte
     push ax
@@ -223,25 +228,10 @@ APPEND_HEX_BYTE macro value, appendProcedure
     local hex_convert_loop, hex_letter, append_hex_ascii
     push ax cx
     mov ah, value
-    mov cx, 2
-    
-    hex_convert_loop:
-        xor al, al
-        rol ax, 4
-
-        cmp al, 9
-        jbe hex_letter
-        
-        add al, 'A' - 10    ;  ABCDEF 
-        jmp append_hex_ascii
-        
-        hex_letter:
-            add al, '0'  ; 0123456789
-        
-        append_hex_ascii:
-            call appendProcedure
-        
-        loop hex_convert_loop
+    call convert_hex
+    call appendProcedure
+    mov al, ah
+    call appendProcedure
     pop cx ax
 endm
 
@@ -476,9 +466,10 @@ read_file_to_buffer endp
 ; Įrašo dabartinį skaitomą failo baitą į registrą al
 ; Jei failas pasiekė pabaigą, readingstatus padidinamas vienetu
 proc read_input_byte
+    
     cmp [inputBuffBytesLeft], 0 ; jei buferis tusščas bandyti, toliau skaityti į failo
     jne read_input_buff_byte  ; jei netuščias, iš buferio skaityti į registrą al 
-
+    
     mov bx, [inputFileHandle]
     lea dx, inputBuff
     call read_file_to_buffer
@@ -505,9 +496,38 @@ proc read_input_byte
         call close_file
         mov bx, [outputfilehandle]
         call close_file
-
+        
         call terminate_program  
 read_input_byte endp
+
+; PARAM: ah(to convert)
+; OUT: ax (converted)
+proc convert_hex
+    push bx cx
+    xor bx, bx
+    mov cx, 2
+    hex_convert_loop:
+        shr bx, 8
+        xor al, al
+        rol ax, 4
+
+        cmp al, 9
+        jbe hex_letter
+        
+        add al, 'A' - 10    ;  ABCDEF 
+        jmp append_hex_ascii
+        
+        hex_letter:
+            add al, '0'  ; 0123456789
+        
+        append_hex_ascii:
+            mov bh, al
+
+        loop hex_convert_loop
+    mov ax, bx
+    pop cx bx
+    ret
+convert_hex endp
 
 ; Pridėti baitą al į išvesties bufferi
 ; PARAM: al(baitas, kurį norime atspausdinti)
@@ -551,6 +571,7 @@ proc fprint_line
     mov [mnemonicbuffpos], 0
     ret
 fprint_line endp
+
 
 proc terminate_program
     mov ax, 4c00h
@@ -610,18 +631,17 @@ proc inOut_analysis
     cmp al, 0E6H ; is out? 
     jae is_out
     is_in:
+        APPEND_CORRECT_REGISTER 0
+        APPEND_COMMA_MNEMONIC
         APPEND_HEX_BYTE instructionhex, append_char_mnemonic
         PUT_CHAR_MNEMONIC 'h'
-        APPEND_COMMA_MNEMONIC
-        APPEND_CORRECT_REGISTER 0
         ret
 
     is_out:
-        APPEND_CORRECT_REGISTER 0
-        APPEND_COMMA_MNEMONIC
         APPEND_HEX_BYTE instructionhex, append_char_mnemonic
         PUT_CHAR_MNEMONIC 'h'
-        
+        APPEND_COMMA_MNEMONIC
+        APPEND_CORRECT_REGISTER 0      
         ret
 inOut_analysis endp
 
@@ -848,17 +868,17 @@ proc dWModRegRM_analysis
     ret
 dWModRegRM_analysis endp
 
-proc jumpsOffset_analysis
+proc jumps1Byte_analysis
     xor ax, ax
     call read_input_byte
     cmp ax, 127 ; [-128, 127]
-    ja jumpsOffset_before
+    ja jumps1Byte_negative
     add ax, codeBytePos
     APPEND_HEX_BYTE ah append_char_mnemonic
     APPEND_HEX_BYTE al append_char_mnemonic
     PUT_CHAR_MNEMONIC 'h'
     ret
-    jumpsOffset_before: ; calculate negative offset
+    jumps1Byte_negative: ; calculate negative offset
         not ax
         inc ax
         mov dx, ax
@@ -869,7 +889,137 @@ proc jumpsOffset_analysis
         APPEND_HEX_BYTE al append_char_mnemonic
         PUT_CHAR_MNEMONIC 'h'
         ret
-jumpsOffset_analysis endp
+jumps1Byte_analysis endp
+
+proc jump2Bytes_analysis
+    call read_input_byte
+    mov ch, al  
+    call read_input_byte
+    mov ah, ch
+    xchg ah, al
+    cmp ax, 32767 ; [-32768, 32767]
+    ja jump2Bytes_negative
+    add ax, codeBytePos
+    APPEND_HEX_BYTE ah append_char_mnemonic
+    APPEND_HEX_BYTE al append_char_mnemonic
+    PUT_CHAR_MNEMONIC 'h'
+    ret
+    jump2Bytes_negative:
+        not ax
+        inc ax
+        mov dx, ax
+        mov ax, codeBytePos
+        sub ax, dx
+        APPEND_HEX_BYTE ah append_char_mnemonic
+        APPEND_HEX_BYTE al append_char_mnemonic
+        PUT_CHAR_MNEMONIC 'h'
+        ret
+jump2Bytes_analysis endp
+
+proc jump4Bytes_analysis
+    call read_input_byte
+    push ax
+    call read_input_byte
+    push ax
+    call read_input_byte
+    push ax
+    call read_input_byte
+    APPEND_HEX_BYTE al append_char_mnemonic
+    pop ax
+    APPEND_HEX_BYTE al append_char_mnemonic
+    PUT_CHAR_MNEMONIC ':'
+    pop ax
+    APPEND_HEX_BYTE al append_char_mnemonic
+    pop ax
+    APPEND_HEX_BYTE al append_char_mnemonic
+    ret
+jump4Bytes_analysis endp
+
+proc returns_analysis
+    mov w, 1
+    call append_immediate_data
+    ret
+returns_analysis endp
+
+proc int_analysis
+
+    READ_APPEND_HEX_BYTE append_char_mnemonic
+    PUT_CHAR_MNEMONIC 'h'
+    ret
+int_analysis endp
+
+proc insModRMPop_analysis
+    call read_input_byte
+    call get_mod
+    call get_rm
+    call append_rm
+    ret
+insModRMPop_analysis endp
+
+proc insDModSregRMMov_analysis
+    mov needWordBytePtr, 1
+    call read_input_byte
+    call get_mod
+    call get_reg
+    call get_rm
+
+    cmp d, 1
+    je insDModSregRMMov_rev
+    call append_rm
+    APPEND_COMMA_MNEMONIC
+    call get_reg_index
+    APPEND_SREG bx
+    ret
+    insDModSregRMMov_rev:
+    call get_reg_index
+    APPEND_SREG bx
+    APPEND_COMMA_MNEMONIC
+    call append_rm
+    ret
+insDModSregRMMov_analysis endp
+
+proc insWAdrAdr_analysis
+    cmp d, 1
+    je insWAdrAdr_reverse
+    APPEND_CORRECT_REGISTER 0
+    APPEND_COMMA_MNEMONIC
+    READ_APPEND_HEX_WORD append_char_mnemonic
+    ret
+    insWAdrAdr_reverse:
+        READ_APPEND_HEX_WORD append_char_mnemonic
+        APPEND_COMMA_MNEMONIC
+        APPEND_CORRECT_REGISTER 0
+        ret
+insWAdrAdr_analysis endp
+
+proc insWModRMOpOpMov_analysis
+    mov needWordBytePtr, 1
+    call read_input_byte
+    call get_mod
+    call get_rm
+    call append_rm
+    APPEND_COMMA_MNEMONIC
+    call append_immediate_data
+    ret
+insWModRMOpOpMov_analysis endp
+
+proc insWRegOpOpMov_analysis
+    ; abcd wreg
+    ; w & reg kitokiose pozicijose, tad senesnė funkcija nebeveikia
+    ; randu be proceduros/macro:
+    mov w, 1000b
+    and w, al
+    shr w, 3
+    and al, 111b
+    mov [reg], al
+
+    call get_reg_index
+    APPEND_CORRECT_REGISTER bx
+    APPEND_COMMA_MNEMONIC
+    call append_immediate_data
+    ret
+insWRegOpOpMov_analysis endp
+
 
 main:
     mov ax, @data
@@ -910,7 +1060,7 @@ main:
     call setup_output_file
     mov outputFileHandle, ax
 
-    ;;;;;;;;;;;;;;;;;;;;;;; NAUJOS KOMANDOS ANALIZE ;;;;;;;;;;;;;;;;;
+    ;;;;;;;;;;;;;;;;;;;;;;; NAUJA ITERACIJA - NAUJOS KOMANDOS ANALIZĖ ;;;;;;;;;;;;;;;;;
     main_loop:
         call append_pos
         APPEND_SPACES_OUTPUT hexCodePos
@@ -931,7 +1081,16 @@ main:
         SEARCH_FOR_INSTRUCTION wOpOpArraySize, wOpOpArray, 1, wOpOp_analysis
         SEARCH_FOR_INSTRUCTION wModRegRMArraySize, wModRegRMArray, 1, wModRegRM_analysis 
         SEARCH_FOR_INSTRUCTION dWModRegRMArraySize, dWModRegRMArray, 3, dWModRegRM_analysis
-        SEARCH_FOR_INSTRUCTION jumpsOffsetArraySize, jumpsOffsetArray, 0 jumpsOffset_analysis
+        SEARCH_FOR_INSTRUCTION jumps1ByteArraySize, jumps1ByteArray, 0 jumps1Byte_analysis
+        SEARCH_FOR_INSTRUCTION jump2BytesArraySize, jump2BytesArray, 0, jump2Bytes_analysis
+        SEARCH_FOR_INSTRUCTION jump4BytesArraySize, jump4BytesArray, 0, jump4Bytes_analysis
+        SEARCH_FOR_INSTRUCTION returnsArraySize, returnsArray, 0, returns_analysis
+        SEARCH_FOR_INSTRUCTION insWAdrAdrArraySize, insWAdrAdrArray, 1, insWAdrAdr_analysis
+        SEARCH_FOR_INSTRUCTION 1, insInt, 0, int_analysis
+        SEARCH_FOR_INSTRUCTION 1, insModRMPop, 0, insModRMPop_analysis
+        SEARCH_FOR_INSTRUCTION 1, insDModSregRMMov, 2, insDModSregRMMov_analysis
+        SEARCH_FOR_INSTRUCTION 1, insWModRMOpOpMov, 1, insWModRMOpOpMov_analysis
+        SEARCH_FOR_INSTRUCTION 1, insWRegOpOpMov, 16, insWRegOpOpMov_analysis
 
         THREE_BYTES_SEARCH 0F6h, 1, threeBitsWModRMArraySize, threeBitsWModRMArray, 0, threeBitsWModRM_analysis
         THREE_BYTES_SEARCH 0D0h, 3, threeBitsVWModRMArraySize, threeBitsVWModRMArray, 0,  threeBitsVWModRM_analysis
