@@ -1,9 +1,12 @@
+; Darius Spruogis
+; PS 1k. 5 gr.
+
 .model small
 .stack 100h
 
 inputBuffSize = 256
 
-; Masyvu dydziai
+; Masyvų dydžiai
 oneByteInstructionArraySize1 = 51
 oneByteInstructionArraySize2 = 39
 twoByteInstructionArraySize = 2
@@ -20,12 +23,13 @@ threeBitsModRMArraySize = 7
 jump2BytesArraySize = 2
 jump4BytesArraySize = 2
 returnsArraySize = 2
-insWAdrAdrArraySize = 2
-
+WAdrAdrArraySize = 2
 modArraySize = 8
-; HEX MNEMONIC pradzios pozicijos isvesties buferyje
-hexCodePos = 12
-mnemonicPos = 40
+
+
+; Išvesties dalių pozicijos
+hexCodePos = 12 ; prasideda šešioliktainės baitų reikšmės
+mnemonicPos = 40 ; prasideda instrukcijos  mnemonika
 
 .data
     testMsg1 db "TEST1 ------ $"
@@ -43,7 +47,7 @@ mnemonicPos = 40
     inputBuffPos dw 0
     inputBuffbytesleft dw 0
     
-    ; Laikinas mnemonikos buferis
+    ; Tarpinis buferis mnemonikai užrašyti prieš išvedant į ouput buferį
     mnemonicBuff db 40 dup (?)
     mnemonicBuffPos dw 0
 
@@ -53,57 +57,34 @@ mnemonicPos = 40
     outputBuffPos dw 0
     codeBytePos dw 100h ; FIXME
 
-    ;;;;;;;;;;;;;;;;;;; SUTVARKYTI(DIDEJIMO TVARKA) INSTRUKCIJOMS ATSPAUSDINTI REIKALINGI MASYVAI  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    ; Instrukcijų pirmo baito šešioliktainė reikšmė ir mnemonika
-
-    ; Visos 1 baito instrukcijos DONE
+    ;;;;;;;;;;;;;;;;;;; SUTVARKYTI(DIDėJIMO TVARKA) MNEMONIKOS MASYVAI ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    
+    ; Masyvo elementas - Instrukcijos pirmo baito šešioliktainė reikšmė ir mnemonika
+    ; Instrukcijos yra sugrupuotos pagal jų savybes(masyvų pavadinimai charakterizuoja)
     oneByteInstructionArray1 db 6H, "PUSH ES", 0, 7H, "POP ES", 0, 0EH, "PUSH CS", 0, 16H, "PUSH SS", 0, 17H, "POP SS", 0, 1EH, "PUSH DS", 0, 1FH, "POP DS", 0, 27H, "DAA", 0, 2FH, "DAS", 0, 37H, "AAA", 0, 3FH, "AAS", 0, 40H, "INC AX", 0, 41H, "INC CX", 0, 42H, "INC DX", 0, 43H, "INC BX", 0, 44H, "INC SP", 0, 45H, "INC BP", 0, 46H, "INC SI", 0, 47H, "INC DI", 0, 48H, "DEC AX", 0, 49H, "DEC CX", 0, 4AH, "DEC DX", 0, 4BH, "DEC BX", 0, 4CH, "DEC SP", 0, 4DH, "DEC BP", 0, 4EH, "DEC SI", 0, 4FH, "DEC DI", 0, 50H, "PUSH AX", 0, 51H, "PUSH CX", 0, 52H, "PUSH DX", 0, 53H, "PUSH BX", 0, 54H, "PUSH SP", 0, 55H, "PUSH BP", 0, 56H, "PUSH SI", 0, 57H, "PUSH DI", 0, 58H, "POP AX", 0, 59H, "POP CX", 0, 5AH, "POP DX", 0, 5BH, "POP BX", 0, 5CH, "POP SP", 0, 5DH, "POP BP", 0, 5EH, "POP SI", 0, 5FH, "POP DI", 0, 90h, "NOP", 0, 91h, "CXHG AX, CX", 0, 92h, "CXHG AX, DX", 0, 93h, "CXHG AX, BX", 0, 94h, "CXHG AX, SP", 0, 95h, "CXHG AX, BP", 0, 96h, "CXHG AX, SI", 0, 97h, "CXHG AX, DI", 0
     oneByteInstructionArray2 db 98H, "CBW", 0, 99H, "CWD", 0, 9BH, "WAIT", 0, 9CH, "PUSHF", 0, 9DH, "POPF", 0, 9EH, "SAHF", 0, 9FH, "LAHF", 0, 0A4H, "MOVSB", 0, 0A5H, "MOVSW", 0, 0A6H, "CMPSB", 0, 0A7H, "CMPSW", 0, 0AAH, "STOSB", 0, 0ABH, "STOSW", 0, 0ACH, "LODSB", 0, 0ADH, "LODSW", 0, 0AEH, "SCASB", 0, 0AFH, "SCASW", 0, 0C3H, "RET", 0, 0CBH, "RET", 0, 0CCH, "INT 3H", 0, 0CEH, "INTO", 0, 0CFH, "IRET", 0, 0D7H, "XLAT", 0, 0ECH, "IN AL, DX", 0, 0EDH, "IN AX, DX", 0, 0EEH, "OUT DX, AL", 0, 0EFH, "OUT DX, AX", 0, 0F0H, "LOCK", 0, 0F2H, "REPNZ", 0, 0F3H, "REP", 0, 0F4H, "HLT", 0, 0F5H, "CMC", 0, 0F8H, "CLC", 0, 0F9H, "STC", 0, 0FAH, "CLI", 0, 0FBH, "STI", 0, 0FCH, "CLD", 0, 0FDH, "STD", 0
-    ; Visos 2 baitų instrukcijos, nereikalaujančios papildomų veiksmų DONE
     twoByteInstructionArray Db 0D4H, "AAM", 0, 0D5H, "AAD", 0
-    ; In/Out instrukcijos DONE
-    inOutArray db 0E4H, "IN ", 0, 0E6H, "OUT ", 0
-    ; mod reg r/m instrukcijos DONE
+    wAdrAdrArray db 0A0H, "MOV ", 0, 0A2H, "MOV ", 0
     modRegRMArray db 8DH, "LEA ", 0, 0C4H, "LES ", 0, 0C5H, "LDS ", 0
-    ; w op op instrukcijos DONE
     wOpOpArray db 4H, "ADD ", 0, 0CH, "OR ", 0, 14H, "ADC ", 0, 1CH, "SBB ", 0, 24H, "AND ", 0, 2CH, "SUB ", 0, 34H, "XOR ", 0, 3CH, "CMP ", 0, 0A8H, "TEST ", 0
-    ; w mod reg r/m  instrukcijos DONE
     wModRegRMArray db 84H, "TEST ", 0, 86H, "XCHG ", 0
-    ; dw mod reg r/m instrukcijos DONE
     dWModRegRMArray db 0H, "ADD ", 0, 08H, "OR ", 0, 10H, "ADC ", 0, 18H, "SBB ", 0, 20H, "AND ", 0, 28H, "SUB ", 0, 30H, "XOR ", 0, 38H, "CMP ", 0, 88H, "MOV ", 0
-    ; 1111 011 w mod xxx r/m instrukcijos DONE
     threeBitsWModRMArray db 000B, "TEST ", 0, 010B, "NOT ", 0, 011B, "NEG ", 0, 100B, "MUL ", 0, 101B, "IMUL ", 0, 110B, "DIV ", 0, 111B, "IDIV ", 0
-    ; 1101 00 vw mod xxx r/m instrukcijos DONE
     threeBitsVWModRMArray db 000B, "ROL ", 0, 001B, "ROR ", 0, 010B, "RCL ", 0, 011B, "RCR ", 0, 100B, "SHL ", 0, 101B, "SHR ", 0, 111B, "SAR ", 0
-    ; 1000 00 sw mod xxx r/m instrukcijos DONE
     threeBitsSWModRMArray db 000B, "ADD ", 0, 001B, "OR ", 0, 010B, "ADC ", 0, 011B, "SBB ", 0, 100B, "AND ", 0, 101B, "SUB ", 0, 110B, "XOR ", 0, 111B, "CMP ", 0
-    ; 1111 1111 mod xxx r/m instrukcijos DONE
     threeBitsModRMArray db 000B, "INC ", 0, 001B, "DEC ", 0, 010B, "CALL ", 0, 011B, "CALL ", 0, 100B, "JMP ", 0, 101B, "JMP ", 0, 110B, "PUSH ", 0
-    ; jumps 1 byte instrukcijos DONE
-    jumps1ByteArray db 70H, "JO ", 0, 71H, "JNO ", 0, 72H, "JB ", 0, 73H, "JNB ", 0, 74H, "JE ", 0, 75H, "JNE ", 0, 76H, "JNA ", 0, 77H, "JA ", 0, 78H, "JS ", 0, 79H, "JNS ", 0, 7AH, "JP ", 0, 7BH, "JNP ", 0, 7CH, "JL ", 0, 7DH, "JNL ", 0, 7EH, "JLE ", 0, 7FH, "JG ", 0, 0E0H, "LOOPNE ", 0, 0E1H, "LOOPE ", 0, 0E2H, "LOOP ", 0, 0E3H, "JCXZ ", 0, 0EBH, "JMP ", 0 
-    ; Jump/call 2 bytes op DONE
+    jumps1ByteArray db 70H, "JO ", 0, 71H, "JNO ", 0, 72H, "JB ", 0, 73H, "JAE ", 0, 74H, "JE ", 0, 75H, "JNE ", 0, 76H, "JNA ", 0, 77H, "JA ", 0, 78H, "JS ", 0, 79H, "JNS ", 0, 7AH, "JP ", 0, 7BH, "JNP ", 0, 7CH, "JL ", 0, 7DH, "JNL ", 0, 7EH, "JLE ", 0, 7FH, "JG ", 0, 0E0H, "LOOPNE ", 0, 0E1H, "LOOPE ", 0, 0E2H, "LOOP ", 0, 0E3H, "JCXZ ", 0, 0EBH, "JMP ", 0 
     jump2BytesArray db 0E8H, "CALL ", 0, 0E9H, "JMP ", 0
-    ; Jumps/call 4 bytes DONE
     jump4BytesArray db 9AH, "CALL ", 0, 0EAH, "JMP ", 0
-    ; returns op op DONE
     returnsArray db 0C2H, "RET ", 0, 0CAH, "RET ", 0
-    ; w adr adr DONE
-    insWAdrAdrArray db 0A0H, "MOV ", 0, 0A2H, "MOV ", 0
+    inOutArray db 0E4H, "IN ", 0, 0E6H, "OUT ", 0
+    
 
-    ; MOV w mod r/m op op  DONE
     insWModRMOpOpMov db 0C6H, "MOV ", 0
-    ; MOV w reg op op  DONE
     insWRegOpOpMov db 0B0H, "MOV ", 0
-    ; MOV d mod sreg r/m  DONE
     insDModSregRMMov db 8CH, "MOV ", 0
-    ; POP mod r/m DONE
     insModRMPop db 8FH, "POP ", 0
-    ; int byte number DONE
     insInt db 0CDH, "INT ", 0
-
-    ; xxx mod yyy r/m 
-    ;insEsc db 
-     
     insUnknown db "NEPAZISTAMA",0
 
     register8Array db "AL", 0, "CL", 0, "DL", 0, "BL", 0, "AH", 0, "CH", 0, "DH", 0, "BH", 0
@@ -114,45 +95,28 @@ mnemonicPos = 40
     wordPtr db "WORD PTR ", 0
     bytePtr db "BYTE PTR ", 0
     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+    
+    ; Instrukcijų indikatoriai
     d db 0 ; d = s = v
     w db 0
     modd db 0
     reg db 0 ; reg = sreg
     rm db 0
-    needWordBytePtr db 0
-    instructionHex db 0
-    
+
+
+    needWordBytePtr db 0 ; Ar pridėti WORD PTR / BYTE PTR?
+    instructionHex db 0 ; laikinas baitas instrukcijos kodui išsaugoti   
 .code
 
-
-
-TESTING1 macro
-    mov ah, 9
-    lea dx, [testmsg1]
-    int 21h
-endm 
-
-TESTING2 macro
-    mov ah, 9
-    lea dx, [testmsg2]
-    int 21h
-endm 
-
-TESTING3 macro
-    mov ah, 9
-    lea dx, [testmsg3]
-    int 21h
-endm 
-
-APPEND_ARRAY_MNEMONIC macro array, index
+; Prideda stringą iš array+index į mnemonikos buferį 
+APPEND_STRING_MNEMONIC macro array, index
     push ax bx
     lea bx, [array + index]
     call copy_string_mnemonic
     pop bx ax
 endm
 
-; macro vienam kableliu su tarpu padeti output buferyje
+; Kableliui padėti
 APPEND_COMMA_MNEMONIC macro
     push ax
     mov al, ','
@@ -161,7 +125,7 @@ APPEND_COMMA_MNEMONIC macro
     pop ax
 endm 
 
-; macro vienam char padeti mnemonic buferyje
+; Prideda baitą char į mnemonikos buferį
 PUT_CHAR_MNEMONIC macro char
     push ax
     mov al, char
@@ -169,7 +133,7 @@ PUT_CHAR_MNEMONIC macro char
     pop ax
 endm 
 
-; macro vienam char padeti output buferyje
+; Prideda baitą char į output buferį
 PUT_CHAR_OUTPUT macro char
     push ax
     mov al, char
@@ -177,7 +141,7 @@ PUT_CHAR_OUTPUT macro char
     pop ax
 endm 
 
-; Macro tarpu dejimui iki endpos ouput buferyje
+; Prideda tarpus(' '), kol output buferio dabartinė pozicija mažesnė už endPos
 APPEND_SPACES_OUTPUT macro endPos
     local append_loop
     push cx ax
@@ -190,24 +154,29 @@ APPEND_SPACES_OUTPUT macro endPos
     pop ax cx
 endm 
 
-; Macro pasirinkti tinkamam(8 ar 16 bitu) registrui ir ji prideti
+; Nustato, kokio dydžio(8 ar 16 bitų) registras, ir jį prideda į mnemonikos buferį
+; Index - registro stringo pradžios pozicija masyve
 APPEND_CORRECT_REGISTER macro index
     local reg8, reg16, end
     cmp w, 0
     je reg8
     reg16:
-        APPEND_ARRAY_MNEMONIC register16Array, index
+        APPEND_STRING_MNEMONIC register16Array, index
         jmp end
     reg8:
-        APPEND_ARRAY_MNEMONIC register8Array, index
+        APPEND_STRING_MNEMONIC register8Array, index
         jmp end 
     end:
 endm
 
+; Prideda segmento registrą į mnemonikos buferį
+; Index - registro stringo pradžios pozicija masyve
 APPEND_SREG macro index
-    APPEND_ARRAY_MNEMONIC segmentArray, index
+    APPEND_STRING_MNEMONIC segmentArray, index
 endm
 
+; Nuskaito 2 baitus ir juos prideda į kažkurį buferį 
+; append_char_output - išvesties buferis, append_char_mnemonic - laikinas mnemonikos buferis
 READ_APPEND_HEX_WORD macro appendProcedure
     call read_input_byte
     push ax
@@ -218,12 +187,15 @@ READ_APPEND_HEX_WORD macro appendProcedure
     PUT_CHAR_MNEMONIC 'h'
 endm 
 
+; Nuskaito 1 baitą ir prideda į kažkurį buferį
+; append_char_output - išvesties buferis, append_char_mnemonic - laikinas mnemonikos buferis
 READ_APPEND_HEX_BYTE macro appendProcedure
     call read_input_byte
     APPEND_HEX_BYTE al, appendProcedure
 endm 
 
-; macro baito isvertimui i ascii hex ir pridejimui i output arba mnemonic buff
+; Išverčia value į šešioliktainį formatą ir prideda į kažkurį buferį
+; append_char_output - išvesties buferis, append_char_mnemonic - laikinas mnemonikos buferis
 APPEND_HEX_BYTE macro value, appendProcedure
     local hex_convert_loop, hex_letter, append_hex_ascii
     push ax cx
@@ -235,7 +207,10 @@ APPEND_HEX_BYTE macro value, appendProcedure
     pop cx ax
 endm
 
-; Macro paziurinti ar instrukcija priklauso masyvui, kurio instrukcijos pirmas baitas vienodas
+; Skirta, kai konkrečios instrukcijos negalima indentifikuoti tik pagal pirmą baitą
+; Nuskaito pirmą baitą, ir pažiūri, ar ši instrukcija priklauso instructionArray masyvui
+; instructionArray masyvo visos instrukcijos prasideda vienodu baitu
+; (ar labai panašiu, t. y. baito vertė <= firstByte + firstByteDiff) 
 THREE_BYTES_SEARCH macro firstByte, firstByteDiff, instructionArraySize, instructionArray, maxInstructionDifference, nextOperation
     local skip_this
     cmp al, firstByte
@@ -254,7 +229,10 @@ THREE_BYTES_SEARCH macro firstByte, firstByteDiff, instructionArraySize, instruc
     skip_this:
 endm
 
-; Macro padedanti ieskoti instrukcijos masyvuose pagal pirma instrukcijos baita
+; Skirta indentifikuoti instrukcijai pagal vieno baito vertę
+; Jei baito vertė <= firstByte + firstByteDiff, tai instrukcija yra šiame masyve ir atitinka
+; registro bx rodomą masyvo elementą
+; Tada iškviečiama tam masyvui(InstructionArray) unikali procedūra (nextOperation)
 SEARCH_FOR_INSTRUCTION macro instructionArraySize, instructionArray, maxInstructionDifference, nextOperation
     local searching_instructions, continue_searching, end_searching
 
@@ -283,8 +261,9 @@ SEARCH_FOR_INSTRUCTION macro instructionArraySize, instructionArray, maxInstruct
 
 endm
 
-; copy string until 0
-; PARAM: bx(adress to the start of string)
+; Kopijuoja kažkokio masyvo elementą į output masyvą
+; Baiga, kai bx rodo į 0
+; PARAM: bx(masyvo elemento pradžios adresas)
 proc copy_string_mnemonic
     push ax bx dx
     copy_array_loop_mnemonic:
@@ -302,8 +281,8 @@ proc copy_string_mnemonic
     ret
 copy_string_mnemonic endp
 
-; copy string until end (cx = 0)
-; PARAM: bx(adress to the start of string), cx (size of array)
+; Kopijuoja į output masyvą, kol cx != 0 
+; PARAM: bx(masyvo elemento pradžios adresas), cx (kiek baitų kopijuoti)
 proc copy_string_output
     push ax bx dx cx
     copy_array_loop_ouput:
@@ -316,7 +295,7 @@ proc copy_string_output
     ret
 copy_string_output endp
 
-; sudanda mod masyve, bx - i masyvo elemento mnemonic
+; Ieško atitinkamo mod, kuris lygus rm
 proc search_mod
     push cx ax
     lea bx, modArray
@@ -335,18 +314,18 @@ proc search_mod
     ret
 search_mod endp
 
-; Gaunamas naujas masyvo elementas
+; Gaunamas naujas masyvo elementas - didėja bx, kol jis nerodo į kitą 0.
 ; PARAM: bx(andresas i kazkuri masyva)
 proc get_next_element
     nex_element_loop:
     inc bx
     cmp byte ptr [bx], 0
     jne nex_element_loop
-    inc bx ; dabar bx rodo i 0, tai padidinti vienu, jog rodytu sesiokliktaine reiksme
+    inc bx ; dabar bx rodo į 0, tai padidinti vienu, jog rodytų šešiokliktainę reikšmę
     ret
 get_next_element endp
 
-; Atspausdina info ir terminuoja programą, kai pirmi 2 komandos eilutės eilutės batai \?
+; Atspausdina info ir terminuoja programą, kai pirmi komandos eilutės eilutės batai yra \?
 proc check_help 
     cmp es:[82h], '?/'
     jne not_help
@@ -366,7 +345,7 @@ proc print_info_msg
     call terminate_program
 print_info_msg endp
 
-; Praleidžia space komandos eilutėje
+; Praleidžia tarpus komandos eilutėje
 ; PARAM: bx(dabartinė komandos eilutės pozicija)
 proc skip_spaces 
     push ax
@@ -382,7 +361,7 @@ proc skip_spaces
 skip_spaces endp
 
 ; Nuskaito komandos eilutės vieną argumentą, kiekvienas baitas, esantis es pozicijoje bx nukopijuojamas į si
-; PARAM: si(adresas i inputFileName/outputFileName), bx(dabartinė komandos eilutės pozicija)
+; PARAM: si(adresas į inputFileName/outputFileName), bx(dabartinė komandos eilutės pozicija)
 proc read_command_line_argument
     push ax
     xor al, al
@@ -402,9 +381,10 @@ proc read_command_line_argument
     ret
 read_command_line_argument endp
 
-; atidaro faila ir grazina file handle ax registre
-; Jei nepavyko atidaryti, atspausdina pranesima ir terminuoja programa
+; atidaro failą ir gražina file handle
+; Jei nepavyko atidaryti, atspausdina pranešimą ir terminuoja programą
 ; PARAM: dx(failo pavadinimas)
+; OUT: ax (file handle)
 proc setup_input_file 
     mov ax, 3D00h
     int 21h
@@ -418,9 +398,10 @@ proc setup_input_file
         call terminate_program
 setup_input_file endp
 
-; atidaro faila ir grazina file handle ax registre
+; atidaro faila ir grazina file handle
 ; Jei nepavyko atidaryti, atspausdina pranesima ir terminuoja programa
 ; PARAM: dx(failo pavadinimas)
+; OUT: ax (file handle)
 proc setup_output_file
     mov ax, 3C00h
     xor cx,cx
@@ -444,8 +425,7 @@ proc close_file
     ret
 close_file endp
 
-; Atspausdina neteisingu argumentu zinute ir terminuoja programa,
-; kai komandos eilutes argumentai neteisingi(maŽiau nei 2 argumentai ir ne \?)
+; Atspausdina, jog neteisingi argumentai ir terminuoja programa,
 proc invalid_arguments 
     mov ah, 9
     lea dx, [infoMsg]
@@ -464,10 +444,10 @@ proc read_file_to_buffer
 read_file_to_buffer endp
 
 ; Įrašo dabartinį skaitomą failo baitą į registrą al
-; Jei failas pasiekė pabaigą, readingstatus padidinamas vienetu
+; Jei failas pasiekė pabaigą, programa terminuojama
 proc read_input_byte
     
-    cmp [inputBuffBytesLeft], 0 ; jei buferis tusščas bandyti, toliau skaityti į failo
+    cmp [inputBuffBytesLeft], 0 ; jei buferis tuščas bandyti toliau skaityti iš failo
     jne read_input_buff_byte  ; jei netuščias, iš buferio skaityti į registrą al 
     
     mov bx, [inputFileHandle]
@@ -500,8 +480,8 @@ proc read_input_byte
         call terminate_program  
 read_input_byte endp
 
-; PARAM: ah(to convert)
-; OUT: ax (converted)
+; PARAM: ah(vertė, kurią konvertuoti)
+; OUT: ax (šešioliktainis formatas)
 proc convert_hex
     push bx cx
     xor bx, bx
@@ -529,7 +509,7 @@ proc convert_hex
     ret
 convert_hex endp
 
-; Pridėti baitą al į išvesties bufferi
+; Pridėti baitą al į išvesties bufferį
 ; PARAM: al(baitas, kurį norime atspausdinti)
 proc append_char_output
     push bx
@@ -572,13 +552,12 @@ proc fprint_line
     ret
 fprint_line endp
 
-
 proc terminate_program
     mov ax, 4c00h
     int 21h
 terminate_program endp
 
-; Prideda posicija i buferi su formatu
+; Prideda instrukcijos poziciją (cs:100, cs:101, cs:104...)
 proc append_pos
     push ax cx bx
     
@@ -598,7 +577,7 @@ proc append_pos
     ret
 append_pos endp
 
-; Gaunu d ir w
+
 ; PARAM: al
 proc get_dw
     mov d, al
@@ -609,19 +588,11 @@ proc get_dw
     ret
 get_dw endp
 
-; Naudojama kai nuskaitomos 1 baito instrukcijos - daugiau nieko daryti nereikia
+; Naudojama, kai nuskaitomos 1 baito instrukcijos - daugiau nieko daryti nereikia
 proc skip_proc
     ret
 skip_proc endp
 
-; Naudojama kai nuskaitomos 2 baito instrukcijos nereikalaujancios papildomu zingsniu
-proc skip_byte
-    call read_input_byte
-    ret
-skip_byte endp
-
-
-; suformatuoja likusią in/out instrukcijų dalį
 proc inOut_analysis     
     push ax
     READ_APPEND_HEX_BYTE append_char_output
@@ -645,7 +616,7 @@ proc inOut_analysis
         ret
 inOut_analysis endp
 
-
+; PARAM: al
 proc get_mod
     mov modd, al
     shr modd, 6
@@ -653,6 +624,7 @@ proc get_mod
     ret
 get_mod endp
 
+; PARAM: al
 proc get_reg 
     mov reg, al
     shr reg, 3
@@ -660,13 +632,14 @@ proc get_reg
     ret
 get_reg endp
 
+; PARAM: al
 proc get_rm
     mov rm, al
     and rm, 00000111b
     ret
 get_rm endp
 
-; PARAM: bx (reg index)
+; Gauti reikiamo registro pradžios poziciją masyve
 proc get_reg_index
     xor ax, ax
     mov al, [reg]
@@ -676,6 +649,7 @@ proc get_reg_index
     ret
 get_reg_index endp
 
+; Prideda rm dalį į mnemonikos buferį
 proc append_rm
     cmp modd, 11b
     je rm_reg
@@ -692,7 +666,7 @@ proc append_rm
     efficient_add_1:
         cmp needwordbyteptr, 0
         je rm2_no_ptr
-        APPEND_ARRAY_MNEMONIC bytePtr, 0
+        APPEND_STRING_MNEMONIC bytePtr, 0
         rm2_no_ptr:
         PUT_CHAR_MNEMONIC '['
         cmp rm, 110b
@@ -712,10 +686,10 @@ proc append_rm
         je rm1_no_ptr
         cmp modd, 01b
         je rm_append_bytePtr
-        APPEND_ARRAY_MNEMONIC wordPtr, 0
+        APPEND_STRING_MNEMONIC wordPtr, 0
         jmp rm1_no_ptr
         rm_append_bytePtr:
-            APPEND_ARRAY_MNEMONIC bytePtr, 0
+            APPEND_STRING_MNEMONIC bytePtr, 0
         rm1_no_ptr:
             PUT_CHAR_MNEMONIC '['
             call search_mod
@@ -769,6 +743,7 @@ proc threeBitsWModRM_analysis
     ret
 threeBitsWModRM_analysis endp
 
+; Prideda į betarpišką operandą į mnemonikos buferį
 proc append_immediate_data
     cmp w, 1
     je imm_word
@@ -789,7 +764,7 @@ proc threeBitsVWModRM_analysis
     PUT_CHAR_MNEMONIC '1'
     ret
     v_cl:
-    APPEND_ARRAY_MNEMONIC register8Array, 4
+    APPEND_STRING_MNEMONIC register8Array, 4
     ret
 threeBitsVWModRM_analysis endp
 
@@ -942,7 +917,6 @@ proc returns_analysis
 returns_analysis endp
 
 proc int_analysis
-
     READ_APPEND_HEX_BYTE append_char_mnemonic
     PUT_CHAR_MNEMONIC 'h'
     ret
@@ -1004,9 +978,6 @@ proc insWModRMOpOpMov_analysis
 insWModRMOpOpMov_analysis endp
 
 proc insWRegOpOpMov_analysis
-    ; abcd wreg
-    ; w & reg kitokiose pozicijose, tad senesnė funkcija nebeveikia
-    ; randu be proceduros/macro:
     mov w, 1000b
     and w, al
     shr w, 3
@@ -1067,14 +1038,13 @@ main:
 
         call read_input_byte
         
-        
         call get_DW
 
         mov [instructionhex], al
         SEARCH_FOR_INSTRUCTION oneByteInstructionArraySize1, oneByteInstructionArray1, 0, skip_proc
         SEARCH_FOR_INSTRUCTION oneByteInstructionArraySize2, oneByteInstructionArray2, 0, skip_proc
 
-        SEARCH_FOR_INSTRUCTION twoByteInstructionArraySize, twoByteInstructionArray, 0, skip_byte
+        SEARCH_FOR_INSTRUCTION twoByteInstructionArraySize, twoByteInstructionArray, 0, read_input_byte
 
         SEARCH_FOR_INSTRUCTION inOutArraySize, inOutArray, 1 inOut_analysis
         SEARCH_FOR_INSTRUCTION modRegRMArraySize, modRegRMArray, 0, modRegRM_analysis
@@ -1085,7 +1055,7 @@ main:
         SEARCH_FOR_INSTRUCTION jump2BytesArraySize, jump2BytesArray, 0, jump2Bytes_analysis
         SEARCH_FOR_INSTRUCTION jump4BytesArraySize, jump4BytesArray, 0, jump4Bytes_analysis
         SEARCH_FOR_INSTRUCTION returnsArraySize, returnsArray, 0, returns_analysis
-        SEARCH_FOR_INSTRUCTION insWAdrAdrArraySize, insWAdrAdrArray, 1, insWAdrAdr_analysis
+        SEARCH_FOR_INSTRUCTION WAdrAdrArraySize, WAdrAdrArray, 1, insWAdrAdr_analysis
         SEARCH_FOR_INSTRUCTION 1, insInt, 0, int_analysis
         SEARCH_FOR_INSTRUCTION 1, insModRMPop, 0, insModRMPop_analysis
         SEARCH_FOR_INSTRUCTION 1, insDModSregRMMov, 2, insDModSregRMMov_analysis
@@ -1095,7 +1065,7 @@ main:
         THREE_BYTES_SEARCH 0F6h, 1, threeBitsWModRMArraySize, threeBitsWModRMArray, 0, threeBitsWModRM_analysis
         THREE_BYTES_SEARCH 0D0h, 3, threeBitsVWModRMArraySize, threeBitsVWModRMArray, 0,  threeBitsVWModRM_analysis
         THREE_BYTES_SEARCH 80h, 3, threeBitsSWModRMArraySize, threeBitsSWModRMArray, 0,  threeBitsSWModRM_analysis
-        THREE_BYTES_SEARCH 0FFh, 0, threeBitsModRMArraySize, threeBitsModRMArray, 0,  threeBitsModRM_analysis
+        THREE_BYTES_SEARCH 0FEh, 1, threeBitsModRMArraySize, threeBitsModRMArray, 0,  threeBitsModRM_analysis
         
         
         unknown_instruction:
