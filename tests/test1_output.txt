@@ -1,10 +1,10 @@
 CS:0100:    61                          NEPAZISTAMA
-CS:0101:    E8B70A                      CALL 0BBBh
-CS:0104:    E9B40A                      JMP 0BBBh
-CS:0107:    A1E70B                      MOV AX, 0BE7h
-CS:010A:    A0E90B                      MOV AL, 0BE9h
-CS:010D:    A3E70B                      MOV 0BE7h, AX
-CS:0110:    A2E90B                      MOV 0BE9h, AL
+CS:0101:    E8E60D                      CALL 0EEAh
+CS:0104:    E9E30D                      JMP 0EEAh
+CS:0107:    A1160F                      MOV AX, 0F16h
+CS:010A:    A0180F                      MOV AL, 0F18h
+CS:010D:    A3160F                      MOV 0F16h, AX
+CS:0110:    A2180F                      MOV 0F18h, AL
 CS:0113:    B015                        MOV AL, 15h
 CS:0115:    B406                        MOV AH, 06h
 CS:0117:    B102                        MOV CL, 02h
@@ -59,922 +59,1119 @@ CS:01B0:    8C9F2222                    MOV WORD PTR [BX+2222h], DS
 CS:01B4:    8E00                        MOV ES, BYTE PTR [BX+SI]
 CS:01B6:    8E17                        MOV SS, BYTE PTR [BX]
 CS:01B8:    8E5870                      MOV DS, BYTE PTR [BX+SI+70h]
-CS:01BB:    0306E70B                    ADD BYTE PTR [0BE7h], AX
-CS:01BF:    0206E90B                    ADD BYTE PTR [0BE9h], AL
-CS:01C3:    0106E70B                    ADD AX, BYTE PTR [0BE7h]
-CS:01C7:    0006E90B                    ADD AL, BYTE PTR [0BE9h]
-CS:01CB:    0415                        ADD AL, 15h
-CS:01CD:    80C406                      ADD AH, 06h
-CS:01D0:    80C102                      ADD CL, 02h
-CS:01D3:    80C608                      ADD DH, 08h
-CS:01D6:    81C33412                    ADD BX, 1234h
-CS:01DA:    81C62231                    ADD SI, 3122h
-CS:01DE:    81C42242                    ADD SP, 4222h
-CS:01E2:    81C51111                    ADD BP, 1111h
-CS:01E6:    030F                        ADD BYTE PTR [BX], CX
-CS:01E8:    03574E                      ADD BYTE PTR [BX+4Eh], DX
-CS:01EB:    039F800D                    ADD WORD PTR [BX+0D80h], BX
-CS:01EF:    0330                        ADD BYTE PTR [BX+SI], SI
-CS:01F1:    037801                      ADD BYTE PTR [BX+SI+01h], DI
-CS:01F4:    03A89138                    ADD WORD PTR [BX+SI+3891h], BP
-CS:01F8:    0331                        ADD BYTE PTR [BX+DI], SI
-CS:01FA:    0324                        ADD BYTE PTR [SI], SP
-CS:01FC:    03AB3121                    ADD WORD PTR [BP+DI+2131h], BP
-CS:0200:    0104                        ADD AX, BYTE PTR [SI]
-CS:0202:    010F                        ADD CX, BYTE PTR [BX]
-CS:0204:    019F1101                    ADD BX, WORD PTR [BX+0111h]
-CS:0208:    015712                      ADD DX, BYTE PTR [BX+12h]
-CS:020B:    016022                      ADD SP, BYTE PTR [BX+SI+22h]
-CS:020E:    0138                        ADD DI, BYTE PTR [BX+SI]
-CS:0210:    01B91222                    ADD DI, WORD PTR [BX+DI+2212h]
-CS:0214:    014C02                      ADD CX, BYTE PTR [SI+02h]
-CS:0217:    0205                        ADD BYTE PTR [DI], AL
-CS:0219:    026501                      ADD BYTE PTR [DI+01h], AH
-CS:021C:    02BD1111                    ADD WORD PTR [DI+1111h], BH
-CS:0220:    024E00                      ADD BYTE PTR [BP+00h], CL
-CS:0223:    029E800D                    ADD WORD PTR [BP+0D80h], BL
-CS:0227:    022A                        ADD BYTE PTR [BP+SI], CH
-CS:0229:    00822301                    ADD AL, WORD PTR [BP+SI+0123h]
-CS:022D:    006222                      ADD AH, BYTE PTR [BP+SI+22h]
-CS:0230:    001A                        ADD BL, BYTE PTR [BP+SI]
-CS:0232:    00BE2222                    ADD BH, WORD PTR [BP+2222h]
-CS:0236:    004E12                      ADD CL, BYTE PTR [BP+12h]
-CS:0239:    006E00                      ADD CH, BYTE PTR [BP+00h]
-CS:023C:    007522                      ADD DH, BYTE PTR [DI+22h]
-CS:023F:    00953212                    ADD DL, WORD PTR [DI+1232h]
-CS:0243:    80451822                    ADD BYTE PTR [DI+18h], 22h
-CS:0247:    8085222211                  ADD WORD PTR [DI+2222h], 11h
-CS:024C:    80471211                    ADD BYTE PTR [BX+12h], 11h
-CS:0250:    800411                      ADD BYTE PTR [SI], 11h
-CS:0253:    8186800D3412                ADD WORD PTR [BP+0D80h], 1234h
-CS:0259:    81023112                    ADD BYTE PTR [BP+SI], 1231h
-CS:025D:    81422D1332                  ADD BYTE PTR [BP+SI+2Dh], 3213h
-CS:0262:    81822E163112                ADD WORD PTR [BP+SI+162Eh], 1231h
-CS:0268:    1B06E70B                    SBB BYTE PTR [0BE7h], AX
-CS:026C:    1A06E90B                    SBB BYTE PTR [0BE9h], AL
-CS:0270:    1906E70B                    SBB AX, BYTE PTR [0BE7h]
-CS:0274:    1806E90B                    SBB AL, BYTE PTR [0BE9h]
-CS:0278:    1C15                        SBB AL, 15h
-CS:027A:    80DC06                      SBB AH, 06h
-CS:027D:    80D902                      SBB CL, 02h
-CS:0280:    80DE08                      SBB DH, 08h
-CS:0283:    81DB3412                    SBB BX, 1234h
-CS:0287:    81DE2231                    SBB SI, 3122h
-CS:028B:    81DC2242                    SBB SP, 4222h
-CS:028F:    81DD1111                    SBB BP, 1111h
-CS:0293:    1B0F                        SBB BYTE PTR [BX], CX
-CS:0295:    1B574E                      SBB BYTE PTR [BX+4Eh], DX
-CS:0298:    1B9F800D                    SBB WORD PTR [BX+0D80h], BX
-CS:029C:    1B30                        SBB BYTE PTR [BX+SI], SI
-CS:029E:    1B7801                      SBB BYTE PTR [BX+SI+01h], DI
-CS:02A1:    1BA89138                    SBB WORD PTR [BX+SI+3891h], BP
-CS:02A5:    1B31                        SBB BYTE PTR [BX+DI], SI
-CS:02A7:    1B24                        SBB BYTE PTR [SI], SP
-CS:02A9:    1BAB3121                    SBB WORD PTR [BP+DI+2131h], BP
-CS:02AD:    1904                        SBB AX, BYTE PTR [SI]
-CS:02AF:    190F                        SBB CX, BYTE PTR [BX]
-CS:02B1:    199F1101                    SBB BX, WORD PTR [BX+0111h]
-CS:02B5:    195712                      SBB DX, BYTE PTR [BX+12h]
-CS:02B8:    196022                      SBB SP, BYTE PTR [BX+SI+22h]
-CS:02BB:    1938                        SBB DI, BYTE PTR [BX+SI]
-CS:02BD:    19B91222                    SBB DI, WORD PTR [BX+DI+2212h]
-CS:02C1:    194C02                      SBB CX, BYTE PTR [SI+02h]
-CS:02C4:    1A05                        SBB BYTE PTR [DI], AL
-CS:02C6:    1A6501                      SBB BYTE PTR [DI+01h], AH
-CS:02C9:    1ABD1111                    SBB WORD PTR [DI+1111h], BH
-CS:02CD:    1A4E00                      SBB BYTE PTR [BP+00h], CL
-CS:02D0:    1A9E800D                    SBB WORD PTR [BP+0D80h], BL
-CS:02D4:    1A2A                        SBB BYTE PTR [BP+SI], CH
-CS:02D6:    18822301                    SBB AL, WORD PTR [BP+SI+0123h]
-CS:02DA:    186222                      SBB AH, BYTE PTR [BP+SI+22h]
-CS:02DD:    181A                        SBB BL, BYTE PTR [BP+SI]
-CS:02DF:    18BE2222                    SBB BH, WORD PTR [BP+2222h]
-CS:02E3:    184E12                      SBB CL, BYTE PTR [BP+12h]
-CS:02E6:    186E00                      SBB CH, BYTE PTR [BP+00h]
-CS:02E9:    187522                      SBB DH, BYTE PTR [DI+22h]
-CS:02EC:    18953212                    SBB DL, WORD PTR [DI+1232h]
-CS:02F0:    805D1822                    SBB BYTE PTR [DI+18h], 22h
-CS:02F4:    809D222211                  SBB WORD PTR [DI+2222h], 11h
-CS:02F9:    805F1211                    SBB BYTE PTR [BX+12h], 11h
-CS:02FD:    801C11                      SBB BYTE PTR [SI], 11h
-CS:0300:    819E56343412                SBB WORD PTR [BP+3456h], 1234h
-CS:0306:    811A3112                    SBB BYTE PTR [BP+SI], 1231h
-CS:030A:    815A451332                  SBB BYTE PTR [BP+SI+45h], 3213h
-CS:030F:    819A78563112                SBB WORD PTR [BP+SI+5678h], 1231h
-CS:0315:    1306E70B                    ADC BYTE PTR [0BE7h], AX
-CS:0319:    1206E90B                    ADC BYTE PTR [0BE9h], AL
-CS:031D:    1106E70B                    ADC AX, BYTE PTR [0BE7h]
-CS:0321:    1006E90B                    ADC AL, BYTE PTR [0BE9h]
-CS:0325:    1415                        ADC AL, 15h
-CS:0327:    80D406                      ADC AH, 06h
-CS:032A:    80D102                      ADC CL, 02h
-CS:032D:    80D608                      ADC DH, 08h
-CS:0330:    81D33412                    ADC BX, 1234h
-CS:0334:    81D62231                    ADC SI, 3122h
-CS:0338:    81D42242                    ADC SP, 4222h
-CS:033C:    81D51111                    ADC BP, 1111h
-CS:0340:    130F                        ADC BYTE PTR [BX], CX
-CS:0342:    135778                      ADC BYTE PTR [BX+78h], DX
-CS:0345:    139F5634                    ADC WORD PTR [BX+3456h], BX
-CS:0349:    1330                        ADC BYTE PTR [BX+SI], SI
-CS:034B:    137801                      ADC BYTE PTR [BX+SI+01h], DI
-CS:034E:    13A89138                    ADC WORD PTR [BX+SI+3891h], BP
-CS:0352:    1331                        ADC BYTE PTR [BX+DI], SI
-CS:0354:    1324                        ADC BYTE PTR [SI], SP
-CS:0356:    13AB3121                    ADC WORD PTR [BP+DI+2131h], BP
-CS:035A:    1104                        ADC AX, BYTE PTR [SI]
-CS:035C:    110F                        ADC CX, BYTE PTR [BX]
-CS:035E:    119F1101                    ADC BX, WORD PTR [BX+0111h]
-CS:0362:    115712                      ADC DX, BYTE PTR [BX+12h]
-CS:0365:    116022                      ADC SP, BYTE PTR [BX+SI+22h]
-CS:0368:    1138                        ADC DI, BYTE PTR [BX+SI]
-CS:036A:    11B91222                    ADC DI, WORD PTR [BX+DI+2212h]
-CS:036E:    114C02                      ADC CX, BYTE PTR [SI+02h]
-CS:0371:    1205                        ADC BYTE PTR [DI], AL
-CS:0373:    126501                      ADC BYTE PTR [DI+01h], AH
-CS:0376:    12BD1111                    ADC WORD PTR [DI+1111h], BH
-CS:037A:    124E00                      ADC BYTE PTR [BP+00h], CL
-CS:037D:    129E5634                    ADC WORD PTR [BP+3456h], BL
-CS:0381:    122A                        ADC BYTE PTR [BP+SI], CH
-CS:0383:    10822301                    ADC AL, WORD PTR [BP+SI+0123h]
-CS:0387:    106222                      ADC AH, BYTE PTR [BP+SI+22h]
-CS:038A:    101A                        ADC BL, BYTE PTR [BP+SI]
-CS:038C:    10BE2222                    ADC BH, WORD PTR [BP+2222h]
-CS:0390:    104E12                      ADC CL, BYTE PTR [BP+12h]
-CS:0393:    106E00                      ADC CH, BYTE PTR [BP+00h]
-CS:0396:    107522                      ADC DH, BYTE PTR [DI+22h]
-CS:0399:    10953212                    ADC DL, WORD PTR [DI+1232h]
-CS:039D:    80551822                    ADC BYTE PTR [DI+18h], 22h
-CS:03A1:    8095222211                  ADC WORD PTR [DI+2222h], 11h
-CS:03A6:    80571211                    ADC BYTE PTR [BX+12h], 11h
-CS:03AA:    801411                      ADC BYTE PTR [SI], 11h
-CS:03AD:    819656343412                ADC WORD PTR [BP+3456h], 1234h
-CS:03B3:    81123112                    ADC BYTE PTR [BP+SI], 1231h
-CS:03B7:    8152451332                  ADC BYTE PTR [BP+SI+45h], 3213h
-CS:03BC:    819278563112                ADC WORD PTR [BP+SI+5678h], 1231h
-CS:03C2:    2B06E70B                    SUB BYTE PTR [0BE7h], AX
-CS:03C6:    2A06E90B                    SUB BYTE PTR [0BE9h], AL
-CS:03CA:    2906E70B                    SUB AX, BYTE PTR [0BE7h]
-CS:03CE:    2806E90B                    SUB AL, BYTE PTR [0BE9h]
-CS:03D2:    2C15                        SUB AL, 15h
-CS:03D4:    80EC06                      SUB AH, 06h
-CS:03D7:    80E902                      SUB CL, 02h
-CS:03DA:    80EE08                      SUB DH, 08h
-CS:03DD:    81EB3412                    SUB BX, 1234h
-CS:03E1:    81EE2231                    SUB SI, 3122h
-CS:03E5:    81EC2242                    SUB SP, 4222h
-CS:03E9:    81ED1111                    SUB BP, 1111h
-CS:03ED:    2B0F                        SUB BYTE PTR [BX], CX
-CS:03EF:    2B5778                      SUB BYTE PTR [BX+78h], DX
-CS:03F2:    2B9F5634                    SUB WORD PTR [BX+3456h], BX
-CS:03F6:    2B30                        SUB BYTE PTR [BX+SI], SI
-CS:03F8:    2B7801                      SUB BYTE PTR [BX+SI+01h], DI
-CS:03FB:    2BA89138                    SUB WORD PTR [BX+SI+3891h], BP
-CS:03FF:    2B31                        SUB BYTE PTR [BX+DI], SI
-CS:0401:    2B24                        SUB BYTE PTR [SI], SP
-CS:0403:    2BAB3121                    SUB WORD PTR [BP+DI+2131h], BP
-CS:0407:    2904                        SUB AX, BYTE PTR [SI]
-CS:0409:    290F                        SUB CX, BYTE PTR [BX]
-CS:040B:    299F1101                    SUB BX, WORD PTR [BX+0111h]
-CS:040F:    295712                      SUB DX, BYTE PTR [BX+12h]
-CS:0412:    296022                      SUB SP, BYTE PTR [BX+SI+22h]
-CS:0415:    2938                        SUB DI, BYTE PTR [BX+SI]
-CS:0417:    29B91222                    SUB DI, WORD PTR [BX+DI+2212h]
-CS:041B:    294C02                      SUB CX, BYTE PTR [SI+02h]
-CS:041E:    2A05                        SUB BYTE PTR [DI], AL
-CS:0420:    2A6501                      SUB BYTE PTR [DI+01h], AH
-CS:0423:    2ABD1111                    SUB WORD PTR [DI+1111h], BH
-CS:0427:    2A4E00                      SUB BYTE PTR [BP+00h], CL
-CS:042A:    2A9E5634                    SUB WORD PTR [BP+3456h], BL
-CS:042E:    2A2A                        SUB BYTE PTR [BP+SI], CH
-CS:0430:    28822301                    SUB AL, WORD PTR [BP+SI+0123h]
-CS:0434:    286222                      SUB AH, BYTE PTR [BP+SI+22h]
-CS:0437:    281A                        SUB BL, BYTE PTR [BP+SI]
-CS:0439:    28BE2222                    SUB BH, WORD PTR [BP+2222h]
-CS:043D:    284E12                      SUB CL, BYTE PTR [BP+12h]
-CS:0440:    286E00                      SUB CH, BYTE PTR [BP+00h]
-CS:0443:    287522                      SUB DH, BYTE PTR [DI+22h]
-CS:0446:    28953212                    SUB DL, WORD PTR [DI+1232h]
-CS:044A:    806D1822                    SUB BYTE PTR [DI+18h], 22h
-CS:044E:    80AD222211                  SUB WORD PTR [DI+2222h], 11h
-CS:0453:    806F1211                    SUB BYTE PTR [BX+12h], 11h
-CS:0457:    802C11                      SUB BYTE PTR [SI], 11h
-CS:045A:    81AE56343412                SUB WORD PTR [BP+3456h], 1234h
-CS:0460:    812A3112                    SUB BYTE PTR [BP+SI], 1231h
-CS:0464:    816A451332                  SUB BYTE PTR [BP+SI+45h], 3213h
-CS:0469:    81AA78563112                SUB WORD PTR [BP+SI+5678h], 1231h
-CS:046F:    50                          PUSH AX
-CS:0470:    53                          PUSH BX
-CS:0471:    51                          PUSH CX
-CS:0472:    52                          PUSH DX
-CS:0473:    55                          PUSH BP
-CS:0474:    57                          PUSH DI
-CS:0475:    06                          PUSH ES
-CS:0476:    0E                          PUSH CS
-CS:0477:    16                          PUSH SS
-CS:0478:    1E                          PUSH DS
-CS:0479:    FF37                        PUSH BYTE PTR [BX]
-CS:047B:    FF7711                      PUSH BYTE PTR [BX+11h]
-CS:047E:    FFB72222                    PUSH WORD PTR [BX+2222h]
-CS:0482:    FF30                        PUSH BYTE PTR [BX+SI]
-CS:0484:    FFB02222                    PUSH WORD PTR [BX+SI+2222h]
-CS:0488:    FF31                        PUSH BYTE PTR [BX+DI]
-CS:048A:    FF35                        PUSH BYTE PTR [DI]
-CS:048C:    FF7523                      PUSH BYTE PTR [DI+23h]
-CS:048F:    FF7600                      PUSH BYTE PTR [BP+00h]
-CS:0492:    FFB32301                    PUSH WORD PTR [BP+DI+0123h]
-CS:0496:    58                          POP AX
-CS:0497:    5B                          POP BX
-CS:0498:    59                          POP CX
-CS:0499:    5A                          POP DX
-CS:049A:    5D                          POP BP
-CS:049B:    5F                          POP DI
-CS:049C:    07                          POP ES
-CS:049D:    17                          POP SS
-CS:049E:    1F                          POP DS
-CS:049F:    8F07                        POP BYTE PTR [BX]
-CS:04A1:    8F4711                      POP BYTE PTR [BX+11h]
-CS:04A4:    8F872222                    POP WORD PTR [BX+2222h]
-CS:04A8:    8F00                        POP BYTE PTR [BX+SI]
-CS:04AA:    8F802222                    POP WORD PTR [BX+SI+2222h]
-CS:04AE:    8F01                        POP BYTE PTR [BX+DI]
-CS:04B0:    8F05                        POP BYTE PTR [DI]
-CS:04B2:    8F4523                      POP BYTE PTR [DI+23h]
-CS:04B5:    8F4600                      POP BYTE PTR [BP+00h]
-CS:04B8:    8F832301                    POP WORD PTR [BP+DI+0123h]
-CS:04BC:    90                          NOP
-CS:04BD:    91                          CXHG AX, CX
-CS:04BE:    92                          CXHG AX, DX
-CS:04BF:    93                          CXHG AX, BX
-CS:04C0:    94                          CXHG AX, SP
-CS:04C1:    95                          CXHG AX, BP
-CS:04C2:    96                          CXHG AX, SI
-CS:04C3:    97                          CXHG AX, DI
-CS:04C4:    86C0                        XCHG AL, AL
-CS:04C6:    86E1                        XCHG CL, CL
-CS:04C8:    86E0                        XCHG AL, AL
-CS:04CA:    86DA                        XCHG DL, DL
-CS:04CC:    86EE                        XCHG DH, DH
-CS:04CE:    87FB                        XCHG BX, BX
-CS:04D0:    87CB                        XCHG BX, BX
-CS:04D2:    87DA                        XCHG DX, DX
-CS:04D4:    87C9                        XCHG CX, CX
-CS:04D6:    87DC                        XCHG SP, SP
-CS:04D8:    87EE                        XCHG SI, SI
-CS:04DA:    87F9                        XCHG CX, CX
-CS:04DC:    87FF                        XCHG DI, DI
-CS:04DE:    87F5                        XCHG BP, BP
-CS:04E0:    87CA                        XCHG DX, DX
-CS:04E2:    862F                        XCHG BYTE PTR [BX], CH
-CS:04E4:    864600                      XCHG BYTE PTR [BP+00h], AL
-CS:04E7:    8608                        XCHG BYTE PTR [BX+SI], CL
-CS:04E9:    86861202                    XCHG WORD PTR [BP+0212h], AL
-CS:04ED:    8614                        XCHG BYTE PTR [SI], DL
-CS:04EF:    8737                        XCHG BYTE PTR [BX], SI
-CS:04F1:    8733                        XCHG BYTE PTR [BP+DI], SI
-CS:04F3:    8708                        XCHG BYTE PTR [BX+SI], CX
-CS:04F5:    87833502                    XCHG WORD PTR [BP+DI+0235h], AX
-CS:04F9:    87AC5421                    XCHG WORD PTR [SI+2154h], BP
-CS:04FD:    E62222                      OUT 22h, AL
-CS:04FF:    E70202                      OUT 02h, AX
-CS:0501:    E50202                      IN AX, 02h
-CS:0503:    E43232                      IN AL, 32h
-CS:0505:    BDE90B                      MOV BP, 0BE9h
-CS:0508:    B9E70B                      MOV CX, 0BE7h
-CS:050B:    C44C12                      LES CX, [SI+12h]
-CS:050E:    C40A                        LES CX, [BP+SI]
-CS:0510:    C5971203                    LDS DX, [BX+0312h]
-CS:0514:    C507                        LDS AX, [BX]
-CS:0516:    D7                          XLAT
-CS:0517:    9F                          LAHF
-CS:0518:    9E                          SAHF
-CS:0519:    9C                          PUSHF
-CS:051A:    9D                          POPF
-CS:051B:    37                          AAA
-CS:051C:    27                          DAA
-CS:051D:    3F                          AAS
-CS:051E:    2F                          DAS
-CS:051F:    D40A                        AAM
-CS:0521:    D50A                        AAD
-CS:0523:    98                          CBW
-CS:0524:    99                          CWD
-CS:0525:    F3                          REP
-CS:0526:    F2                          REPNZ
-CS:0527:    A4                          MOVSB
-CS:0528:    A5                          MOVSW
-CS:0529:    A6                          CMPSB
-CS:052A:    A7                          CMPSW
-CS:052B:    AE                          SCASB
-CS:052C:    AF                          SCASW
-CS:052D:    AC                          LODSB
-CS:052E:    AD                          LODSW
-CS:052F:    AA                          STOSB
-CS:0530:    AB                          STOSW
-CS:0531:    CE                          INTO
-CS:0532:    C3                          RET
-CS:0533:    CB                          RET
-CS:0534:    C23412                      RET 1234h
-CS:0537:    CA3412                      RET 1234h
-CS:053A:    40                          INC AX
-CS:053B:    43                          INC BX
-CS:053C:    42                          INC DX
-CS:053D:    FE4518                      INC BYTE PTR [DI+18h]
-CS:0540:    FE852222                    INC WORD PTR [DI+2222h]
-CS:0544:    FE4712                      INC BYTE PTR [BX+12h]
-CS:0547:    FE04                        INC BYTE PTR [SI]
-CS:0549:    FF865634                    INC WORD PTR [BP+3456h]
-CS:054D:    FF02                        INC BYTE PTR [BP+SI]
-CS:054F:    FF4245                      INC BYTE PTR [BP+SI+45h]
-CS:0552:    FF827856                    INC WORD PTR [BP+SI+5678h]
-CS:0556:    48                          DEC AX
-CS:0557:    4B                          DEC BX
-CS:0558:    49                          DEC CX
-CS:0559:    FE4D18                      DEC BYTE PTR [DI+18h]
-CS:055C:    FE8D2222                    DEC WORD PTR [DI+2222h]
-CS:0560:    FE4F12                      DEC BYTE PTR [BX+12h]
-CS:0563:    FE0C                        DEC BYTE PTR [SI]
-CS:0565:    FF8E5634                    DEC WORD PTR [BP+3456h]
-CS:0569:    FF0A                        DEC BYTE PTR [BP+SI]
-CS:056B:    FF4A45                      DEC BYTE PTR [BP+SI+45h]
-CS:056E:    FF8A7856                    DEC WORD PTR [BP+SI+5678h]
-CS:0572:    50                          PUSH AX
-CS:0573:    53                          PUSH BX
-CS:0574:    52                          PUSH DX
-CS:0575:    51                          PUSH CX
-CS:0576:    58                          POP AX
-CS:0577:    5A                          POP DX
-CS:0578:    58                          POP AX
-CS:0579:    59                          POP CX
-CS:057A:    1E                          PUSH DS
-CS:057B:    06                          PUSH ES
-CS:057C:    16                          PUSH SS
-CS:057D:    0E                          PUSH CS
-CS:057E:    1F                          POP DS
-CS:057F:    07                          POP ES
-CS:0580:    17                          POP SS
-CS:0581:    EB23                        JMP 05A6h
-CS:0583:    90                          NOP
-CS:0584:    7720                        JA 05A6h
-CS:0586:    731E                        JAE 05A6h
-CS:0588:    721C                        JB 05A6h
-CS:058A:    761A                        JNA 05A6h
-CS:058C:    7418                        JE 05A6h
-CS:058E:    E316                        JCXZ 05A6h
-CS:0590:    7F14                        JG 05A6h
-CS:0592:    7D12                        JNL 05A6h
-CS:0594:    7C10                        JL 05A6h
-CS:0596:    7E0E                        JLE 05A6h
-CS:0598:    750C                        JNE 05A6h
-CS:059A:    710A                        JNO 05A6h
-CS:059C:    7B08                        JNP 05A6h
-CS:059E:    7A06                        JP 05A6h
-CS:05A0:    7004                        JO 05A6h
-CS:05A2:    7902                        JNS 05A6h
-CS:05A4:    7800                        JS 05A6h
-CS:05A6:    CC                          INT 3H
-CS:05A7:    CD23                        INT 23h
-CS:05A9:    CD21                        INT 21h
-CS:05AB:    CF                          IRET
-CS:05AC:    F8                          CLC
-CS:05AD:    F9                          STC
-CS:05AE:    F5                          CMC
-CS:05AF:    FC                          CLD
-CS:05B0:    FD                          STD
-CS:05B1:    FA                          CLI
-CS:05B2:    FB                          STI
-CS:05B3:    F4                          HLT
-CS:05B4:    9B                          WAIT
-CS:05B5:    F0                          LOCK
-CS:05B6:    3B06E70B                    CMP BYTE PTR [0BE7h], AX
-CS:05BA:    3A06E90B                    CMP BYTE PTR [0BE9h], AL
-CS:05BE:    3906E70B                    CMP AX, BYTE PTR [0BE7h]
-CS:05C2:    3806E90B                    CMP AL, BYTE PTR [0BE9h]
-CS:05C6:    3C15                        CMP AL, 15h
-CS:05C8:    80FC06                      CMP AH, 06h
-CS:05CB:    80F902                      CMP CL, 02h
-CS:05CE:    80FE08                      CMP DH, 08h
-CS:05D1:    81FB3412                    CMP BX, 1234h
-CS:05D5:    81FE2231                    CMP SI, 3122h
-CS:05D9:    81FC2242                    CMP SP, 4222h
-CS:05DD:    81FD1111                    CMP BP, 1111h
-CS:05E1:    3B0F                        CMP BYTE PTR [BX], CX
-CS:05E3:    3B574E                      CMP BYTE PTR [BX+4Eh], DX
-CS:05E6:    3B9F800D                    CMP WORD PTR [BX+0D80h], BX
-CS:05EA:    3B30                        CMP BYTE PTR [BX+SI], SI
-CS:05EC:    3B7801                      CMP BYTE PTR [BX+SI+01h], DI
-CS:05EF:    3BA89138                    CMP WORD PTR [BX+SI+3891h], BP
-CS:05F3:    3B31                        CMP BYTE PTR [BX+DI], SI
-CS:05F5:    3B24                        CMP BYTE PTR [SI], SP
-CS:05F7:    3BAB3121                    CMP WORD PTR [BP+DI+2131h], BP
-CS:05FB:    3904                        CMP AX, BYTE PTR [SI]
-CS:05FD:    390F                        CMP CX, BYTE PTR [BX]
-CS:05FF:    399F1101                    CMP BX, WORD PTR [BX+0111h]
-CS:0603:    395712                      CMP DX, BYTE PTR [BX+12h]
-CS:0606:    396022                      CMP SP, BYTE PTR [BX+SI+22h]
-CS:0609:    3938                        CMP DI, BYTE PTR [BX+SI]
-CS:060B:    39B91222                    CMP DI, WORD PTR [BX+DI+2212h]
-CS:060F:    394C02                      CMP CX, BYTE PTR [SI+02h]
-CS:0612:    3A05                        CMP BYTE PTR [DI], AL
-CS:0614:    3A6501                      CMP BYTE PTR [DI+01h], AH
-CS:0617:    3ABD1111                    CMP WORD PTR [DI+1111h], BH
-CS:061B:    3A4E00                      CMP BYTE PTR [BP+00h], CL
-CS:061E:    3A9E800D                    CMP WORD PTR [BP+0D80h], BL
-CS:0622:    3A2A                        CMP BYTE PTR [BP+SI], CH
-CS:0624:    38822301                    CMP AL, WORD PTR [BP+SI+0123h]
-CS:0628:    386222                      CMP AH, BYTE PTR [BP+SI+22h]
-CS:062B:    381A                        CMP BL, BYTE PTR [BP+SI]
-CS:062D:    38BE2222                    CMP BH, WORD PTR [BP+2222h]
-CS:0631:    384E12                      CMP CL, BYTE PTR [BP+12h]
-CS:0634:    386E00                      CMP CH, BYTE PTR [BP+00h]
-CS:0637:    387522                      CMP DH, BYTE PTR [DI+22h]
-CS:063A:    38953212                    CMP DL, WORD PTR [DI+1232h]
-CS:063E:    807D1822                    CMP BYTE PTR [DI+18h], 22h
-CS:0642:    80BD222211                  CMP WORD PTR [DI+2222h], 11h
-CS:0647:    807F1211                    CMP BYTE PTR [BX+12h], 11h
-CS:064B:    803C11                      CMP BYTE PTR [SI], 11h
-CS:064E:    81BE800D3412                CMP WORD PTR [BP+0D80h], 1234h
-CS:0654:    813A3112                    CMP BYTE PTR [BP+SI], 1231h
-CS:0658:    817A2D1332                  CMP BYTE PTR [BP+SI+2Dh], 3213h
-CS:065D:    F726E70B                    MUL BYTE PTR [0BE7h]
-CS:0661:    F626E90B                    MUL BYTE PTR [0BE9h]
-CS:0665:    F7E0                        MUL AX
-CS:0667:    F6E0                        MUL AL
-CS:0669:    F6E1                        MUL CL
-CS:066B:    F6E6                        MUL DH
-CS:066D:    F7E3                        MUL BX
-CS:066F:    F7E6                        MUL SI
-CS:0671:    F7E4                        MUL SP
-CS:0673:    F7E5                        MUL BP
-CS:0675:    F7E1                        MUL CX
-CS:0677:    F7E2                        MUL DX
-CS:0679:    F7A7800D                    MUL WORD PTR [BX+0D80h]
-CS:067D:    F720                        MUL BYTE PTR [BX+SI]
-CS:067F:    F76001                      MUL BYTE PTR [BX+SI+01h]
-CS:0682:    F7A09138                    MUL WORD PTR [BX+SI+3891h]
-CS:0686:    F721                        MUL BYTE PTR [BX+DI]
-CS:0688:    F724                        MUL BYTE PTR [SI]
-CS:068A:    F7A33121                    MUL WORD PTR [BP+DI+2131h]
-CS:068E:    F72EE70B                    IMUL BYTE PTR [0BE7h]
-CS:0692:    F62EE90B                    IMUL BYTE PTR [0BE9h]
-CS:0696:    F7E8                        IMUL AX
-CS:0698:    F6E8                        IMUL AL
-CS:069A:    F6E9                        IMUL CL
-CS:069C:    F6EE                        IMUL DH
-CS:069E:    F7EB                        IMUL BX
-CS:06A0:    F7EE                        IMUL SI
-CS:06A2:    F7EC                        IMUL SP
-CS:06A4:    F7ED                        IMUL BP
-CS:06A6:    F7E9                        IMUL CX
-CS:06A8:    F7EA                        IMUL DX
-CS:06AA:    F7AF800D                    IMUL WORD PTR [BX+0D80h]
-CS:06AE:    F728                        IMUL BYTE PTR [BX+SI]
-CS:06B0:    F76801                      IMUL BYTE PTR [BX+SI+01h]
-CS:06B3:    F7A89138                    IMUL WORD PTR [BX+SI+3891h]
-CS:06B7:    F729                        IMUL BYTE PTR [BX+DI]
-CS:06B9:    F72C                        IMUL BYTE PTR [SI]
-CS:06BB:    F7AB3121                    IMUL WORD PTR [BP+DI+2131h]
-CS:06BF:    F736E70B                    DIV BYTE PTR [0BE7h]
-CS:06C3:    F636E90B                    DIV BYTE PTR [0BE9h]
-CS:06C7:    F7F0                        DIV AX
-CS:06C9:    F6F0                        DIV AL
-CS:06CB:    F6F1                        DIV CL
-CS:06CD:    F6F6                        DIV DH
-CS:06CF:    F7F3                        DIV BX
-CS:06D1:    F7F6                        DIV SI
-CS:06D3:    F7F4                        DIV SP
-CS:06D5:    F7F5                        DIV BP
-CS:06D7:    F7F1                        DIV CX
-CS:06D9:    F7F2                        DIV DX
-CS:06DB:    F7B7800D                    DIV WORD PTR [BX+0D80h]
-CS:06DF:    F730                        DIV BYTE PTR [BX+SI]
-CS:06E1:    F77001                      DIV BYTE PTR [BX+SI+01h]
-CS:06E4:    F7B09138                    DIV WORD PTR [BX+SI+3891h]
-CS:06E8:    F731                        DIV BYTE PTR [BX+DI]
-CS:06EA:    F734                        DIV BYTE PTR [SI]
-CS:06EC:    F7B33121                    DIV WORD PTR [BP+DI+2131h]
-CS:06F0:    F73EE70B                    IDIV BYTE PTR [0BE7h]
-CS:06F4:    F63EE90B                    IDIV BYTE PTR [0BE9h]
-CS:06F8:    F7F8                        IDIV AX
-CS:06FA:    F6F8                        IDIV AL
-CS:06FC:    F6F9                        IDIV CL
-CS:06FE:    F6FE                        IDIV DH
-CS:0700:    F7FB                        IDIV BX
-CS:0702:    F7FE                        IDIV SI
-CS:0704:    F7FC                        IDIV SP
-CS:0706:    F7FD                        IDIV BP
-CS:0708:    F7F9                        IDIV CX
-CS:070A:    F7FA                        IDIV DX
-CS:070C:    F7BF800D                    IDIV WORD PTR [BX+0D80h]
-CS:0710:    F738                        IDIV BYTE PTR [BX+SI]
-CS:0712:    F77801                      IDIV BYTE PTR [BX+SI+01h]
-CS:0715:    F7B89138                    IDIV WORD PTR [BX+SI+3891h]
-CS:0719:    F739                        IDIV BYTE PTR [BX+DI]
-CS:071B:    F73C                        IDIV BYTE PTR [SI]
-CS:071D:    F7BB3121                    IDIV WORD PTR [BP+DI+2131h]
-CS:0721:    F71EE70B                    NEG BYTE PTR [0BE7h]
-CS:0725:    F61EE90B                    NEG BYTE PTR [0BE9h]
-CS:0729:    F7D8                        NEG AX
-CS:072B:    F6D8                        NEG AL
-CS:072D:    F6D9                        NEG CL
-CS:072F:    F6DE                        NEG DH
-CS:0731:    F7DB                        NEG BX
-CS:0733:    F7DE                        NEG SI
-CS:0735:    F7DC                        NEG SP
-CS:0737:    F7DD                        NEG BP
-CS:0739:    F7D9                        NEG CX
-CS:073B:    F7DA                        NEG DX
-CS:073D:    F79F800D                    NEG WORD PTR [BX+0D80h]
-CS:0741:    F718                        NEG BYTE PTR [BX+SI]
-CS:0743:    F75801                      NEG BYTE PTR [BX+SI+01h]
-CS:0746:    F7989138                    NEG WORD PTR [BX+SI+3891h]
-CS:074A:    F719                        NEG BYTE PTR [BX+DI]
-CS:074C:    F71C                        NEG BYTE PTR [SI]
-CS:074E:    F79B3121                    NEG WORD PTR [BP+DI+2131h]
-CS:0752:    F716E70B                    NOT BYTE PTR [0BE7h]
-CS:0756:    F616E90B                    NOT BYTE PTR [0BE9h]
-CS:075A:    F7D0                        NOT AX
-CS:075C:    F6D0                        NOT AL
-CS:075E:    F6D1                        NOT CL
-CS:0760:    F6D6                        NOT DH
-CS:0762:    F7D3                        NOT BX
-CS:0764:    F7D6                        NOT SI
-CS:0766:    F7D4                        NOT SP
-CS:0768:    F7D5                        NOT BP
-CS:076A:    F7D1                        NOT CX
-CS:076C:    F7D2                        NOT DX
-CS:076E:    F797800D                    NOT WORD PTR [BX+0D80h]
-CS:0772:    F710                        NOT BYTE PTR [BX+SI]
-CS:0774:    F75001                      NOT BYTE PTR [BX+SI+01h]
-CS:0777:    F7909138                    NOT WORD PTR [BX+SI+3891h]
-CS:077B:    F711                        NOT BYTE PTR [BX+DI]
-CS:077D:    F714                        NOT BYTE PTR [SI]
-CS:077F:    F7933121                    NOT WORD PTR [BP+DI+2131h]
-CS:0783:    D1E8                        SHR AX, 1
-CS:0785:    D1EB                        SHR BX, 1
-CS:0787:    D2E8                        SHR AL, CL
-CS:0789:    D3E9                        SHR CX, CL
-CS:078B:    D1ED                        SHR BP, 1
-CS:078D:    D12F                        SHR BYTE PTR [BX], 1
-CS:078F:    D26F22                      SHR BYTE PTR [BX+22h], CL
-CS:0792:    D1AF2222                    SHR WORD PTR [BX+2222h], 1
-CS:0796:    D328                        SHR BYTE PTR [BX+SI], CL
-CS:0798:    D06811                      SHR BYTE PTR [BX+SI+11h], 1
-CS:079B:    D3A81111                    SHR WORD PTR [BX+SI+1111h], CL
-CS:079F:    D129                        SHR BYTE PTR [BX+DI], 1
-CS:07A1:    D329                        SHR BYTE PTR [BX+DI], CL
-CS:07A3:    D1A97856                    SHR WORD PTR [BX+DI+5678h], 1
-CS:07A7:    D22C                        SHR BYTE PTR [SI], CL
-CS:07A9:    D26C02                      SHR BYTE PTR [SI+02h], CL
-CS:07AC:    D12D                        SHR BYTE PTR [DI], 1
-CS:07AE:    D16D11                      SHR BYTE PTR [DI+11h], 1
-CS:07B1:    D36E00                      SHR BYTE PTR [BP+00h], CL
-CS:07B4:    D02A                        SHR BYTE PTR [BP+SI], 1
-CS:07B6:    D36A59                      SHR BYTE PTR [BP+SI+59h], CL
-CS:07B9:    D1AA1811                    SHR WORD PTR [BP+SI+1118h], 1
-CS:07BD:    D22B                        SHR BYTE PTR [BP+DI], CL
-CS:07BF:    D3AB2852                    SHR WORD PTR [BP+DI+5228h], CL
-CS:07C3:    D1E0                        SHL AX, 1
-CS:07C5:    D1E3                        SHL BX, 1
-CS:07C7:    D2E0                        SHL AL, CL
-CS:07C9:    D3E1                        SHL CX, CL
-CS:07CB:    D1E5                        SHL BP, 1
-CS:07CD:    D127                        SHL BYTE PTR [BX], 1
-CS:07CF:    D26722                      SHL BYTE PTR [BX+22h], CL
-CS:07D2:    D1A72222                    SHL WORD PTR [BX+2222h], 1
-CS:07D6:    D321                        SHL BYTE PTR [BX+DI], CL
-CS:07D8:    D1A17856                    SHL WORD PTR [BX+DI+5678h], 1
-CS:07DC:    D224                        SHL BYTE PTR [SI], CL
-CS:07DE:    D26402                      SHL BYTE PTR [SI+02h], CL
-CS:07E1:    D125                        SHL BYTE PTR [DI], 1
-CS:07E3:    D16511                      SHL BYTE PTR [DI+11h], 1
-CS:07E6:    D36600                      SHL BYTE PTR [BP+00h], CL
-CS:07E9:    D022                        SHL BYTE PTR [BP+SI], 1
-CS:07EB:    D36259                      SHL BYTE PTR [BP+SI+59h], CL
-CS:07EE:    D1A21811                    SHL WORD PTR [BP+SI+1118h], 1
-CS:07F2:    D223                        SHL BYTE PTR [BP+DI], CL
-CS:07F4:    D3A32852                    SHL WORD PTR [BP+DI+5228h], CL
-CS:07F8:    D1F8                        SAR AX, 1
-CS:07FA:    D1FB                        SAR BX, 1
-CS:07FC:    D2F8                        SAR AL, CL
-CS:07FE:    D3F9                        SAR CX, CL
-CS:0800:    D1FD                        SAR BP, 1
-CS:0802:    D13F                        SAR BYTE PTR [BX], 1
-CS:0804:    D27F22                      SAR BYTE PTR [BX+22h], CL
-CS:0807:    D1BF2222                    SAR WORD PTR [BX+2222h], 1
-CS:080B:    D339                        SAR BYTE PTR [BX+DI], CL
-CS:080D:    D1B97856                    SAR WORD PTR [BX+DI+5678h], 1
-CS:0811:    D23C                        SAR BYTE PTR [SI], CL
-CS:0813:    D27C02                      SAR BYTE PTR [SI+02h], CL
-CS:0816:    D13D                        SAR BYTE PTR [DI], 1
-CS:0818:    D17D11                      SAR BYTE PTR [DI+11h], 1
-CS:081B:    D37E00                      SAR BYTE PTR [BP+00h], CL
-CS:081E:    D03A                        SAR BYTE PTR [BP+SI], 1
-CS:0820:    D37A59                      SAR BYTE PTR [BP+SI+59h], CL
-CS:0823:    D1BA1811                    SAR WORD PTR [BP+SI+1118h], 1
-CS:0827:    D23B                        SAR BYTE PTR [BP+DI], CL
-CS:0829:    D3BB2852                    SAR WORD PTR [BP+DI+5228h], CL
-CS:082D:    D1C0                        ROL AX, 1
-CS:082F:    D1C3                        ROL BX, 1
-CS:0831:    D2C0                        ROL AL, CL
-CS:0833:    D3C1                        ROL CX, CL
-CS:0835:    D1C5                        ROL BP, 1
-CS:0837:    D107                        ROL BYTE PTR [BX], 1
-CS:0839:    D24722                      ROL BYTE PTR [BX+22h], CL
-CS:083C:    D1872222                    ROL WORD PTR [BX+2222h], 1
-CS:0840:    D301                        ROL BYTE PTR [BX+DI], CL
-CS:0842:    D1817856                    ROL WORD PTR [BX+DI+5678h], 1
-CS:0846:    D204                        ROL BYTE PTR [SI], CL
-CS:0848:    D24402                      ROL BYTE PTR [SI+02h], CL
-CS:084B:    D105                        ROL BYTE PTR [DI], 1
-CS:084D:    D14511                      ROL BYTE PTR [DI+11h], 1
-CS:0850:    D34600                      ROL BYTE PTR [BP+00h], CL
-CS:0853:    D002                        ROL BYTE PTR [BP+SI], 1
-CS:0855:    D34259                      ROL BYTE PTR [BP+SI+59h], CL
-CS:0858:    D1821811                    ROL WORD PTR [BP+SI+1118h], 1
-CS:085C:    D203                        ROL BYTE PTR [BP+DI], CL
-CS:085E:    D3832852                    ROL WORD PTR [BP+DI+5228h], CL
-CS:0862:    D1C8                        ROR AX, 1
-CS:0864:    D1CB                        ROR BX, 1
-CS:0866:    D2C8                        ROR AL, CL
-CS:0868:    D3C9                        ROR CX, CL
-CS:086A:    D1CD                        ROR BP, 1
-CS:086C:    D10F                        ROR BYTE PTR [BX], 1
-CS:086E:    D24F22                      ROR BYTE PTR [BX+22h], CL
-CS:0871:    D18F2222                    ROR WORD PTR [BX+2222h], 1
-CS:0875:    D309                        ROR BYTE PTR [BX+DI], CL
-CS:0877:    D1897856                    ROR WORD PTR [BX+DI+5678h], 1
-CS:087B:    D20C                        ROR BYTE PTR [SI], CL
-CS:087D:    D24C02                      ROR BYTE PTR [SI+02h], CL
-CS:0880:    D10D                        ROR BYTE PTR [DI], 1
-CS:0882:    D14D11                      ROR BYTE PTR [DI+11h], 1
-CS:0885:    D34E00                      ROR BYTE PTR [BP+00h], CL
-CS:0888:    D00A                        ROR BYTE PTR [BP+SI], 1
-CS:088A:    D34A59                      ROR BYTE PTR [BP+SI+59h], CL
-CS:088D:    D18A1811                    ROR WORD PTR [BP+SI+1118h], 1
-CS:0891:    D20B                        ROR BYTE PTR [BP+DI], CL
-CS:0893:    D38B2852                    ROR WORD PTR [BP+DI+5228h], CL
-CS:0897:    D1D0                        RCL AX, 1
-CS:0899:    D1D3                        RCL BX, 1
-CS:089B:    D2D0                        RCL AL, CL
-CS:089D:    D3D1                        RCL CX, CL
-CS:089F:    D1D5                        RCL BP, 1
-CS:08A1:    D117                        RCL BYTE PTR [BX], 1
-CS:08A3:    D25722                      RCL BYTE PTR [BX+22h], CL
-CS:08A6:    D1972222                    RCL WORD PTR [BX+2222h], 1
-CS:08AA:    D311                        RCL BYTE PTR [BX+DI], CL
-CS:08AC:    D1917856                    RCL WORD PTR [BX+DI+5678h], 1
-CS:08B0:    D214                        RCL BYTE PTR [SI], CL
-CS:08B2:    D25402                      RCL BYTE PTR [SI+02h], CL
-CS:08B5:    D115                        RCL BYTE PTR [DI], 1
-CS:08B7:    D15511                      RCL BYTE PTR [DI+11h], 1
-CS:08BA:    D35600                      RCL BYTE PTR [BP+00h], CL
-CS:08BD:    D012                        RCL BYTE PTR [BP+SI], 1
-CS:08BF:    D35259                      RCL BYTE PTR [BP+SI+59h], CL
-CS:08C2:    D1921811                    RCL WORD PTR [BP+SI+1118h], 1
-CS:08C6:    D213                        RCL BYTE PTR [BP+DI], CL
-CS:08C8:    D3932852                    RCL WORD PTR [BP+DI+5228h], CL
-CS:08CC:    D1D8                        RCR AX, 1
-CS:08CE:    D1DB                        RCR BX, 1
-CS:08D0:    D2D8                        RCR AL, CL
-CS:08D2:    D3D9                        RCR CX, CL
-CS:08D4:    D1DD                        RCR BP, 1
-CS:08D6:    D11F                        RCR BYTE PTR [BX], 1
-CS:08D8:    D25F22                      RCR BYTE PTR [BX+22h], CL
-CS:08DB:    D19F2222                    RCR WORD PTR [BX+2222h], 1
-CS:08DF:    D319                        RCR BYTE PTR [BX+DI], CL
-CS:08E1:    D1997856                    RCR WORD PTR [BX+DI+5678h], 1
-CS:08E5:    D21C                        RCR BYTE PTR [SI], CL
-CS:08E7:    D25C02                      RCR BYTE PTR [SI+02h], CL
-CS:08EA:    D11D                        RCR BYTE PTR [DI], 1
-CS:08EC:    D15D11                      RCR BYTE PTR [DI+11h], 1
-CS:08EF:    D35E00                      RCR BYTE PTR [BP+00h], CL
-CS:08F2:    D01A                        RCR BYTE PTR [BP+SI], 1
-CS:08F4:    D35A59                      RCR BYTE PTR [BP+SI+59h], CL
-CS:08F7:    D19A1811                    RCR WORD PTR [BP+SI+1118h], 1
-CS:08FB:    D21B                        RCR BYTE PTR [BP+DI], CL
-CS:08FD:    D39B2852                    RCR WORD PTR [BP+DI+5228h], CL
-CS:0901:    2306E70B                    AND BYTE PTR [0BE7h], AX
-CS:0905:    2206E90B                    AND BYTE PTR [0BE9h], AL
-CS:0909:    2106E70B                    AND AX, BYTE PTR [0BE7h]
-CS:090D:    2006E90B                    AND AL, BYTE PTR [0BE9h]
-CS:0911:    2415                        AND AL, 15h
-CS:0913:    80E406                      AND AH, 06h
-CS:0916:    80E102                      AND CL, 02h
-CS:0919:    80E608                      AND DH, 08h
-CS:091C:    81E33412                    AND BX, 1234h
-CS:0920:    81E62231                    AND SI, 3122h
-CS:0924:    81E42242                    AND SP, 4222h
-CS:0928:    81E51111                    AND BP, 1111h
-CS:092C:    230F                        AND BYTE PTR [BX], CX
-CS:092E:    23574E                      AND BYTE PTR [BX+4Eh], DX
-CS:0931:    239F800D                    AND WORD PTR [BX+0D80h], BX
-CS:0935:    2330                        AND BYTE PTR [BX+SI], SI
-CS:0937:    237801                      AND BYTE PTR [BX+SI+01h], DI
-CS:093A:    23A89138                    AND WORD PTR [BX+SI+3891h], BP
-CS:093E:    2331                        AND BYTE PTR [BX+DI], SI
-CS:0940:    2324                        AND BYTE PTR [SI], SP
-CS:0942:    23AB3121                    AND WORD PTR [BP+DI+2131h], BP
-CS:0946:    2104                        AND AX, BYTE PTR [SI]
-CS:0948:    210F                        AND CX, BYTE PTR [BX]
-CS:094A:    219F1101                    AND BX, WORD PTR [BX+0111h]
-CS:094E:    215712                      AND DX, BYTE PTR [BX+12h]
-CS:0951:    216022                      AND SP, BYTE PTR [BX+SI+22h]
-CS:0954:    2138                        AND DI, BYTE PTR [BX+SI]
-CS:0956:    21B91222                    AND DI, WORD PTR [BX+DI+2212h]
-CS:095A:    214C02                      AND CX, BYTE PTR [SI+02h]
-CS:095D:    2205                        AND BYTE PTR [DI], AL
-CS:095F:    226501                      AND BYTE PTR [DI+01h], AH
-CS:0962:    22BD1111                    AND WORD PTR [DI+1111h], BH
-CS:0966:    224E00                      AND BYTE PTR [BP+00h], CL
-CS:0969:    229E800D                    AND WORD PTR [BP+0D80h], BL
-CS:096D:    222A                        AND BYTE PTR [BP+SI], CH
-CS:096F:    20822301                    AND AL, WORD PTR [BP+SI+0123h]
-CS:0973:    206222                      AND AH, BYTE PTR [BP+SI+22h]
-CS:0976:    201A                        AND BL, BYTE PTR [BP+SI]
-CS:0978:    20BE2222                    AND BH, WORD PTR [BP+2222h]
-CS:097C:    204E12                      AND CL, BYTE PTR [BP+12h]
-CS:097F:    206E00                      AND CH, BYTE PTR [BP+00h]
-CS:0982:    207522                      AND DH, BYTE PTR [DI+22h]
-CS:0985:    20953212                    AND DL, WORD PTR [DI+1232h]
-CS:0989:    80651822                    AND BYTE PTR [DI+18h], 22h
-CS:098D:    80A5222211                  AND WORD PTR [DI+2222h], 11h
-CS:0992:    80671211                    AND BYTE PTR [BX+12h], 11h
-CS:0996:    802411                      AND BYTE PTR [SI], 11h
-CS:0999:    81A6800D3412                AND WORD PTR [BP+0D80h], 1234h
-CS:099F:    81223112                    AND BYTE PTR [BP+SI], 1231h
-CS:09A3:    81622D1332                  AND BYTE PTR [BP+SI+2Dh], 3213h
-CS:09A8:    81A22E163112                AND WORD PTR [BP+SI+162Eh], 1231h
-CS:09AE:    0B06E70B                    OR BYTE PTR [0BE7h], AX
-CS:09B2:    0A06E90B                    OR BYTE PTR [0BE9h], AL
-CS:09B6:    0906E70B                    OR AX, BYTE PTR [0BE7h]
-CS:09BA:    0806E90B                    OR AL, BYTE PTR [0BE9h]
-CS:09BE:    0C15                        OR AL, 15h
-CS:09C0:    80CC06                      OR AH, 06h
-CS:09C3:    80C902                      OR CL, 02h
-CS:09C6:    80CE08                      OR DH, 08h
-CS:09C9:    81CB3412                    OR BX, 1234h
-CS:09CD:    81CE2231                    OR SI, 3122h
-CS:09D1:    81CC2242                    OR SP, 4222h
-CS:09D5:    81CD1111                    OR BP, 1111h
-CS:09D9:    0B0F                        OR BYTE PTR [BX], CX
-CS:09DB:    0B574E                      OR BYTE PTR [BX+4Eh], DX
-CS:09DE:    0B9F800D                    OR WORD PTR [BX+0D80h], BX
-CS:09E2:    0B30                        OR BYTE PTR [BX+SI], SI
-CS:09E4:    0B7801                      OR BYTE PTR [BX+SI+01h], DI
-CS:09E7:    0BA89138                    OR WORD PTR [BX+SI+3891h], BP
-CS:09EB:    0B31                        OR BYTE PTR [BX+DI], SI
-CS:09ED:    0B24                        OR BYTE PTR [SI], SP
-CS:09EF:    0BAB3121                    OR WORD PTR [BP+DI+2131h], BP
-CS:09F3:    0904                        OR AX, BYTE PTR [SI]
-CS:09F5:    090F                        OR CX, BYTE PTR [BX]
-CS:09F7:    099F1101                    OR BX, WORD PTR [BX+0111h]
-CS:09FB:    095712                      OR DX, BYTE PTR [BX+12h]
-CS:09FE:    096022                      OR SP, BYTE PTR [BX+SI+22h]
-CS:0A01:    0938                        OR DI, BYTE PTR [BX+SI]
-CS:0A03:    09B91222                    OR DI, WORD PTR [BX+DI+2212h]
-CS:0A07:    094C02                      OR CX, BYTE PTR [SI+02h]
-CS:0A0A:    0A05                        OR BYTE PTR [DI], AL
-CS:0A0C:    0A6501                      OR BYTE PTR [DI+01h], AH
-CS:0A0F:    0ABD1111                    OR WORD PTR [DI+1111h], BH
-CS:0A13:    0A4E00                      OR BYTE PTR [BP+00h], CL
-CS:0A16:    0A9E800D                    OR WORD PTR [BP+0D80h], BL
-CS:0A1A:    0A2A                        OR BYTE PTR [BP+SI], CH
-CS:0A1C:    08822301                    OR AL, WORD PTR [BP+SI+0123h]
-CS:0A20:    086222                      OR AH, BYTE PTR [BP+SI+22h]
-CS:0A23:    081A                        OR BL, BYTE PTR [BP+SI]
-CS:0A25:    08BE2222                    OR BH, WORD PTR [BP+2222h]
-CS:0A29:    084E12                      OR CL, BYTE PTR [BP+12h]
-CS:0A2C:    086E00                      OR CH, BYTE PTR [BP+00h]
-CS:0A2F:    087522                      OR DH, BYTE PTR [DI+22h]
-CS:0A32:    08953212                    OR DL, WORD PTR [DI+1232h]
-CS:0A36:    804D1822                    OR BYTE PTR [DI+18h], 22h
-CS:0A3A:    808D222211                  OR WORD PTR [DI+2222h], 11h
-CS:0A3F:    804F1211                    OR BYTE PTR [BX+12h], 11h
-CS:0A43:    800C11                      OR BYTE PTR [SI], 11h
-CS:0A46:    818E800D3412                OR WORD PTR [BP+0D80h], 1234h
-CS:0A4C:    810A3112                    OR BYTE PTR [BP+SI], 1231h
-CS:0A50:    814A2D1332                  OR BYTE PTR [BP+SI+2Dh], 3213h
-CS:0A55:    818A2E163112                OR WORD PTR [BP+SI+162Eh], 1231h
-CS:0A5B:    3306E70B                    XOR BYTE PTR [0BE7h], AX
-CS:0A5F:    3206E90B                    XOR BYTE PTR [0BE9h], AL
-CS:0A63:    3106E70B                    XOR AX, BYTE PTR [0BE7h]
-CS:0A67:    3006E90B                    XOR AL, BYTE PTR [0BE9h]
-CS:0A6B:    3415                        XOR AL, 15h
-CS:0A6D:    80F406                      XOR AH, 06h
-CS:0A70:    80F102                      XOR CL, 02h
-CS:0A73:    80F608                      XOR DH, 08h
-CS:0A76:    81F33412                    XOR BX, 1234h
-CS:0A7A:    81F62231                    XOR SI, 3122h
-CS:0A7E:    81F42242                    XOR SP, 4222h
-CS:0A82:    81F51111                    XOR BP, 1111h
-CS:0A86:    330F                        XOR BYTE PTR [BX], CX
-CS:0A88:    33574E                      XOR BYTE PTR [BX+4Eh], DX
-CS:0A8B:    339F800D                    XOR WORD PTR [BX+0D80h], BX
-CS:0A8F:    3330                        XOR BYTE PTR [BX+SI], SI
-CS:0A91:    337801                      XOR BYTE PTR [BX+SI+01h], DI
-CS:0A94:    33A89138                    XOR WORD PTR [BX+SI+3891h], BP
-CS:0A98:    3331                        XOR BYTE PTR [BX+DI], SI
-CS:0A9A:    3324                        XOR BYTE PTR [SI], SP
-CS:0A9C:    33AB3121                    XOR WORD PTR [BP+DI+2131h], BP
-CS:0AA0:    3104                        XOR AX, BYTE PTR [SI]
-CS:0AA2:    310F                        XOR CX, BYTE PTR [BX]
-CS:0AA4:    319F1101                    XOR BX, WORD PTR [BX+0111h]
-CS:0AA8:    315712                      XOR DX, BYTE PTR [BX+12h]
-CS:0AAB:    316022                      XOR SP, BYTE PTR [BX+SI+22h]
-CS:0AAE:    3138                        XOR DI, BYTE PTR [BX+SI]
-CS:0AB0:    31B91222                    XOR DI, WORD PTR [BX+DI+2212h]
-CS:0AB4:    314C02                      XOR CX, BYTE PTR [SI+02h]
-CS:0AB7:    3205                        XOR BYTE PTR [DI], AL
-CS:0AB9:    326501                      XOR BYTE PTR [DI+01h], AH
-CS:0ABC:    32BD1111                    XOR WORD PTR [DI+1111h], BH
-CS:0AC0:    324E00                      XOR BYTE PTR [BP+00h], CL
-CS:0AC3:    329E800D                    XOR WORD PTR [BP+0D80h], BL
-CS:0AC7:    322A                        XOR BYTE PTR [BP+SI], CH
-CS:0AC9:    30822301                    XOR AL, WORD PTR [BP+SI+0123h]
-CS:0ACD:    306222                      XOR AH, BYTE PTR [BP+SI+22h]
-CS:0AD0:    301A                        XOR BL, BYTE PTR [BP+SI]
-CS:0AD2:    30BE2222                    XOR BH, WORD PTR [BP+2222h]
-CS:0AD6:    304E12                      XOR CL, BYTE PTR [BP+12h]
-CS:0AD9:    306E00                      XOR CH, BYTE PTR [BP+00h]
-CS:0ADC:    307522                      XOR DH, BYTE PTR [DI+22h]
-CS:0ADF:    30953212                    XOR DL, WORD PTR [DI+1232h]
-CS:0AE3:    80751822                    XOR BYTE PTR [DI+18h], 22h
-CS:0AE7:    80B5222211                  XOR WORD PTR [DI+2222h], 11h
-CS:0AEC:    80771211                    XOR BYTE PTR [BX+12h], 11h
-CS:0AF0:    803411                      XOR BYTE PTR [SI], 11h
-CS:0AF3:    81B6800D3412                XOR WORD PTR [BP+0D80h], 1234h
-CS:0AF9:    81323112                    XOR BYTE PTR [BP+SI], 1231h
-CS:0AFD:    81722D1332                  XOR BYTE PTR [BP+SI+2Dh], 3213h
-CS:0B02:    81B22E163112                XOR WORD PTR [BP+SI+162Eh], 1231h
-CS:0B08:    8506E70B                    TEST BYTE PTR [0BE7h], AX
-CS:0B0C:    8406E90B                    TEST BYTE PTR [0BE9h], AL
-CS:0B10:    8506E70B                    TEST BYTE PTR [0BE7h], AX
-CS:0B14:    8406E90B                    TEST BYTE PTR [0BE9h], AL
-CS:0B18:    A815                        TEST AL, 15h
-CS:0B1A:    F6C406                      TEST AH, 06h
-CS:0B1D:    F6C102                      TEST CL, 02h
-CS:0B20:    F6C608                      TEST DH, 08h
-CS:0B23:    F7C33412                    TEST BX, 1234h
-CS:0B27:    F7C62231                    TEST SI, 3122h
-CS:0B2B:    F7C42242                    TEST SP, 4222h
-CS:0B2F:    F7C51111                    TEST BP, 1111h
-CS:0B33:    850F                        TEST BYTE PTR [BX], CX
-CS:0B35:    85574E                      TEST BYTE PTR [BX+4Eh], DX
-CS:0B38:    859F800D                    TEST WORD PTR [BX+0D80h], BX
-CS:0B3C:    8530                        TEST BYTE PTR [BX+SI], SI
-CS:0B3E:    857801                      TEST BYTE PTR [BX+SI+01h], DI
-CS:0B41:    85A89138                    TEST WORD PTR [BX+SI+3891h], BP
-CS:0B45:    8531                        TEST BYTE PTR [BX+DI], SI
-CS:0B47:    8524                        TEST BYTE PTR [SI], SP
-CS:0B49:    85AB3121                    TEST WORD PTR [BP+DI+2131h], BP
-CS:0B4D:    8504                        TEST BYTE PTR [SI], AX
-CS:0B4F:    850F                        TEST BYTE PTR [BX], CX
-CS:0B51:    859F1101                    TEST WORD PTR [BX+0111h], BX
-CS:0B55:    855712                      TEST BYTE PTR [BX+12h], DX
-CS:0B58:    856022                      TEST BYTE PTR [BX+SI+22h], SP
-CS:0B5B:    8538                        TEST BYTE PTR [BX+SI], DI
-CS:0B5D:    85B91222                    TEST WORD PTR [BX+DI+2212h], DI
-CS:0B61:    854C02                      TEST BYTE PTR [SI+02h], CX
-CS:0B64:    8405                        TEST BYTE PTR [DI], AL
-CS:0B66:    846501                      TEST BYTE PTR [DI+01h], AH
-CS:0B69:    84BD1111                    TEST WORD PTR [DI+1111h], BH
-CS:0B6D:    844E00                      TEST BYTE PTR [BP+00h], CL
-CS:0B70:    849E800D                    TEST WORD PTR [BP+0D80h], BL
-CS:0B74:    842A                        TEST BYTE PTR [BP+SI], CH
-CS:0B76:    84822301                    TEST WORD PTR [BP+SI+0123h], AL
-CS:0B7A:    846222                      TEST BYTE PTR [BP+SI+22h], AH
-CS:0B7D:    841A                        TEST BYTE PTR [BP+SI], BL
-CS:0B7F:    84BE2222                    TEST WORD PTR [BP+2222h], BH
-CS:0B83:    844E12                      TEST BYTE PTR [BP+12h], CL
-CS:0B86:    846E00                      TEST BYTE PTR [BP+00h], CH
-CS:0B89:    847522                      TEST BYTE PTR [DI+22h], DH
-CS:0B8C:    84953212                    TEST WORD PTR [DI+1232h], DL
-CS:0B90:    F6451822                    TEST BYTE PTR [DI+18h], 22h
-CS:0B94:    F685222211                  TEST WORD PTR [DI+2222h], 11h
-CS:0B99:    F6471211                    TEST BYTE PTR [BX+12h], 11h
-CS:0B9D:    F60411                      TEST BYTE PTR [SI], 11h
-CS:0BA0:    F786800D3412                TEST WORD PTR [BP+0D80h], 1234h
-CS:0BA6:    F7023112                    TEST BYTE PTR [BP+SI], 1231h
-CS:0BAA:    F7422D1332                  TEST BYTE PTR [BP+SI+2Dh], 3213h
-CS:0BAF:    F7822E163112                TEST WORD PTR [BP+SI+162Eh], 1231h
-CS:0BB5:    E80300                      CALL 0BBBh
-CS:0BB8:    EB01                        JMP 0BBBh
-CS:0BBA:    90                          NOP
-CS:0BBB:    E8FDFF                      CALL 0BBBh
-CS:0BBE:    EBFB                        JMP 0BBBh
-CS:0BC0:    E82400                      CALL 0BE7h
-CS:0BC3:    FFE0                        JMP AX
-CS:0BC5:    FFE6                        JMP SI
-CS:0BC7:    FFE5                        JMP BP
-CS:0BC9:    FF6708                      JMP BYTE PTR [BX+08h]
-CS:0BCC:    FFA03112                    JMP WORD PTR [BX+SI+1231h]
-CS:0BD0:    FF21                        JMP BYTE PTR [BX+DI]
-CS:0BD2:    FFD0                        CALL AX
-CS:0BD4:    FFD6                        CALL SI
-CS:0BD6:    FFD5                        CALL BP
-CS:0BD8:    FF5708                      CALL BYTE PTR [BX+08h]
-CS:0BDB:    FF903112                    CALL WORD PTR [BX+SI+1231h]
-CS:0BDF:    FF11                        CALL BYTE PTR [BX+DI]
-CS:0BE1:    E2FE                        LOOP 0BE1h
-CS:0BE3:    E1FC                        LOOPE 0BE1h
-CS:0BE5:    E0FA                        LOOPNE 0BE1h
+CS:01BB:    268A4570                    MOV BYTE PTR ES:[DI+70h], AL
+CS:01BF:    268A9D0020                  MOV WORD PTR ES:[DI+2000h], BL
+CS:01C4:    368A4D70                    MOV BYTE PTR SS:[DI+70h], CL
+CS:01C8:    2E8A4D70                    MOV BYTE PTR CS:[DI+70h], CL
+CS:01CC:    8B5570                      MOV BYTE PTR [DI+70h], DX
+CS:01CF:    26884570                    MOV AL, BYTE PTR ES:[DI+70h]
+CS:01D3:    36889D0020                  MOV BL, WORD PTR SS:[DI+2000h]
+CS:01D8:    895570                      MOV DX, BYTE PTR [DI+70h]
+CS:01DB:    0306160F                    ADD BYTE PTR [0F16h], AX
+CS:01DF:    0206180F                    ADD BYTE PTR [0F18h], AL
+CS:01E3:    0106160F                    ADD AX, BYTE PTR [0F16h]
+CS:01E7:    0006180F                    ADD AL, BYTE PTR [0F18h]
+CS:01EB:    0415                        ADD AL, 15h
+CS:01ED:    80C406                      ADD AH, 06h
+CS:01F0:    80C102                      ADD CL, 02h
+CS:01F3:    80C608                      ADD DH, 08h
+CS:01F6:    81C33412                    ADD BX, 1234h
+CS:01FA:    81C62231                    ADD SI, 3122h
+CS:01FE:    81C42242                    ADD SP, 4222h
+CS:0202:    81C51111                    ADD BP, 1111h
+CS:0206:    030F                        ADD BYTE PTR [BX], CX
+CS:0208:    03574E                      ADD BYTE PTR [BX+4Eh], DX
+CS:020B:    039F800D                    ADD WORD PTR [BX+0D80h], BX
+CS:020F:    0330                        ADD BYTE PTR [BX+SI], SI
+CS:0211:    037801                      ADD BYTE PTR [BX+SI+01h], DI
+CS:0214:    03A89138                    ADD WORD PTR [BX+SI+3891h], BP
+CS:0218:    0331                        ADD BYTE PTR [BX+DI], SI
+CS:021A:    0324                        ADD BYTE PTR [SI], SP
+CS:021C:    03AB3121                    ADD WORD PTR [BP+DI+2131h], BP
+CS:0220:    0104                        ADD AX, BYTE PTR [SI]
+CS:0222:    010F                        ADD CX, BYTE PTR [BX]
+CS:0224:    019F1101                    ADD BX, WORD PTR [BX+0111h]
+CS:0228:    015712                      ADD DX, BYTE PTR [BX+12h]
+CS:022B:    016022                      ADD SP, BYTE PTR [BX+SI+22h]
+CS:022E:    0138                        ADD DI, BYTE PTR [BX+SI]
+CS:0230:    01B91222                    ADD DI, WORD PTR [BX+DI+2212h]
+CS:0234:    014C02                      ADD CX, BYTE PTR [SI+02h]
+CS:0237:    0205                        ADD BYTE PTR [DI], AL
+CS:0239:    026501                      ADD BYTE PTR [DI+01h], AH
+CS:023C:    02BD1111                    ADD WORD PTR [DI+1111h], BH
+CS:0240:    024E00                      ADD BYTE PTR [BP+00h], CL
+CS:0243:    029E800D                    ADD WORD PTR [BP+0D80h], BL
+CS:0247:    022A                        ADD BYTE PTR [BP+SI], CH
+CS:0249:    00822301                    ADD AL, WORD PTR [BP+SI+0123h]
+CS:024D:    006222                      ADD AH, BYTE PTR [BP+SI+22h]
+CS:0250:    001A                        ADD BL, BYTE PTR [BP+SI]
+CS:0252:    00BE2222                    ADD BH, WORD PTR [BP+2222h]
+CS:0256:    004E12                      ADD CL, BYTE PTR [BP+12h]
+CS:0259:    006E00                      ADD CH, BYTE PTR [BP+00h]
+CS:025C:    007522                      ADD DH, BYTE PTR [DI+22h]
+CS:025F:    00953212                    ADD DL, WORD PTR [DI+1232h]
+CS:0263:    26024570                    ADD BYTE PTR ES:[DI+70h], AL
+CS:0267:    26029D0020                  ADD WORD PTR ES:[DI+2000h], BL
+CS:026C:    36024D70                    ADD BYTE PTR SS:[DI+70h], CL
+CS:0270:    2E024D70                    ADD BYTE PTR CS:[DI+70h], CL
+CS:0274:    035570                      ADD BYTE PTR [DI+70h], DX
+CS:0277:    26004570                    ADD AL, BYTE PTR ES:[DI+70h]
+CS:027B:    36009D0020                  ADD BL, WORD PTR SS:[DI+2000h]
+CS:0280:    80451822                    ADD BYTE PTR [DI+18h], 22h
+CS:0284:    8085222211                  ADD WORD PTR [DI+2222h], 11h
+CS:0289:    80471211                    ADD BYTE PTR [BX+12h], 11h
+CS:028D:    800411                      ADD BYTE PTR [SI], 11h
+CS:0290:    8186800D3412                ADD WORD PTR [BP+0D80h], 1234h
+CS:0296:    81023112                    ADD BYTE PTR [BP+SI], 1231h
+CS:029A:    81422D1332                  ADD BYTE PTR [BP+SI+2Dh], 3213h
+CS:029F:    81822E163112                ADD WORD PTR [BP+SI+162Eh], 1231h
+CS:02A5:    1B06160F                    SBB BYTE PTR [0F16h], AX
+CS:02A9:    1A06180F                    SBB BYTE PTR [0F18h], AL
+CS:02AD:    1906160F                    SBB AX, BYTE PTR [0F16h]
+CS:02B1:    1806180F                    SBB AL, BYTE PTR [0F18h]
+CS:02B5:    1C15                        SBB AL, 15h
+CS:02B7:    80DC06                      SBB AH, 06h
+CS:02BA:    80D902                      SBB CL, 02h
+CS:02BD:    80DE08                      SBB DH, 08h
+CS:02C0:    81DB3412                    SBB BX, 1234h
+CS:02C4:    81DE2231                    SBB SI, 3122h
+CS:02C8:    81DC2242                    SBB SP, 4222h
+CS:02CC:    81DD1111                    SBB BP, 1111h
+CS:02D0:    1B0F                        SBB BYTE PTR [BX], CX
+CS:02D2:    1B574E                      SBB BYTE PTR [BX+4Eh], DX
+CS:02D5:    1B9F800D                    SBB WORD PTR [BX+0D80h], BX
+CS:02D9:    1B30                        SBB BYTE PTR [BX+SI], SI
+CS:02DB:    1B7801                      SBB BYTE PTR [BX+SI+01h], DI
+CS:02DE:    1BA89138                    SBB WORD PTR [BX+SI+3891h], BP
+CS:02E2:    1B31                        SBB BYTE PTR [BX+DI], SI
+CS:02E4:    1B24                        SBB BYTE PTR [SI], SP
+CS:02E6:    1BAB3121                    SBB WORD PTR [BP+DI+2131h], BP
+CS:02EA:    1904                        SBB AX, BYTE PTR [SI]
+CS:02EC:    190F                        SBB CX, BYTE PTR [BX]
+CS:02EE:    199F1101                    SBB BX, WORD PTR [BX+0111h]
+CS:02F2:    195712                      SBB DX, BYTE PTR [BX+12h]
+CS:02F5:    196022                      SBB SP, BYTE PTR [BX+SI+22h]
+CS:02F8:    1938                        SBB DI, BYTE PTR [BX+SI]
+CS:02FA:    19B91222                    SBB DI, WORD PTR [BX+DI+2212h]
+CS:02FE:    194C02                      SBB CX, BYTE PTR [SI+02h]
+CS:0301:    1A05                        SBB BYTE PTR [DI], AL
+CS:0303:    1A6501                      SBB BYTE PTR [DI+01h], AH
+CS:0306:    1ABD1111                    SBB WORD PTR [DI+1111h], BH
+CS:030A:    1A4E00                      SBB BYTE PTR [BP+00h], CL
+CS:030D:    1A9E800D                    SBB WORD PTR [BP+0D80h], BL
+CS:0311:    1A2A                        SBB BYTE PTR [BP+SI], CH
+CS:0313:    18822301                    SBB AL, WORD PTR [BP+SI+0123h]
+CS:0317:    186222                      SBB AH, BYTE PTR [BP+SI+22h]
+CS:031A:    181A                        SBB BL, BYTE PTR [BP+SI]
+CS:031C:    18BE2222                    SBB BH, WORD PTR [BP+2222h]
+CS:0320:    184E12                      SBB CL, BYTE PTR [BP+12h]
+CS:0323:    186E00                      SBB CH, BYTE PTR [BP+00h]
+CS:0326:    187522                      SBB DH, BYTE PTR [DI+22h]
+CS:0329:    18953212                    SBB DL, WORD PTR [DI+1232h]
+CS:032D:    261A4570                    SBB BYTE PTR ES:[DI+70h], AL
+CS:0331:    261A9D0020                  SBB WORD PTR ES:[DI+2000h], BL
+CS:0336:    361A4D70                    SBB BYTE PTR SS:[DI+70h], CL
+CS:033A:    2E1A4D70                    SBB BYTE PTR CS:[DI+70h], CL
+CS:033E:    1B5570                      SBB BYTE PTR [DI+70h], DX
+CS:0341:    26184570                    SBB AL, BYTE PTR ES:[DI+70h]
+CS:0345:    36189D0020                  SBB BL, WORD PTR SS:[DI+2000h]
+CS:034A:    805D1822                    SBB BYTE PTR [DI+18h], 22h
+CS:034E:    809D222211                  SBB WORD PTR [DI+2222h], 11h
+CS:0353:    805F1211                    SBB BYTE PTR [BX+12h], 11h
+CS:0357:    801C11                      SBB BYTE PTR [SI], 11h
+CS:035A:    819E56343412                SBB WORD PTR [BP+3456h], 1234h
+CS:0360:    811A3112                    SBB BYTE PTR [BP+SI], 1231h
+CS:0364:    815A451332                  SBB BYTE PTR [BP+SI+45h], 3213h
+CS:0369:    819A78563112                SBB WORD PTR [BP+SI+5678h], 1231h
+CS:036F:    1306160F                    ADC BYTE PTR [0F16h], AX
+CS:0373:    1206180F                    ADC BYTE PTR [0F18h], AL
+CS:0377:    1106160F                    ADC AX, BYTE PTR [0F16h]
+CS:037B:    1006180F                    ADC AL, BYTE PTR [0F18h]
+CS:037F:    1415                        ADC AL, 15h
+CS:0381:    80D406                      ADC AH, 06h
+CS:0384:    80D102                      ADC CL, 02h
+CS:0387:    80D608                      ADC DH, 08h
+CS:038A:    81D33412                    ADC BX, 1234h
+CS:038E:    81D62231                    ADC SI, 3122h
+CS:0392:    81D42242                    ADC SP, 4222h
+CS:0396:    81D51111                    ADC BP, 1111h
+CS:039A:    130F                        ADC BYTE PTR [BX], CX
+CS:039C:    135778                      ADC BYTE PTR [BX+78h], DX
+CS:039F:    139F5634                    ADC WORD PTR [BX+3456h], BX
+CS:03A3:    1330                        ADC BYTE PTR [BX+SI], SI
+CS:03A5:    137801                      ADC BYTE PTR [BX+SI+01h], DI
+CS:03A8:    13A89138                    ADC WORD PTR [BX+SI+3891h], BP
+CS:03AC:    1331                        ADC BYTE PTR [BX+DI], SI
+CS:03AE:    1324                        ADC BYTE PTR [SI], SP
+CS:03B0:    13AB3121                    ADC WORD PTR [BP+DI+2131h], BP
+CS:03B4:    1104                        ADC AX, BYTE PTR [SI]
+CS:03B6:    110F                        ADC CX, BYTE PTR [BX]
+CS:03B8:    119F1101                    ADC BX, WORD PTR [BX+0111h]
+CS:03BC:    115712                      ADC DX, BYTE PTR [BX+12h]
+CS:03BF:    116022                      ADC SP, BYTE PTR [BX+SI+22h]
+CS:03C2:    1138                        ADC DI, BYTE PTR [BX+SI]
+CS:03C4:    11B91222                    ADC DI, WORD PTR [BX+DI+2212h]
+CS:03C8:    114C02                      ADC CX, BYTE PTR [SI+02h]
+CS:03CB:    1205                        ADC BYTE PTR [DI], AL
+CS:03CD:    126501                      ADC BYTE PTR [DI+01h], AH
+CS:03D0:    12BD1111                    ADC WORD PTR [DI+1111h], BH
+CS:03D4:    124E00                      ADC BYTE PTR [BP+00h], CL
+CS:03D7:    129E5634                    ADC WORD PTR [BP+3456h], BL
+CS:03DB:    122A                        ADC BYTE PTR [BP+SI], CH
+CS:03DD:    10822301                    ADC AL, WORD PTR [BP+SI+0123h]
+CS:03E1:    106222                      ADC AH, BYTE PTR [BP+SI+22h]
+CS:03E4:    101A                        ADC BL, BYTE PTR [BP+SI]
+CS:03E6:    10BE2222                    ADC BH, WORD PTR [BP+2222h]
+CS:03EA:    104E12                      ADC CL, BYTE PTR [BP+12h]
+CS:03ED:    106E00                      ADC CH, BYTE PTR [BP+00h]
+CS:03F0:    107522                      ADC DH, BYTE PTR [DI+22h]
+CS:03F3:    10953212                    ADC DL, WORD PTR [DI+1232h]
+CS:03F7:    26124570                    ADC BYTE PTR ES:[DI+70h], AL
+CS:03FB:    26129D0020                  ADC WORD PTR ES:[DI+2000h], BL
+CS:0400:    36124D70                    ADC BYTE PTR SS:[DI+70h], CL
+CS:0404:    2E124D70                    ADC BYTE PTR CS:[DI+70h], CL
+CS:0408:    135570                      ADC BYTE PTR [DI+70h], DX
+CS:040B:    26104570                    ADC AL, BYTE PTR ES:[DI+70h]
+CS:040F:    36109D0020                  ADC BL, WORD PTR SS:[DI+2000h]
+CS:0414:    80551822                    ADC BYTE PTR [DI+18h], 22h
+CS:0418:    8095222211                  ADC WORD PTR [DI+2222h], 11h
+CS:041D:    80571211                    ADC BYTE PTR [BX+12h], 11h
+CS:0421:    801411                      ADC BYTE PTR [SI], 11h
+CS:0424:    819656343412                ADC WORD PTR [BP+3456h], 1234h
+CS:042A:    81123112                    ADC BYTE PTR [BP+SI], 1231h
+CS:042E:    8152451332                  ADC BYTE PTR [BP+SI+45h], 3213h
+CS:0433:    819278563112                ADC WORD PTR [BP+SI+5678h], 1231h
+CS:0439:    2B06160F                    SUB BYTE PTR [0F16h], AX
+CS:043D:    2A06180F                    SUB BYTE PTR [0F18h], AL
+CS:0441:    2906160F                    SUB AX, BYTE PTR [0F16h]
+CS:0445:    2806180F                    SUB AL, BYTE PTR [0F18h]
+CS:0449:    2C15                        SUB AL, 15h
+CS:044B:    80EC06                      SUB AH, 06h
+CS:044E:    80E902                      SUB CL, 02h
+CS:0451:    80EE08                      SUB DH, 08h
+CS:0454:    81EB3412                    SUB BX, 1234h
+CS:0458:    81EE2231                    SUB SI, 3122h
+CS:045C:    81EC2242                    SUB SP, 4222h
+CS:0460:    81ED1111                    SUB BP, 1111h
+CS:0464:    2B0F                        SUB BYTE PTR [BX], CX
+CS:0466:    2B5778                      SUB BYTE PTR [BX+78h], DX
+CS:0469:    2B9F5634                    SUB WORD PTR [BX+3456h], BX
+CS:046D:    2B30                        SUB BYTE PTR [BX+SI], SI
+CS:046F:    2B7801                      SUB BYTE PTR [BX+SI+01h], DI
+CS:0472:    2BA89138                    SUB WORD PTR [BX+SI+3891h], BP
+CS:0476:    2B31                        SUB BYTE PTR [BX+DI], SI
+CS:0478:    2B24                        SUB BYTE PTR [SI], SP
+CS:047A:    2BAB3121                    SUB WORD PTR [BP+DI+2131h], BP
+CS:047E:    2904                        SUB AX, BYTE PTR [SI]
+CS:0480:    290F                        SUB CX, BYTE PTR [BX]
+CS:0482:    299F1101                    SUB BX, WORD PTR [BX+0111h]
+CS:0486:    295712                      SUB DX, BYTE PTR [BX+12h]
+CS:0489:    296022                      SUB SP, BYTE PTR [BX+SI+22h]
+CS:048C:    2938                        SUB DI, BYTE PTR [BX+SI]
+CS:048E:    29B91222                    SUB DI, WORD PTR [BX+DI+2212h]
+CS:0492:    294C02                      SUB CX, BYTE PTR [SI+02h]
+CS:0495:    2A05                        SUB BYTE PTR [DI], AL
+CS:0497:    2A6501                      SUB BYTE PTR [DI+01h], AH
+CS:049A:    2ABD1111                    SUB WORD PTR [DI+1111h], BH
+CS:049E:    2A4E00                      SUB BYTE PTR [BP+00h], CL
+CS:04A1:    2A9E5634                    SUB WORD PTR [BP+3456h], BL
+CS:04A5:    2A2A                        SUB BYTE PTR [BP+SI], CH
+CS:04A7:    28822301                    SUB AL, WORD PTR [BP+SI+0123h]
+CS:04AB:    286222                      SUB AH, BYTE PTR [BP+SI+22h]
+CS:04AE:    281A                        SUB BL, BYTE PTR [BP+SI]
+CS:04B0:    28BE2222                    SUB BH, WORD PTR [BP+2222h]
+CS:04B4:    284E12                      SUB CL, BYTE PTR [BP+12h]
+CS:04B7:    286E00                      SUB CH, BYTE PTR [BP+00h]
+CS:04BA:    287522                      SUB DH, BYTE PTR [DI+22h]
+CS:04BD:    28953212                    SUB DL, WORD PTR [DI+1232h]
+CS:04C1:    262A4570                    SUB BYTE PTR ES:[DI+70h], AL
+CS:04C5:    262A9D0020                  SUB WORD PTR ES:[DI+2000h], BL
+CS:04CA:    362A4D70                    SUB BYTE PTR SS:[DI+70h], CL
+CS:04CE:    2E2A4D70                    SUB BYTE PTR CS:[DI+70h], CL
+CS:04D2:    2B5570                      SUB BYTE PTR [DI+70h], DX
+CS:04D5:    26284570                    SUB AL, BYTE PTR ES:[DI+70h]
+CS:04D9:    36289D0020                  SUB BL, WORD PTR SS:[DI+2000h]
+CS:04DE:    806D1822                    SUB BYTE PTR [DI+18h], 22h
+CS:04E2:    80AD222211                  SUB WORD PTR [DI+2222h], 11h
+CS:04E7:    806F1211                    SUB BYTE PTR [BX+12h], 11h
+CS:04EB:    802C11                      SUB BYTE PTR [SI], 11h
+CS:04EE:    81AE56343412                SUB WORD PTR [BP+3456h], 1234h
+CS:04F4:    812A3112                    SUB BYTE PTR [BP+SI], 1231h
+CS:04F8:    816A451332                  SUB BYTE PTR [BP+SI+45h], 3213h
+CS:04FD:    81AA78563112                SUB WORD PTR [BP+SI+5678h], 1231h
+CS:0503:    50                          PUSH AX
+CS:0504:    53                          PUSH BX
+CS:0505:    51                          PUSH CX
+CS:0506:    52                          PUSH DX
+CS:0507:    55                          PUSH BP
+CS:0508:    57                          PUSH DI
+CS:0509:    06                          PUSH ES
+CS:050A:    0E                          PUSH CS
+CS:050B:    16                          PUSH SS
+CS:050C:    1E                          PUSH DS
+CS:050D:    FF37                        PUSH BYTE PTR [BX]
+CS:050F:    FF7711                      PUSH BYTE PTR [BX+11h]
+CS:0512:    FFB72222                    PUSH WORD PTR [BX+2222h]
+CS:0516:    FF30                        PUSH BYTE PTR [BX+SI]
+CS:0518:    FFB02222                    PUSH WORD PTR [BX+SI+2222h]
+CS:051C:    FF31                        PUSH BYTE PTR [BX+DI]
+CS:051E:    FF35                        PUSH BYTE PTR [DI]
+CS:0520:    FF7523                      PUSH BYTE PTR [DI+23h]
+CS:0523:    FF7600                      PUSH BYTE PTR [BP+00h]
+CS:0526:    FFB32301                    PUSH WORD PTR [BP+DI+0123h]
+CS:052A:    26FF7570                    PUSH BYTE PTR ES:[DI+70h]
+CS:052E:    26FFB50020                  PUSH WORD PTR ES:[DI+2000h]
+CS:0533:    36FF7570                    PUSH BYTE PTR SS:[DI+70h]
+CS:0537:    2EFF7570                    PUSH BYTE PTR CS:[DI+70h]
+CS:053B:    FF7570                      PUSH BYTE PTR [DI+70h]
+CS:053E:    26FF7570                    PUSH BYTE PTR ES:[DI+70h]
+CS:0542:    36FFB50020                  PUSH WORD PTR SS:[DI+2000h]
+CS:0547:    58                          POP AX
+CS:0548:    5B                          POP BX
+CS:0549:    59                          POP CX
+CS:054A:    5A                          POP DX
+CS:054B:    5D                          POP BP
+CS:054C:    5F                          POP DI
+CS:054D:    07                          POP ES
+CS:054E:    17                          POP SS
+CS:054F:    1F                          POP DS
+CS:0550:    8F07                        POP BYTE PTR [BX]
+CS:0552:    8F4711                      POP BYTE PTR [BX+11h]
+CS:0555:    8F872222                    POP WORD PTR [BX+2222h]
+CS:0559:    8F00                        POP BYTE PTR [BX+SI]
+CS:055B:    8F802222                    POP WORD PTR [BX+SI+2222h]
+CS:055F:    8F01                        POP BYTE PTR [BX+DI]
+CS:0561:    8F05                        POP BYTE PTR [DI]
+CS:0563:    8F4523                      POP BYTE PTR [DI+23h]
+CS:0566:    8F4600                      POP BYTE PTR [BP+00h]
+CS:0569:    8F832301                    POP WORD PTR [BP+DI+0123h]
+CS:056D:    268F4570                    POP BYTE PTR ES:[DI+70h]
+CS:0571:    268F850020                  POP WORD PTR ES:[DI+2000h]
+CS:0576:    368F4570                    POP BYTE PTR SS:[DI+70h]
+CS:057A:    2E8F4570                    POP BYTE PTR CS:[DI+70h]
+CS:057E:    8F4570                      POP BYTE PTR [DI+70h]
+CS:0581:    268F4570                    POP BYTE PTR ES:[DI+70h]
+CS:0585:    368F850020                  POP WORD PTR SS:[DI+2000h]
+CS:058A:    90                          NOP
+CS:058B:    91                          CXHG AX, CX
+CS:058C:    92                          CXHG AX, DX
+CS:058D:    93                          CXHG AX, BX
+CS:058E:    94                          CXHG AX, SP
+CS:058F:    95                          CXHG AX, BP
+CS:0590:    96                          CXHG AX, SI
+CS:0591:    97                          CXHG AX, DI
+CS:0592:    86C0                        XCHG AL, AL
+CS:0594:    86E1                        XCHG CL, CL
+CS:0596:    86E0                        XCHG AL, AL
+CS:0598:    86DA                        XCHG DL, DL
+CS:059A:    86EE                        XCHG DH, DH
+CS:059C:    87FB                        XCHG BX, BX
+CS:059E:    87CB                        XCHG BX, BX
+CS:05A0:    87DA                        XCHG DX, DX
+CS:05A2:    87C9                        XCHG CX, CX
+CS:05A4:    87DC                        XCHG SP, SP
+CS:05A6:    87EE                        XCHG SI, SI
+CS:05A8:    87F9                        XCHG CX, CX
+CS:05AA:    87FF                        XCHG DI, DI
+CS:05AC:    87F5                        XCHG BP, BP
+CS:05AE:    87CA                        XCHG DX, DX
+CS:05B0:    862F                        XCHG BYTE PTR [BX], CH
+CS:05B2:    864600                      XCHG BYTE PTR [BP+00h], AL
+CS:05B5:    8608                        XCHG BYTE PTR [BX+SI], CL
+CS:05B7:    86861202                    XCHG WORD PTR [BP+0212h], AL
+CS:05BB:    8614                        XCHG BYTE PTR [SI], DL
+CS:05BD:    8737                        XCHG BYTE PTR [BX], SI
+CS:05BF:    8733                        XCHG BYTE PTR [BP+DI], SI
+CS:05C1:    8708                        XCHG BYTE PTR [BX+SI], CX
+CS:05C3:    87833502                    XCHG WORD PTR [BP+DI+0235h], AX
+CS:05C7:    87AC5421                    XCHG WORD PTR [SI+2154h], BP
+CS:05CB:    26864570                    XCHG BYTE PTR ES:[DI+70h], AL
+CS:05CF:    26869D0020                  XCHG WORD PTR ES:[DI+2000h], BL
+CS:05D4:    36864D70                    XCHG BYTE PTR SS:[DI+70h], CL
+CS:05D8:    2E864D70                    XCHG BYTE PTR CS:[DI+70h], CL
+CS:05DC:    875570                      XCHG BYTE PTR [DI+70h], DX
+CS:05DF:    26864570                    XCHG BYTE PTR ES:[DI+70h], AL
+CS:05E3:    36869D0020                  XCHG WORD PTR SS:[DI+2000h], BL
+CS:05E8:    E62222                      OUT 22h, AL
+CS:05EA:    E70202                      OUT 02h, AX
+CS:05EC:    E50202                      IN AX, 02h
+CS:05EE:    E43232                      IN AL, 32h
+CS:05F0:    BD180F                      MOV BP, 0F18h
+CS:05F3:    B9160F                      MOV CX, 0F16h
+CS:05F6:    C44C12                      LES CX, BYTE PTR [SI+12h]
+CS:05F9:    C40A                        LES CX, BYTE PTR [BP+SI]
+CS:05FB:    C5971203                    LDS DX, WORD PTR [BX+0312h]
+CS:05FF:    C507                        LDS AX, BYTE PTR [BX]
+CS:0601:    D7                          XLAT
+CS:0602:    9F                          LAHF
+CS:0603:    9E                          SAHF
+CS:0604:    9C                          PUSHF
+CS:0605:    9D                          POPF
+CS:0606:    37                          AAA
+CS:0607:    27                          DAA
+CS:0608:    3F                          AAS
+CS:0609:    2F                          DAS
+CS:060A:    D40A                        AAM
+CS:060C:    D50A                        AAD
+CS:060E:    98                          CBW
+CS:060F:    99                          CWD
+CS:0610:    F3                          REP
+CS:0611:    F2                          REPNZ
+CS:0612:    A4                          MOVSB
+CS:0613:    A5                          MOVSW
+CS:0614:    A6                          CMPSB
+CS:0615:    A7                          CMPSW
+CS:0616:    AE                          SCASB
+CS:0617:    AF                          SCASW
+CS:0618:    AC                          LODSB
+CS:0619:    AD                          LODSW
+CS:061A:    AA                          STOSB
+CS:061B:    AB                          STOSW
+CS:061C:    CE                          INTO
+CS:061D:    C3                          RET
+CS:061E:    CB                          RET
+CS:061F:    C23412                      RET 1234h
+CS:0622:    CA3412                      RET 1234h
+CS:0625:    40                          INC AX
+CS:0626:    43                          INC BX
+CS:0627:    42                          INC DX
+CS:0628:    FE4518                      INC BYTE PTR [DI+18h]
+CS:062B:    FE852222                    INC WORD PTR [DI+2222h]
+CS:062F:    FE4712                      INC BYTE PTR [BX+12h]
+CS:0632:    FE04                        INC BYTE PTR [SI]
+CS:0634:    FF865634                    INC WORD PTR [BP+3456h]
+CS:0638:    FF02                        INC BYTE PTR [BP+SI]
+CS:063A:    FF4245                      INC BYTE PTR [BP+SI+45h]
+CS:063D:    FF827856                    INC WORD PTR [BP+SI+5678h]
+CS:0641:    26FF4570                    INC BYTE PTR ES:[DI+70h]
+CS:0645:    26FF850020                  INC WORD PTR ES:[DI+2000h]
+CS:064A:    36FF4570                    INC BYTE PTR SS:[DI+70h]
+CS:064E:    2EFF4570                    INC BYTE PTR CS:[DI+70h]
+CS:0652:    FF4570                      INC BYTE PTR [DI+70h]
+CS:0655:    26FF4570                    INC BYTE PTR ES:[DI+70h]
+CS:0659:    36FF850020                  INC WORD PTR SS:[DI+2000h]
+CS:065E:    48                          DEC AX
+CS:065F:    4B                          DEC BX
+CS:0660:    49                          DEC CX
+CS:0661:    FE4D18                      DEC BYTE PTR [DI+18h]
+CS:0664:    FE8D2222                    DEC WORD PTR [DI+2222h]
+CS:0668:    FE4F12                      DEC BYTE PTR [BX+12h]
+CS:066B:    FE0C                        DEC BYTE PTR [SI]
+CS:066D:    FF8E5634                    DEC WORD PTR [BP+3456h]
+CS:0671:    FF0A                        DEC BYTE PTR [BP+SI]
+CS:0673:    FF4A45                      DEC BYTE PTR [BP+SI+45h]
+CS:0676:    FF8A7856                    DEC WORD PTR [BP+SI+5678h]
+CS:067A:    26FF4D70                    DEC BYTE PTR ES:[DI+70h]
+CS:067E:    26FF8D0020                  DEC WORD PTR ES:[DI+2000h]
+CS:0683:    36FF4D70                    DEC BYTE PTR SS:[DI+70h]
+CS:0687:    2EFF4D70                    DEC BYTE PTR CS:[DI+70h]
+CS:068B:    FF4D70                      DEC BYTE PTR [DI+70h]
+CS:068E:    26FF4D70                    DEC BYTE PTR ES:[DI+70h]
+CS:0692:    36FF8D0020                  DEC WORD PTR SS:[DI+2000h]
+CS:0697:    50                          PUSH AX
+CS:0698:    53                          PUSH BX
+CS:0699:    52                          PUSH DX
+CS:069A:    51                          PUSH CX
+CS:069B:    58                          POP AX
+CS:069C:    5A                          POP DX
+CS:069D:    58                          POP AX
+CS:069E:    59                          POP CX
+CS:069F:    1E                          PUSH DS
+CS:06A0:    06                          PUSH ES
+CS:06A1:    16                          PUSH SS
+CS:06A2:    0E                          PUSH CS
+CS:06A3:    1F                          POP DS
+CS:06A4:    07                          POP ES
+CS:06A5:    17                          POP SS
+CS:06A6:    EB23                        JMP 06CBh
+CS:06A8:    90                          NOP
+CS:06A9:    7720                        JA 06CBh
+CS:06AB:    731E                        JAE 06CBh
+CS:06AD:    721C                        JB 06CBh
+CS:06AF:    761A                        JNA 06CBh
+CS:06B1:    7418                        JE 06CBh
+CS:06B3:    E316                        JCXZ 06CBh
+CS:06B5:    7F14                        JG 06CBh
+CS:06B7:    7D12                        JNL 06CBh
+CS:06B9:    7C10                        JL 06CBh
+CS:06BB:    7E0E                        JLE 06CBh
+CS:06BD:    750C                        JNE 06CBh
+CS:06BF:    710A                        JNO 06CBh
+CS:06C1:    7B08                        JNP 06CBh
+CS:06C3:    7A06                        JP 06CBh
+CS:06C5:    7004                        JO 06CBh
+CS:06C7:    7902                        JNS 06CBh
+CS:06C9:    7800                        JS 06CBh
+CS:06CB:    CC                          INT 3H
+CS:06CC:    CD23                        INT 23h
+CS:06CE:    CD21                        INT 21h
+CS:06D0:    CF                          IRET
+CS:06D1:    F8                          CLC
+CS:06D2:    F9                          STC
+CS:06D3:    F5                          CMC
+CS:06D4:    FC                          CLD
+CS:06D5:    FD                          STD
+CS:06D6:    FA                          CLI
+CS:06D7:    FB                          STI
+CS:06D8:    F4                          HLT
+CS:06D9:    9B                          WAIT
+CS:06DA:    F0                          LOCK
+CS:06DB:    3B06160F                    CMP BYTE PTR [0F16h], AX
+CS:06DF:    3A06180F                    CMP BYTE PTR [0F18h], AL
+CS:06E3:    3906160F                    CMP AX, BYTE PTR [0F16h]
+CS:06E7:    3806180F                    CMP AL, BYTE PTR [0F18h]
+CS:06EB:    3C15                        CMP AL, 15h
+CS:06ED:    80FC06                      CMP AH, 06h
+CS:06F0:    80F902                      CMP CL, 02h
+CS:06F3:    80FE08                      CMP DH, 08h
+CS:06F6:    81FB3412                    CMP BX, 1234h
+CS:06FA:    81FE2231                    CMP SI, 3122h
+CS:06FE:    81FC2242                    CMP SP, 4222h
+CS:0702:    81FD1111                    CMP BP, 1111h
+CS:0706:    3B0F                        CMP BYTE PTR [BX], CX
+CS:0708:    3B574E                      CMP BYTE PTR [BX+4Eh], DX
+CS:070B:    3B9F800D                    CMP WORD PTR [BX+0D80h], BX
+CS:070F:    3B30                        CMP BYTE PTR [BX+SI], SI
+CS:0711:    3B7801                      CMP BYTE PTR [BX+SI+01h], DI
+CS:0714:    3BA89138                    CMP WORD PTR [BX+SI+3891h], BP
+CS:0718:    3B31                        CMP BYTE PTR [BX+DI], SI
+CS:071A:    3B24                        CMP BYTE PTR [SI], SP
+CS:071C:    3BAB3121                    CMP WORD PTR [BP+DI+2131h], BP
+CS:0720:    3904                        CMP AX, BYTE PTR [SI]
+CS:0722:    390F                        CMP CX, BYTE PTR [BX]
+CS:0724:    399F1101                    CMP BX, WORD PTR [BX+0111h]
+CS:0728:    395712                      CMP DX, BYTE PTR [BX+12h]
+CS:072B:    396022                      CMP SP, BYTE PTR [BX+SI+22h]
+CS:072E:    3938                        CMP DI, BYTE PTR [BX+SI]
+CS:0730:    39B91222                    CMP DI, WORD PTR [BX+DI+2212h]
+CS:0734:    394C02                      CMP CX, BYTE PTR [SI+02h]
+CS:0737:    3A05                        CMP BYTE PTR [DI], AL
+CS:0739:    3A6501                      CMP BYTE PTR [DI+01h], AH
+CS:073C:    3ABD1111                    CMP WORD PTR [DI+1111h], BH
+CS:0740:    3A4E00                      CMP BYTE PTR [BP+00h], CL
+CS:0743:    3A9E800D                    CMP WORD PTR [BP+0D80h], BL
+CS:0747:    3A2A                        CMP BYTE PTR [BP+SI], CH
+CS:0749:    38822301                    CMP AL, WORD PTR [BP+SI+0123h]
+CS:074D:    386222                      CMP AH, BYTE PTR [BP+SI+22h]
+CS:0750:    381A                        CMP BL, BYTE PTR [BP+SI]
+CS:0752:    38BE2222                    CMP BH, WORD PTR [BP+2222h]
+CS:0756:    384E12                      CMP CL, BYTE PTR [BP+12h]
+CS:0759:    386E00                      CMP CH, BYTE PTR [BP+00h]
+CS:075C:    387522                      CMP DH, BYTE PTR [DI+22h]
+CS:075F:    38953212                    CMP DL, WORD PTR [DI+1232h]
+CS:0763:    263A4570                    CMP BYTE PTR ES:[DI+70h], AL
+CS:0767:    263A9D0020                  CMP WORD PTR ES:[DI+2000h], BL
+CS:076C:    363A4D70                    CMP BYTE PTR SS:[DI+70h], CL
+CS:0770:    2E3A4D70                    CMP BYTE PTR CS:[DI+70h], CL
+CS:0774:    3B5570                      CMP BYTE PTR [DI+70h], DX
+CS:0777:    26384570                    CMP AL, BYTE PTR ES:[DI+70h]
+CS:077B:    36389D0020                  CMP BL, WORD PTR SS:[DI+2000h]
+CS:0780:    807D1822                    CMP BYTE PTR [DI+18h], 22h
+CS:0784:    80BD222211                  CMP WORD PTR [DI+2222h], 11h
+CS:0789:    807F1211                    CMP BYTE PTR [BX+12h], 11h
+CS:078D:    803C11                      CMP BYTE PTR [SI], 11h
+CS:0790:    81BE800D3412                CMP WORD PTR [BP+0D80h], 1234h
+CS:0796:    813A3112                    CMP BYTE PTR [BP+SI], 1231h
+CS:079A:    817A2D1332                  CMP BYTE PTR [BP+SI+2Dh], 3213h
+CS:079F:    F726160F                    MUL BYTE PTR [0F16h]
+CS:07A3:    F626180F                    MUL BYTE PTR [0F18h]
+CS:07A7:    F7E0                        MUL AX
+CS:07A9:    F6E0                        MUL AL
+CS:07AB:    F6E1                        MUL CL
+CS:07AD:    F6E6                        MUL DH
+CS:07AF:    F7E3                        MUL BX
+CS:07B1:    F7E6                        MUL SI
+CS:07B3:    F7E4                        MUL SP
+CS:07B5:    F7E5                        MUL BP
+CS:07B7:    F7E1                        MUL CX
+CS:07B9:    F7E2                        MUL DX
+CS:07BB:    F7A7800D                    MUL WORD PTR [BX+0D80h]
+CS:07BF:    F720                        MUL BYTE PTR [BX+SI]
+CS:07C1:    F76001                      MUL BYTE PTR [BX+SI+01h]
+CS:07C4:    F7A09138                    MUL WORD PTR [BX+SI+3891h]
+CS:07C8:    F721                        MUL BYTE PTR [BX+DI]
+CS:07CA:    F724                        MUL BYTE PTR [SI]
+CS:07CC:    F7A33121                    MUL WORD PTR [BP+DI+2131h]
+CS:07D0:    26F76570                    MUL BYTE PTR ES:[DI+70h]
+CS:07D4:    26F7A50020                  MUL WORD PTR ES:[DI+2000h]
+CS:07D9:    36F76570                    MUL BYTE PTR SS:[DI+70h]
+CS:07DD:    2EF76570                    MUL BYTE PTR CS:[DI+70h]
+CS:07E1:    F76570                      MUL BYTE PTR [DI+70h]
+CS:07E4:    26F76570                    MUL BYTE PTR ES:[DI+70h]
+CS:07E8:    36F7A50020                  MUL WORD PTR SS:[DI+2000h]
+CS:07ED:    F72E160F                    IMUL BYTE PTR [0F16h]
+CS:07F1:    F62E180F                    IMUL BYTE PTR [0F18h]
+CS:07F5:    F7E8                        IMUL AX
+CS:07F7:    F6E8                        IMUL AL
+CS:07F9:    F6E9                        IMUL CL
+CS:07FB:    F6EE                        IMUL DH
+CS:07FD:    F7EB                        IMUL BX
+CS:07FF:    F7EE                        IMUL SI
+CS:0801:    F7EC                        IMUL SP
+CS:0803:    F7ED                        IMUL BP
+CS:0805:    F7E9                        IMUL CX
+CS:0807:    F7EA                        IMUL DX
+CS:0809:    F7AF800D                    IMUL WORD PTR [BX+0D80h]
+CS:080D:    F728                        IMUL BYTE PTR [BX+SI]
+CS:080F:    F76801                      IMUL BYTE PTR [BX+SI+01h]
+CS:0812:    F7A89138                    IMUL WORD PTR [BX+SI+3891h]
+CS:0816:    F729                        IMUL BYTE PTR [BX+DI]
+CS:0818:    F72C                        IMUL BYTE PTR [SI]
+CS:081A:    F7AB3121                    IMUL WORD PTR [BP+DI+2131h]
+CS:081E:    26F76D70                    IMUL BYTE PTR ES:[DI+70h]
+CS:0822:    26F7AD0020                  IMUL WORD PTR ES:[DI+2000h]
+CS:0827:    36F76D70                    IMUL BYTE PTR SS:[DI+70h]
+CS:082B:    2EF76D70                    IMUL BYTE PTR CS:[DI+70h]
+CS:082F:    F76D70                      IMUL BYTE PTR [DI+70h]
+CS:0832:    26F76D70                    IMUL BYTE PTR ES:[DI+70h]
+CS:0836:    36F7AD0020                  IMUL WORD PTR SS:[DI+2000h]
+CS:083B:    F736160F                    DIV BYTE PTR [0F16h]
+CS:083F:    F636180F                    DIV BYTE PTR [0F18h]
+CS:0843:    F7F0                        DIV AX
+CS:0845:    F6F0                        DIV AL
+CS:0847:    F6F1                        DIV CL
+CS:0849:    F6F6                        DIV DH
+CS:084B:    F7F3                        DIV BX
+CS:084D:    F7F6                        DIV SI
+CS:084F:    F7F4                        DIV SP
+CS:0851:    F7F5                        DIV BP
+CS:0853:    F7F1                        DIV CX
+CS:0855:    F7F2                        DIV DX
+CS:0857:    F7B7800D                    DIV WORD PTR [BX+0D80h]
+CS:085B:    F730                        DIV BYTE PTR [BX+SI]
+CS:085D:    F77001                      DIV BYTE PTR [BX+SI+01h]
+CS:0860:    F7B09138                    DIV WORD PTR [BX+SI+3891h]
+CS:0864:    F731                        DIV BYTE PTR [BX+DI]
+CS:0866:    F734                        DIV BYTE PTR [SI]
+CS:0868:    F7B33121                    DIV WORD PTR [BP+DI+2131h]
+CS:086C:    26F77570                    DIV BYTE PTR ES:[DI+70h]
+CS:0870:    26F7B50020                  DIV WORD PTR ES:[DI+2000h]
+CS:0875:    36F77570                    DIV BYTE PTR SS:[DI+70h]
+CS:0879:    2EF77570                    DIV BYTE PTR CS:[DI+70h]
+CS:087D:    F77570                      DIV BYTE PTR [DI+70h]
+CS:0880:    26F77570                    DIV BYTE PTR ES:[DI+70h]
+CS:0884:    36F7B50020                  DIV WORD PTR SS:[DI+2000h]
+CS:0889:    F73E160F                    IDIV BYTE PTR [0F16h]
+CS:088D:    F63E180F                    IDIV BYTE PTR [0F18h]
+CS:0891:    F7F8                        IDIV AX
+CS:0893:    F6F8                        IDIV AL
+CS:0895:    F6F9                        IDIV CL
+CS:0897:    F6FE                        IDIV DH
+CS:0899:    F7FB                        IDIV BX
+CS:089B:    F7FE                        IDIV SI
+CS:089D:    F7FC                        IDIV SP
+CS:089F:    F7FD                        IDIV BP
+CS:08A1:    F7F9                        IDIV CX
+CS:08A3:    F7FA                        IDIV DX
+CS:08A5:    F7BF800D                    IDIV WORD PTR [BX+0D80h]
+CS:08A9:    F738                        IDIV BYTE PTR [BX+SI]
+CS:08AB:    F77801                      IDIV BYTE PTR [BX+SI+01h]
+CS:08AE:    F7B89138                    IDIV WORD PTR [BX+SI+3891h]
+CS:08B2:    F739                        IDIV BYTE PTR [BX+DI]
+CS:08B4:    F73C                        IDIV BYTE PTR [SI]
+CS:08B6:    F7BB3121                    IDIV WORD PTR [BP+DI+2131h]
+CS:08BA:    26F77D70                    IDIV BYTE PTR ES:[DI+70h]
+CS:08BE:    26F7BD0020                  IDIV WORD PTR ES:[DI+2000h]
+CS:08C3:    36F77D70                    IDIV BYTE PTR SS:[DI+70h]
+CS:08C7:    2EF77D70                    IDIV BYTE PTR CS:[DI+70h]
+CS:08CB:    F77D70                      IDIV BYTE PTR [DI+70h]
+CS:08CE:    26F77D70                    IDIV BYTE PTR ES:[DI+70h]
+CS:08D2:    36F7BD0020                  IDIV WORD PTR SS:[DI+2000h]
+CS:08D7:    F71E160F                    NEG BYTE PTR [0F16h]
+CS:08DB:    F61E180F                    NEG BYTE PTR [0F18h]
+CS:08DF:    F7D8                        NEG AX
+CS:08E1:    F6D8                        NEG AL
+CS:08E3:    F6D9                        NEG CL
+CS:08E5:    F6DE                        NEG DH
+CS:08E7:    F7DB                        NEG BX
+CS:08E9:    F7DE                        NEG SI
+CS:08EB:    F7DC                        NEG SP
+CS:08ED:    F7DD                        NEG BP
+CS:08EF:    F7D9                        NEG CX
+CS:08F1:    F7DA                        NEG DX
+CS:08F3:    F79F800D                    NEG WORD PTR [BX+0D80h]
+CS:08F7:    F718                        NEG BYTE PTR [BX+SI]
+CS:08F9:    F75801                      NEG BYTE PTR [BX+SI+01h]
+CS:08FC:    F7989138                    NEG WORD PTR [BX+SI+3891h]
+CS:0900:    F719                        NEG BYTE PTR [BX+DI]
+CS:0902:    F71C                        NEG BYTE PTR [SI]
+CS:0904:    F79B3121                    NEG WORD PTR [BP+DI+2131h]
+CS:0908:    26F77D70                    IDIV BYTE PTR ES:[DI+70h]
+CS:090C:    26F7BD0020                  IDIV WORD PTR ES:[DI+2000h]
+CS:0911:    36F77D70                    IDIV BYTE PTR SS:[DI+70h]
+CS:0915:    2EF77D70                    IDIV BYTE PTR CS:[DI+70h]
+CS:0919:    F77D70                      IDIV BYTE PTR [DI+70h]
+CS:091C:    26F77D70                    IDIV BYTE PTR ES:[DI+70h]
+CS:0920:    36F7BD0020                  IDIV WORD PTR SS:[DI+2000h]
+CS:0925:    F716160F                    NOT BYTE PTR [0F16h]
+CS:0929:    F616180F                    NOT BYTE PTR [0F18h]
+CS:092D:    F7D0                        NOT AX
+CS:092F:    F6D0                        NOT AL
+CS:0931:    F6D1                        NOT CL
+CS:0933:    F6D6                        NOT DH
+CS:0935:    F7D3                        NOT BX
+CS:0937:    F7D6                        NOT SI
+CS:0939:    F7D4                        NOT SP
+CS:093B:    F7D5                        NOT BP
+CS:093D:    F7D1                        NOT CX
+CS:093F:    F7D2                        NOT DX
+CS:0941:    F797800D                    NOT WORD PTR [BX+0D80h]
+CS:0945:    F710                        NOT BYTE PTR [BX+SI]
+CS:0947:    F75001                      NOT BYTE PTR [BX+SI+01h]
+CS:094A:    F7909138                    NOT WORD PTR [BX+SI+3891h]
+CS:094E:    F711                        NOT BYTE PTR [BX+DI]
+CS:0950:    F714                        NOT BYTE PTR [SI]
+CS:0952:    F7933121                    NOT WORD PTR [BP+DI+2131h]
+CS:0956:    26F75570                    NOT BYTE PTR ES:[DI+70h]
+CS:095A:    26F7950020                  NOT WORD PTR ES:[DI+2000h]
+CS:095F:    36F75570                    NOT BYTE PTR SS:[DI+70h]
+CS:0963:    2EF75570                    NOT BYTE PTR CS:[DI+70h]
+CS:0967:    F75570                      NOT BYTE PTR [DI+70h]
+CS:096A:    26F75570                    NOT BYTE PTR ES:[DI+70h]
+CS:096E:    36F7950020                  NOT WORD PTR SS:[DI+2000h]
+CS:0973:    D1E8                        SHR AX, 1
+CS:0975:    D1EB                        SHR BX, 1
+CS:0977:    D2E8                        SHR AL, CL
+CS:0979:    D3E9                        SHR CX, CL
+CS:097B:    D1ED                        SHR BP, 1
+CS:097D:    D12F                        SHR BYTE PTR [BX], 1
+CS:097F:    D26F22                      SHR BYTE PTR [BX+22h], CL
+CS:0982:    D1AF2222                    SHR WORD PTR [BX+2222h], 1
+CS:0986:    D328                        SHR BYTE PTR [BX+SI], CL
+CS:0988:    D06811                      SHR BYTE PTR [BX+SI+11h], 1
+CS:098B:    D3A81111                    SHR WORD PTR [BX+SI+1111h], CL
+CS:098F:    D129                        SHR BYTE PTR [BX+DI], 1
+CS:0991:    D329                        SHR BYTE PTR [BX+DI], CL
+CS:0993:    D1A97856                    SHR WORD PTR [BX+DI+5678h], 1
+CS:0997:    D22C                        SHR BYTE PTR [SI], CL
+CS:0999:    D26C02                      SHR BYTE PTR [SI+02h], CL
+CS:099C:    D12D                        SHR BYTE PTR [DI], 1
+CS:099E:    D16D11                      SHR BYTE PTR [DI+11h], 1
+CS:09A1:    D36E00                      SHR BYTE PTR [BP+00h], CL
+CS:09A4:    D02A                        SHR BYTE PTR [BP+SI], 1
+CS:09A6:    D36A59                      SHR BYTE PTR [BP+SI+59h], CL
+CS:09A9:    D1AA1811                    SHR WORD PTR [BP+SI+1118h], 1
+CS:09AD:    D22B                        SHR BYTE PTR [BP+DI], CL
+CS:09AF:    D3AB2852                    SHR WORD PTR [BP+DI+5228h], CL
+CS:09B3:    26D16D70                    SHR BYTE PTR ES:[DI+70h], 1
+CS:09B7:    26D3AD0020                  SHR WORD PTR ES:[DI+2000h], CL
+CS:09BC:    36D16D70                    SHR BYTE PTR SS:[DI+70h], 1
+CS:09C0:    2ED16D70                    SHR BYTE PTR CS:[DI+70h], 1
+CS:09C4:    D16D70                      SHR BYTE PTR [DI+70h], 1
+CS:09C7:    26D16D70                    SHR BYTE PTR ES:[DI+70h], 1
+CS:09CB:    36D3AD0020                  SHR WORD PTR SS:[DI+2000h], CL
+CS:09D0:    D1E0                        SHL AX, 1
+CS:09D2:    D1E3                        SHL BX, 1
+CS:09D4:    D2E0                        SHL AL, CL
+CS:09D6:    D3E1                        SHL CX, CL
+CS:09D8:    D1E5                        SHL BP, 1
+CS:09DA:    D127                        SHL BYTE PTR [BX], 1
+CS:09DC:    D26722                      SHL BYTE PTR [BX+22h], CL
+CS:09DF:    D1A72222                    SHL WORD PTR [BX+2222h], 1
+CS:09E3:    D321                        SHL BYTE PTR [BX+DI], CL
+CS:09E5:    D1A17856                    SHL WORD PTR [BX+DI+5678h], 1
+CS:09E9:    D224                        SHL BYTE PTR [SI], CL
+CS:09EB:    D26402                      SHL BYTE PTR [SI+02h], CL
+CS:09EE:    D125                        SHL BYTE PTR [DI], 1
+CS:09F0:    D16511                      SHL BYTE PTR [DI+11h], 1
+CS:09F3:    D36600                      SHL BYTE PTR [BP+00h], CL
+CS:09F6:    D022                        SHL BYTE PTR [BP+SI], 1
+CS:09F8:    D36259                      SHL BYTE PTR [BP+SI+59h], CL
+CS:09FB:    D1A21811                    SHL WORD PTR [BP+SI+1118h], 1
+CS:09FF:    D223                        SHL BYTE PTR [BP+DI], CL
+CS:0A01:    D3A32852                    SHL WORD PTR [BP+DI+5228h], CL
+CS:0A05:    26D16570                    SHL BYTE PTR ES:[DI+70h], 1
+CS:0A09:    26D3A50020                  SHL WORD PTR ES:[DI+2000h], CL
+CS:0A0E:    36D16570                    SHL BYTE PTR SS:[DI+70h], 1
+CS:0A12:    2ED16570                    SHL BYTE PTR CS:[DI+70h], 1
+CS:0A16:    D16570                      SHL BYTE PTR [DI+70h], 1
+CS:0A19:    26D16570                    SHL BYTE PTR ES:[DI+70h], 1
+CS:0A1D:    36D3A50020                  SHL WORD PTR SS:[DI+2000h], CL
+CS:0A22:    D1F8                        SAR AX, 1
+CS:0A24:    D1FB                        SAR BX, 1
+CS:0A26:    D2F8                        SAR AL, CL
+CS:0A28:    D3F9                        SAR CX, CL
+CS:0A2A:    D1FD                        SAR BP, 1
+CS:0A2C:    D13F                        SAR BYTE PTR [BX], 1
+CS:0A2E:    D27F22                      SAR BYTE PTR [BX+22h], CL
+CS:0A31:    D1BF2222                    SAR WORD PTR [BX+2222h], 1
+CS:0A35:    D339                        SAR BYTE PTR [BX+DI], CL
+CS:0A37:    D1B97856                    SAR WORD PTR [BX+DI+5678h], 1
+CS:0A3B:    D23C                        SAR BYTE PTR [SI], CL
+CS:0A3D:    D27C02                      SAR BYTE PTR [SI+02h], CL
+CS:0A40:    D13D                        SAR BYTE PTR [DI], 1
+CS:0A42:    D17D11                      SAR BYTE PTR [DI+11h], 1
+CS:0A45:    D37E00                      SAR BYTE PTR [BP+00h], CL
+CS:0A48:    D03A                        SAR BYTE PTR [BP+SI], 1
+CS:0A4A:    D37A59                      SAR BYTE PTR [BP+SI+59h], CL
+CS:0A4D:    D1BA1811                    SAR WORD PTR [BP+SI+1118h], 1
+CS:0A51:    D23B                        SAR BYTE PTR [BP+DI], CL
+CS:0A53:    D3BB2852                    SAR WORD PTR [BP+DI+5228h], CL
+CS:0A57:    26D17D70                    SAR BYTE PTR ES:[DI+70h], 1
+CS:0A5B:    26D3BD0020                  SAR WORD PTR ES:[DI+2000h], CL
+CS:0A60:    36D17D70                    SAR BYTE PTR SS:[DI+70h], 1
+CS:0A64:    2ED17D70                    SAR BYTE PTR CS:[DI+70h], 1
+CS:0A68:    D17D70                      SAR BYTE PTR [DI+70h], 1
+CS:0A6B:    26D17D70                    SAR BYTE PTR ES:[DI+70h], 1
+CS:0A6F:    36D3BD0020                  SAR WORD PTR SS:[DI+2000h], CL
+CS:0A74:    D1C0                        ROL AX, 1
+CS:0A76:    D1C3                        ROL BX, 1
+CS:0A78:    D2C0                        ROL AL, CL
+CS:0A7A:    D3C1                        ROL CX, CL
+CS:0A7C:    D1C5                        ROL BP, 1
+CS:0A7E:    D107                        ROL BYTE PTR [BX], 1
+CS:0A80:    D24722                      ROL BYTE PTR [BX+22h], CL
+CS:0A83:    D1872222                    ROL WORD PTR [BX+2222h], 1
+CS:0A87:    D301                        ROL BYTE PTR [BX+DI], CL
+CS:0A89:    D1817856                    ROL WORD PTR [BX+DI+5678h], 1
+CS:0A8D:    D204                        ROL BYTE PTR [SI], CL
+CS:0A8F:    D24402                      ROL BYTE PTR [SI+02h], CL
+CS:0A92:    D105                        ROL BYTE PTR [DI], 1
+CS:0A94:    D14511                      ROL BYTE PTR [DI+11h], 1
+CS:0A97:    D34600                      ROL BYTE PTR [BP+00h], CL
+CS:0A9A:    D002                        ROL BYTE PTR [BP+SI], 1
+CS:0A9C:    D34259                      ROL BYTE PTR [BP+SI+59h], CL
+CS:0A9F:    D1821811                    ROL WORD PTR [BP+SI+1118h], 1
+CS:0AA3:    D203                        ROL BYTE PTR [BP+DI], CL
+CS:0AA5:    D3832852                    ROL WORD PTR [BP+DI+5228h], CL
+CS:0AA9:    26D14570                    ROL BYTE PTR ES:[DI+70h], 1
+CS:0AAD:    26D3850020                  ROL WORD PTR ES:[DI+2000h], CL
+CS:0AB2:    36D14570                    ROL BYTE PTR SS:[DI+70h], 1
+CS:0AB6:    2ED14570                    ROL BYTE PTR CS:[DI+70h], 1
+CS:0ABA:    D14570                      ROL BYTE PTR [DI+70h], 1
+CS:0ABD:    26D14570                    ROL BYTE PTR ES:[DI+70h], 1
+CS:0AC1:    36D3850020                  ROL WORD PTR SS:[DI+2000h], CL
+CS:0AC6:    D1C8                        ROR AX, 1
+CS:0AC8:    D1CB                        ROR BX, 1
+CS:0ACA:    D2C8                        ROR AL, CL
+CS:0ACC:    D3C9                        ROR CX, CL
+CS:0ACE:    D1CD                        ROR BP, 1
+CS:0AD0:    D10F                        ROR BYTE PTR [BX], 1
+CS:0AD2:    D24F22                      ROR BYTE PTR [BX+22h], CL
+CS:0AD5:    D18F2222                    ROR WORD PTR [BX+2222h], 1
+CS:0AD9:    D309                        ROR BYTE PTR [BX+DI], CL
+CS:0ADB:    D1897856                    ROR WORD PTR [BX+DI+5678h], 1
+CS:0ADF:    D20C                        ROR BYTE PTR [SI], CL
+CS:0AE1:    D24C02                      ROR BYTE PTR [SI+02h], CL
+CS:0AE4:    D10D                        ROR BYTE PTR [DI], 1
+CS:0AE6:    D14D11                      ROR BYTE PTR [DI+11h], 1
+CS:0AE9:    D34E00                      ROR BYTE PTR [BP+00h], CL
+CS:0AEC:    D00A                        ROR BYTE PTR [BP+SI], 1
+CS:0AEE:    D34A59                      ROR BYTE PTR [BP+SI+59h], CL
+CS:0AF1:    D18A1811                    ROR WORD PTR [BP+SI+1118h], 1
+CS:0AF5:    D20B                        ROR BYTE PTR [BP+DI], CL
+CS:0AF7:    D38B2852                    ROR WORD PTR [BP+DI+5228h], CL
+CS:0AFB:    26D14D70                    ROR BYTE PTR ES:[DI+70h], 1
+CS:0AFF:    26D38D0020                  ROR WORD PTR ES:[DI+2000h], CL
+CS:0B04:    36D14D70                    ROR BYTE PTR SS:[DI+70h], 1
+CS:0B08:    2ED14D70                    ROR BYTE PTR CS:[DI+70h], 1
+CS:0B0C:    D14D70                      ROR BYTE PTR [DI+70h], 1
+CS:0B0F:    26D14D70                    ROR BYTE PTR ES:[DI+70h], 1
+CS:0B13:    36D38D0020                  ROR WORD PTR SS:[DI+2000h], CL
+CS:0B18:    D1D0                        RCL AX, 1
+CS:0B1A:    D1D3                        RCL BX, 1
+CS:0B1C:    D2D0                        RCL AL, CL
+CS:0B1E:    D3D1                        RCL CX, CL
+CS:0B20:    D1D5                        RCL BP, 1
+CS:0B22:    D117                        RCL BYTE PTR [BX], 1
+CS:0B24:    D25722                      RCL BYTE PTR [BX+22h], CL
+CS:0B27:    D1972222                    RCL WORD PTR [BX+2222h], 1
+CS:0B2B:    D311                        RCL BYTE PTR [BX+DI], CL
+CS:0B2D:    D1917856                    RCL WORD PTR [BX+DI+5678h], 1
+CS:0B31:    D214                        RCL BYTE PTR [SI], CL
+CS:0B33:    D25402                      RCL BYTE PTR [SI+02h], CL
+CS:0B36:    D115                        RCL BYTE PTR [DI], 1
+CS:0B38:    D15511                      RCL BYTE PTR [DI+11h], 1
+CS:0B3B:    D35600                      RCL BYTE PTR [BP+00h], CL
+CS:0B3E:    D012                        RCL BYTE PTR [BP+SI], 1
+CS:0B40:    D35259                      RCL BYTE PTR [BP+SI+59h], CL
+CS:0B43:    D1921811                    RCL WORD PTR [BP+SI+1118h], 1
+CS:0B47:    D213                        RCL BYTE PTR [BP+DI], CL
+CS:0B49:    D3932852                    RCL WORD PTR [BP+DI+5228h], CL
+CS:0B4D:    26D15570                    RCL BYTE PTR ES:[DI+70h], 1
+CS:0B51:    26D3950020                  RCL WORD PTR ES:[DI+2000h], CL
+CS:0B56:    36D15570                    RCL BYTE PTR SS:[DI+70h], 1
+CS:0B5A:    2ED15570                    RCL BYTE PTR CS:[DI+70h], 1
+CS:0B5E:    D15570                      RCL BYTE PTR [DI+70h], 1
+CS:0B61:    26D15570                    RCL BYTE PTR ES:[DI+70h], 1
+CS:0B65:    36D3950020                  RCL WORD PTR SS:[DI+2000h], CL
+CS:0B6A:    D1D8                        RCR AX, 1
+CS:0B6C:    D1DB                        RCR BX, 1
+CS:0B6E:    D2D8                        RCR AL, CL
+CS:0B70:    D3D9                        RCR CX, CL
+CS:0B72:    D1DD                        RCR BP, 1
+CS:0B74:    D11F                        RCR BYTE PTR [BX], 1
+CS:0B76:    D25F22                      RCR BYTE PTR [BX+22h], CL
+CS:0B79:    D19F2222                    RCR WORD PTR [BX+2222h], 1
+CS:0B7D:    D319                        RCR BYTE PTR [BX+DI], CL
+CS:0B7F:    D1997856                    RCR WORD PTR [BX+DI+5678h], 1
+CS:0B83:    D21C                        RCR BYTE PTR [SI], CL
+CS:0B85:    D25C02                      RCR BYTE PTR [SI+02h], CL
+CS:0B88:    D11D                        RCR BYTE PTR [DI], 1
+CS:0B8A:    D15D11                      RCR BYTE PTR [DI+11h], 1
+CS:0B8D:    D35E00                      RCR BYTE PTR [BP+00h], CL
+CS:0B90:    D01A                        RCR BYTE PTR [BP+SI], 1
+CS:0B92:    D35A59                      RCR BYTE PTR [BP+SI+59h], CL
+CS:0B95:    D19A1811                    RCR WORD PTR [BP+SI+1118h], 1
+CS:0B99:    D21B                        RCR BYTE PTR [BP+DI], CL
+CS:0B9B:    D39B2852                    RCR WORD PTR [BP+DI+5228h], CL
+CS:0B9F:    26D15D70                    RCR BYTE PTR ES:[DI+70h], 1
+CS:0BA3:    26D39D0020                  RCR WORD PTR ES:[DI+2000h], CL
+CS:0BA8:    36D15D70                    RCR BYTE PTR SS:[DI+70h], 1
+CS:0BAC:    2ED15D70                    RCR BYTE PTR CS:[DI+70h], 1
+CS:0BB0:    D15D70                      RCR BYTE PTR [DI+70h], 1
+CS:0BB3:    26D15D70                    RCR BYTE PTR ES:[DI+70h], 1
+CS:0BB7:    36D39D0020                  RCR WORD PTR SS:[DI+2000h], CL
+CS:0BBC:    2306160F                    AND BYTE PTR [0F16h], AX
+CS:0BC0:    2206180F                    AND BYTE PTR [0F18h], AL
+CS:0BC4:    2106160F                    AND AX, BYTE PTR [0F16h]
+CS:0BC8:    2006180F                    AND AL, BYTE PTR [0F18h]
+CS:0BCC:    2415                        AND AL, 15h
+CS:0BCE:    80E406                      AND AH, 06h
+CS:0BD1:    80E102                      AND CL, 02h
+CS:0BD4:    80E608                      AND DH, 08h
+CS:0BD7:    81E33412                    AND BX, 1234h
+CS:0BDB:    81E62231                    AND SI, 3122h
+CS:0BDF:    81E42242                    AND SP, 4222h
+CS:0BE3:    81E51111                    AND BP, 1111h
+CS:0BE7:    230F                        AND BYTE PTR [BX], CX
+CS:0BE9:    23574E                      AND BYTE PTR [BX+4Eh], DX
+CS:0BEC:    239F800D                    AND WORD PTR [BX+0D80h], BX
+CS:0BF0:    2330                        AND BYTE PTR [BX+SI], SI
+CS:0BF2:    237801                      AND BYTE PTR [BX+SI+01h], DI
+CS:0BF5:    23A89138                    AND WORD PTR [BX+SI+3891h], BP
+CS:0BF9:    2331                        AND BYTE PTR [BX+DI], SI
+CS:0BFB:    2324                        AND BYTE PTR [SI], SP
+CS:0BFD:    23AB3121                    AND WORD PTR [BP+DI+2131h], BP
+CS:0C01:    2104                        AND AX, BYTE PTR [SI]
+CS:0C03:    210F                        AND CX, BYTE PTR [BX]
+CS:0C05:    219F1101                    AND BX, WORD PTR [BX+0111h]
+CS:0C09:    215712                      AND DX, BYTE PTR [BX+12h]
+CS:0C0C:    216022                      AND SP, BYTE PTR [BX+SI+22h]
+CS:0C0F:    2138                        AND DI, BYTE PTR [BX+SI]
+CS:0C11:    21B91222                    AND DI, WORD PTR [BX+DI+2212h]
+CS:0C15:    214C02                      AND CX, BYTE PTR [SI+02h]
+CS:0C18:    2205                        AND BYTE PTR [DI], AL
+CS:0C1A:    226501                      AND BYTE PTR [DI+01h], AH
+CS:0C1D:    22BD1111                    AND WORD PTR [DI+1111h], BH
+CS:0C21:    224E00                      AND BYTE PTR [BP+00h], CL
+CS:0C24:    229E800D                    AND WORD PTR [BP+0D80h], BL
+CS:0C28:    222A                        AND BYTE PTR [BP+SI], CH
+CS:0C2A:    20822301                    AND AL, WORD PTR [BP+SI+0123h]
+CS:0C2E:    206222                      AND AH, BYTE PTR [BP+SI+22h]
+CS:0C31:    201A                        AND BL, BYTE PTR [BP+SI]
+CS:0C33:    20BE2222                    AND BH, WORD PTR [BP+2222h]
+CS:0C37:    204E12                      AND CL, BYTE PTR [BP+12h]
+CS:0C3A:    206E00                      AND CH, BYTE PTR [BP+00h]
+CS:0C3D:    207522                      AND DH, BYTE PTR [DI+22h]
+CS:0C40:    20953212                    AND DL, WORD PTR [DI+1232h]
+CS:0C44:    26224570                    AND BYTE PTR ES:[DI+70h], AL
+CS:0C48:    26229D0020                  AND WORD PTR ES:[DI+2000h], BL
+CS:0C4D:    36224D70                    AND BYTE PTR SS:[DI+70h], CL
+CS:0C51:    2E224D70                    AND BYTE PTR CS:[DI+70h], CL
+CS:0C55:    235570                      AND BYTE PTR [DI+70h], DX
+CS:0C58:    26204570                    AND AL, BYTE PTR ES:[DI+70h]
+CS:0C5C:    36209D0020                  AND BL, WORD PTR SS:[DI+2000h]
+CS:0C61:    80651822                    AND BYTE PTR [DI+18h], 22h
+CS:0C65:    80A5222211                  AND WORD PTR [DI+2222h], 11h
+CS:0C6A:    80671211                    AND BYTE PTR [BX+12h], 11h
+CS:0C6E:    802411                      AND BYTE PTR [SI], 11h
+CS:0C71:    81A6800D3412                AND WORD PTR [BP+0D80h], 1234h
+CS:0C77:    81223112                    AND BYTE PTR [BP+SI], 1231h
+CS:0C7B:    81622D1332                  AND BYTE PTR [BP+SI+2Dh], 3213h
+CS:0C80:    81A22E163112                AND WORD PTR [BP+SI+162Eh], 1231h
+CS:0C86:    0B06160F                    OR BYTE PTR [0F16h], AX
+CS:0C8A:    0A06180F                    OR BYTE PTR [0F18h], AL
+CS:0C8E:    0906160F                    OR AX, BYTE PTR [0F16h]
+CS:0C92:    0806180F                    OR AL, BYTE PTR [0F18h]
+CS:0C96:    0C15                        OR AL, 15h
+CS:0C98:    80CC06                      OR AH, 06h
+CS:0C9B:    80C902                      OR CL, 02h
+CS:0C9E:    80CE08                      OR DH, 08h
+CS:0CA1:    81CB3412                    OR BX, 1234h
+CS:0CA5:    81CE2231                    OR SI, 3122h
+CS:0CA9:    81CC2242                    OR SP, 4222h
+CS:0CAD:    81CD1111                    OR BP, 1111h
+CS:0CB1:    0B0F                        OR BYTE PTR [BX], CX
+CS:0CB3:    0B574E                      OR BYTE PTR [BX+4Eh], DX
+CS:0CB6:    0B9F800D                    OR WORD PTR [BX+0D80h], BX
+CS:0CBA:    0B30                        OR BYTE PTR [BX+SI], SI
+CS:0CBC:    0B7801                      OR BYTE PTR [BX+SI+01h], DI
+CS:0CBF:    0BA89138                    OR WORD PTR [BX+SI+3891h], BP
+CS:0CC3:    0B31                        OR BYTE PTR [BX+DI], SI
+CS:0CC5:    0B24                        OR BYTE PTR [SI], SP
+CS:0CC7:    0BAB3121                    OR WORD PTR [BP+DI+2131h], BP
+CS:0CCB:    0904                        OR AX, BYTE PTR [SI]
+CS:0CCD:    090F                        OR CX, BYTE PTR [BX]
+CS:0CCF:    099F1101                    OR BX, WORD PTR [BX+0111h]
+CS:0CD3:    095712                      OR DX, BYTE PTR [BX+12h]
+CS:0CD6:    096022                      OR SP, BYTE PTR [BX+SI+22h]
+CS:0CD9:    0938                        OR DI, BYTE PTR [BX+SI]
+CS:0CDB:    09B91222                    OR DI, WORD PTR [BX+DI+2212h]
+CS:0CDF:    094C02                      OR CX, BYTE PTR [SI+02h]
+CS:0CE2:    0A05                        OR BYTE PTR [DI], AL
+CS:0CE4:    0A6501                      OR BYTE PTR [DI+01h], AH
+CS:0CE7:    0ABD1111                    OR WORD PTR [DI+1111h], BH
+CS:0CEB:    0A4E00                      OR BYTE PTR [BP+00h], CL
+CS:0CEE:    0A9E800D                    OR WORD PTR [BP+0D80h], BL
+CS:0CF2:    0A2A                        OR BYTE PTR [BP+SI], CH
+CS:0CF4:    08822301                    OR AL, WORD PTR [BP+SI+0123h]
+CS:0CF8:    086222                      OR AH, BYTE PTR [BP+SI+22h]
+CS:0CFB:    081A                        OR BL, BYTE PTR [BP+SI]
+CS:0CFD:    08BE2222                    OR BH, WORD PTR [BP+2222h]
+CS:0D01:    084E12                      OR CL, BYTE PTR [BP+12h]
+CS:0D04:    086E00                      OR CH, BYTE PTR [BP+00h]
+CS:0D07:    087522                      OR DH, BYTE PTR [DI+22h]
+CS:0D0A:    08953212                    OR DL, WORD PTR [DI+1232h]
+CS:0D0E:    260A4570                    OR BYTE PTR ES:[DI+70h], AL
+CS:0D12:    260A9D0020                  OR WORD PTR ES:[DI+2000h], BL
+CS:0D17:    360A4D70                    OR BYTE PTR SS:[DI+70h], CL
+CS:0D1B:    2E0A4D70                    OR BYTE PTR CS:[DI+70h], CL
+CS:0D1F:    0B5570                      OR BYTE PTR [DI+70h], DX
+CS:0D22:    26084570                    OR AL, BYTE PTR ES:[DI+70h]
+CS:0D26:    36089D0020                  OR BL, WORD PTR SS:[DI+2000h]
+CS:0D2B:    804D1822                    OR BYTE PTR [DI+18h], 22h
+CS:0D2F:    808D222211                  OR WORD PTR [DI+2222h], 11h
+CS:0D34:    804F1211                    OR BYTE PTR [BX+12h], 11h
+CS:0D38:    800C11                      OR BYTE PTR [SI], 11h
+CS:0D3B:    818E800D3412                OR WORD PTR [BP+0D80h], 1234h
+CS:0D41:    810A3112                    OR BYTE PTR [BP+SI], 1231h
+CS:0D45:    814A2D1332                  OR BYTE PTR [BP+SI+2Dh], 3213h
+CS:0D4A:    818A2E163112                OR WORD PTR [BP+SI+162Eh], 1231h
+CS:0D50:    3306160F                    XOR BYTE PTR [0F16h], AX
+CS:0D54:    3206180F                    XOR BYTE PTR [0F18h], AL
+CS:0D58:    3106160F                    XOR AX, BYTE PTR [0F16h]
+CS:0D5C:    3006180F                    XOR AL, BYTE PTR [0F18h]
+CS:0D60:    3415                        XOR AL, 15h
+CS:0D62:    80F406                      XOR AH, 06h
+CS:0D65:    80F102                      XOR CL, 02h
+CS:0D68:    80F608                      XOR DH, 08h
+CS:0D6B:    81F33412                    XOR BX, 1234h
+CS:0D6F:    81F62231                    XOR SI, 3122h
+CS:0D73:    81F42242                    XOR SP, 4222h
+CS:0D77:    81F51111                    XOR BP, 1111h
+CS:0D7B:    330F                        XOR BYTE PTR [BX], CX
+CS:0D7D:    33574E                      XOR BYTE PTR [BX+4Eh], DX
+CS:0D80:    339F800D                    XOR WORD PTR [BX+0D80h], BX
+CS:0D84:    3330                        XOR BYTE PTR [BX+SI], SI
+CS:0D86:    337801                      XOR BYTE PTR [BX+SI+01h], DI
+CS:0D89:    33A89138                    XOR WORD PTR [BX+SI+3891h], BP
+CS:0D8D:    3331                        XOR BYTE PTR [BX+DI], SI
+CS:0D8F:    3324                        XOR BYTE PTR [SI], SP
+CS:0D91:    33AB3121                    XOR WORD PTR [BP+DI+2131h], BP
+CS:0D95:    3104                        XOR AX, BYTE PTR [SI]
+CS:0D97:    310F                        XOR CX, BYTE PTR [BX]
+CS:0D99:    319F1101                    XOR BX, WORD PTR [BX+0111h]
+CS:0D9D:    315712                      XOR DX, BYTE PTR [BX+12h]
+CS:0DA0:    316022                      XOR SP, BYTE PTR [BX+SI+22h]
+CS:0DA3:    3138                        XOR DI, BYTE PTR [BX+SI]
+CS:0DA5:    31B91222                    XOR DI, WORD PTR [BX+DI+2212h]
+CS:0DA9:    314C02                      XOR CX, BYTE PTR [SI+02h]
+CS:0DAC:    3205                        XOR BYTE PTR [DI], AL
+CS:0DAE:    326501                      XOR BYTE PTR [DI+01h], AH
+CS:0DB1:    32BD1111                    XOR WORD PTR [DI+1111h], BH
+CS:0DB5:    324E00                      XOR BYTE PTR [BP+00h], CL
+CS:0DB8:    329E800D                    XOR WORD PTR [BP+0D80h], BL
+CS:0DBC:    322A                        XOR BYTE PTR [BP+SI], CH
+CS:0DBE:    30822301                    XOR AL, WORD PTR [BP+SI+0123h]
+CS:0DC2:    306222                      XOR AH, BYTE PTR [BP+SI+22h]
+CS:0DC5:    301A                        XOR BL, BYTE PTR [BP+SI]
+CS:0DC7:    30BE2222                    XOR BH, WORD PTR [BP+2222h]
+CS:0DCB:    304E12                      XOR CL, BYTE PTR [BP+12h]
+CS:0DCE:    306E00                      XOR CH, BYTE PTR [BP+00h]
+CS:0DD1:    307522                      XOR DH, BYTE PTR [DI+22h]
+CS:0DD4:    30953212                    XOR DL, WORD PTR [DI+1232h]
+CS:0DD8:    26324570                    XOR BYTE PTR ES:[DI+70h], AL
+CS:0DDC:    26329D0020                  XOR WORD PTR ES:[DI+2000h], BL
+CS:0DE1:    36324D70                    XOR BYTE PTR SS:[DI+70h], CL
+CS:0DE5:    2E324D70                    XOR BYTE PTR CS:[DI+70h], CL
+CS:0DE9:    335570                      XOR BYTE PTR [DI+70h], DX
+CS:0DEC:    26304570                    XOR AL, BYTE PTR ES:[DI+70h]
+CS:0DF0:    36309D0020                  XOR BL, WORD PTR SS:[DI+2000h]
+CS:0DF5:    80751822                    XOR BYTE PTR [DI+18h], 22h
+CS:0DF9:    80B5222211                  XOR WORD PTR [DI+2222h], 11h
+CS:0DFE:    80771211                    XOR BYTE PTR [BX+12h], 11h
+CS:0E02:    803411                      XOR BYTE PTR [SI], 11h
+CS:0E05:    81B6800D3412                XOR WORD PTR [BP+0D80h], 1234h
+CS:0E0B:    81323112                    XOR BYTE PTR [BP+SI], 1231h
+CS:0E0F:    81722D1332                  XOR BYTE PTR [BP+SI+2Dh], 3213h
+CS:0E14:    81B22E163112                XOR WORD PTR [BP+SI+162Eh], 1231h
+CS:0E1A:    8506160F                    TEST BYTE PTR [0F16h], AX
+CS:0E1E:    8406180F                    TEST BYTE PTR [0F18h], AL
+CS:0E22:    8506160F                    TEST BYTE PTR [0F16h], AX
+CS:0E26:    8406180F                    TEST BYTE PTR [0F18h], AL
+CS:0E2A:    A815                        TEST AL, 15h
+CS:0E2C:    F6C406                      TEST AH, 06h
+CS:0E2F:    F6C102                      TEST CL, 02h
+CS:0E32:    F6C608                      TEST DH, 08h
+CS:0E35:    F7C33412                    TEST BX, 1234h
+CS:0E39:    F7C62231                    TEST SI, 3122h
+CS:0E3D:    F7C42242                    TEST SP, 4222h
+CS:0E41:    F7C51111                    TEST BP, 1111h
+CS:0E45:    850F                        TEST BYTE PTR [BX], CX
+CS:0E47:    85574E                      TEST BYTE PTR [BX+4Eh], DX
+CS:0E4A:    859F800D                    TEST WORD PTR [BX+0D80h], BX
+CS:0E4E:    8530                        TEST BYTE PTR [BX+SI], SI
+CS:0E50:    857801                      TEST BYTE PTR [BX+SI+01h], DI
+CS:0E53:    85A89138                    TEST WORD PTR [BX+SI+3891h], BP
+CS:0E57:    8531                        TEST BYTE PTR [BX+DI], SI
+CS:0E59:    8524                        TEST BYTE PTR [SI], SP
+CS:0E5B:    85AB3121                    TEST WORD PTR [BP+DI+2131h], BP
+CS:0E5F:    8504                        TEST BYTE PTR [SI], AX
+CS:0E61:    850F                        TEST BYTE PTR [BX], CX
+CS:0E63:    859F1101                    TEST WORD PTR [BX+0111h], BX
+CS:0E67:    855712                      TEST BYTE PTR [BX+12h], DX
+CS:0E6A:    856022                      TEST BYTE PTR [BX+SI+22h], SP
+CS:0E6D:    8538                        TEST BYTE PTR [BX+SI], DI
+CS:0E6F:    85B91222                    TEST WORD PTR [BX+DI+2212h], DI
+CS:0E73:    854C02                      TEST BYTE PTR [SI+02h], CX
+CS:0E76:    8405                        TEST BYTE PTR [DI], AL
+CS:0E78:    846501                      TEST BYTE PTR [DI+01h], AH
+CS:0E7B:    84BD1111                    TEST WORD PTR [DI+1111h], BH
+CS:0E7F:    844E00                      TEST BYTE PTR [BP+00h], CL
+CS:0E82:    849E800D                    TEST WORD PTR [BP+0D80h], BL
+CS:0E86:    842A                        TEST BYTE PTR [BP+SI], CH
+CS:0E88:    84822301                    TEST WORD PTR [BP+SI+0123h], AL
+CS:0E8C:    846222                      TEST BYTE PTR [BP+SI+22h], AH
+CS:0E8F:    841A                        TEST BYTE PTR [BP+SI], BL
+CS:0E91:    84BE2222                    TEST WORD PTR [BP+2222h], BH
+CS:0E95:    844E12                      TEST BYTE PTR [BP+12h], CL
+CS:0E98:    846E00                      TEST BYTE PTR [BP+00h], CH
+CS:0E9B:    847522                      TEST BYTE PTR [DI+22h], DH
+CS:0E9E:    84953212                    TEST WORD PTR [DI+1232h], DL
+CS:0EA2:    26844570                    TEST BYTE PTR ES:[DI+70h], AL
+CS:0EA6:    26849D0020                  TEST WORD PTR ES:[DI+2000h], BL
+CS:0EAB:    36844D70                    TEST BYTE PTR SS:[DI+70h], CL
+CS:0EAF:    2E844D70                    TEST BYTE PTR CS:[DI+70h], CL
+CS:0EB3:    855570                      TEST BYTE PTR [DI+70h], DX
+CS:0EB6:    26844570                    TEST BYTE PTR ES:[DI+70h], AL
+CS:0EBA:    36849D0020                  TEST WORD PTR SS:[DI+2000h], BL
+CS:0EBF:    F6451822                    TEST BYTE PTR [DI+18h], 22h
+CS:0EC3:    F685222211                  TEST WORD PTR [DI+2222h], 11h
+CS:0EC8:    F6471211                    TEST BYTE PTR [BX+12h], 11h
+CS:0ECC:    F60411                      TEST BYTE PTR [SI], 11h
+CS:0ECF:    F786800D3412                TEST WORD PTR [BP+0D80h], 1234h
+CS:0ED5:    F7023112                    TEST BYTE PTR [BP+SI], 1231h
+CS:0ED9:    F7422D1332                  TEST BYTE PTR [BP+SI+2Dh], 3213h
+CS:0EDE:    F7822E163112                TEST WORD PTR [BP+SI+162Eh], 1231h
+CS:0EE4:    E80300                      CALL 0EEAh
+CS:0EE7:    EB01                        JMP 0EEAh
+CS:0EE9:    90                          NOP
+CS:0EEA:    E8FDFF                      CALL 0EEAh
+CS:0EED:    EBFB                        JMP 0EEAh
+CS:0EEF:    E82400                      CALL 0F16h
+CS:0EF2:    FFE0                        JMP AX
+CS:0EF4:    FFE6                        JMP SI
+CS:0EF6:    FFE5                        JMP BP
+CS:0EF8:    FF6708                      JMP BYTE PTR [BX+08h]
+CS:0EFB:    FFA03112                    JMP WORD PTR [BX+SI+1231h]
+CS:0EFF:    FF21                        JMP BYTE PTR [BX+DI]
+CS:0F01:    FFD0                        CALL AX
+CS:0F03:    FFD6                        CALL SI
+CS:0F05:    FFD5                        CALL BP
+CS:0F07:    FF5708                      CALL BYTE PTR [BX+08h]
+CS:0F0A:    FF903112                    CALL WORD PTR [BX+SI+1231h]
+CS:0F0E:    FF11                        CALL BYTE PTR [BX+DI]
+CS:0F10:    E2FE                        LOOP 0F10h
+CS:0F12:    E1FC                        LOOPE 0F10h
+CS:0F14:    E0FA                        LOOPNE 0F10h
