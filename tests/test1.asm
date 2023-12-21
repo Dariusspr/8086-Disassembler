@@ -24,8 +24,8 @@ START:
     MOV SP, 4222h
     MOV BP, 1111h
     MOV CX, [BX]
-    MOV DX, [BX+78]
-    MOV BX, [BX+3456]
+    MOV DX, [BX+78h]
+    MOV BX, [BX+3456h]
     MOV SI, [BX+SI]
     MOV DI, [BX+SI+1h]
     MOV BP, [BX+SI+3891h]
@@ -44,7 +44,7 @@ START:
     MOV AH, [DI+1h]
     MOV BH, [DI+1111h]
     MOV CL, [BP+00h]
-    MOV BL, [BP+3456]
+    MOV BL, [BP+3456h]
     MOV CH, [BP+SI]
     MOV [BP+SI+123h], AL
     MOV [BP+SI+22h], AH
@@ -58,10 +58,10 @@ START:
     MOV BYTE PTR [DI+2222h], 11h
     MOV BYTE PTR [BX+12h], 11h
     MOV BYTE PTR [SI], 11h
-    MOV WORD PTR [BP+3456], 1234h
+    MOV WORD PTR [BP+3456h], 1234h
     MOV WORD PTR [BP+SI], 1231h
-    MOV WORD PTR [BP+SI+45], 3213h
-    MOV WORD PTR [BP+SI+5678], 1231h
+    MOV WORD PTR [BP+SI+45h], 3213h
+    MOV WORD PTR [BP+SI+2222h], 1231h
     MOV WORD PTR [BX+SI], ES
     MOV WORD PTR [DI+7h], CS
     MOV WORD PTR [DI], SS
@@ -93,7 +93,7 @@ START:
     ADD BP, 1111h
     ADD CX, [BX]
     ADD DX, [BX+78]
-    ADD BX, [BX+3456]
+    ADD BX, [BX+3456h]
     ADD SI, [BX+SI]
     ADD DI, [BX+SI+1h]
     ADD BP, [BX+SI+3891h]
@@ -112,7 +112,7 @@ START:
     ADD AH, [DI+1h]
     ADD BH, [DI+1111h]
     ADD CL, [BP+00h]
-    ADD BL, [BP+3456]
+    ADD BL, [BP+3456h]
     ADD CH, [BP+SI]
     ADD [BP+SI+123h], AL
     ADD [BP+SI+22h], AH
@@ -133,10 +133,10 @@ START:
     ADD BYTE PTR [DI+2222h], 11h
     ADD BYTE PTR [BX+12h], 11h
     ADD BYTE PTR [SI], 11h
-    ADD WORD PTR [BP+3456], 1234h
+    ADD WORD PTR [BP+3456h], 1234h
     ADD WORD PTR [BP+SI], 1231h
-    ADD WORD PTR [BP+SI+45], 3213h
-    ADD WORD PTR [BP+SI+5678], 1231h
+    ADD WORD PTR [BP+SI+42h], 3213h
+    ADD WORD PTR [BP+SI+2222h], 1231h
 
     SBB AX, a
     SBB AL, b
@@ -151,8 +151,8 @@ START:
     SBB SP, 4222h
     SBB BP, 1111h
     SBB CX, [BX]
-    SBB DX, [BX+78]
-    SBB BX, [BX+3456]
+    SBB DX, [BX+78h]
+    SBB BX, [BX+3245h]
     SBB SI, [BX+SI]
     SBB DI, [BX+SI+1h]
     SBB BP, [BX+SI+3891h]
@@ -171,7 +171,7 @@ START:
     SBB AH, [DI+1h]
     SBB BH, [DI+1111h]
     SBB CL, [BP+00h]
-    SBB BL, [BP+3456]
+    SBB BL, [BP+3456h]
     SBB CH, [BP+SI]
     SBB [BP+SI+123h], AL
     SBB [BP+SI+22h], AH
@@ -417,9 +417,9 @@ START:
     IN AX , 2h   
     IN AL, 32h   
 
-    LEA BP, B
-    LEA CX, A
-    LES CX, [SI+12H]
+    LEA CX, [BX+SI+12H]
+    LEA CX, [SI+2131H]
+    LES CX, [SI+12H] 
     LES CX, [BP+SI]
     LDS DX, [BX+312H]
     LDS AX, [BX]
@@ -508,7 +508,7 @@ START:
     POP ES
     POP SS
 
-    JMP MY_LABEL
+   
     JA MY_LABEL
     JAE MY_LABEL
     JB MY_LABEL
@@ -526,8 +526,9 @@ START:
     JO MY_LABEL
     JNS MY_LABEL
     JS MY_LABEL
+
     MY_LABEL:
-    
+    JMP MY_LABEL
     INT 3h
     INT 23h
     INT 21h
@@ -557,7 +558,7 @@ START:
     CMP SP, 4222h
     CMP BP, 1111h
     CMP CX, WORD PTR [BX]
-    CMP DX, WORD PTR [BX+78]
+    CMP DX, WORD PTR [BX+78h]
     CMP BX, WORD PTR [BX+3456]
     CMP SI, WORD PTR [BX+SI]
     CMP DI, WORD PTR [BX+SI+1h]
@@ -577,7 +578,7 @@ START:
     CMP AH, BYTE PTR [DI+1h]
     CMP BH, BYTE PTR [DI+1111h]
     CMP CL, BYTE PTR [BP+00h]
-    CMP BL, BYTE PTR [BP+3456]
+    CMP BL, BYTE PTR [BP+3456h]
     CMP CH, BYTE PTR [BP+SI]
     CMP BYTE PTR [BP+SI+123h], AL
     CMP BYTE PTR [BP+SI+22h], AH
@@ -598,7 +599,7 @@ START:
     CMP BYTE PTR [DI+2222h], 11h
     CMP BYTE PTR [BX+12h], 11h
     CMP BYTE PTR [SI], 11h
-    CMP WORD PTR [BP+3456], 1234h
+    CMP WORD PTR [BP+3456h], 1234h
     CMP WORD PTR [BP+SI], 1231h
     CMP WORD PTR [BP+SI+45], 3213h
     
@@ -614,7 +615,7 @@ START:
     MUL BP
     MUL CX
     MUL DX
-    MUL WORD PTR [BX+3456]
+    MUL WORD PTR [BX+3456h]
     MUL WORD PTR [BX+SI]
     MUL WORD PTR [BX+SI+1h]
     MUL WORD PTR [BX+SI+3891h]
@@ -641,7 +642,7 @@ START:
     IMUL BP
     IMUL CX
     IMUL DX
-    IMUL WORD PTR [BX+3456]
+    IMUL WORD PTR [BX+3456h]
     IMUL WORD PTR [BX+SI]
     IMUL WORD PTR [BX+SI+1h]
     IMUL WORD PTR [BX+SI+3891h]
@@ -668,7 +669,7 @@ START:
     DIV BP
     DIV CX
     DIV DX
-    DIV WORD PTR [BX+3456]
+    DIV WORD PTR [BX+3456h]
     DIV WORD PTR [BX+SI]
     DIV WORD PTR [BX+SI+1h]
     DIV WORD PTR [BX+SI+3891h]
@@ -695,7 +696,7 @@ START:
     IDIV BP
     IDIV CX
     IDIV DX
-    IDIV WORD PTR [BX+3456]
+    IDIV WORD PTR [BX+3456h]
     IDIV WORD PTR [BX+SI]
     IDIV WORD PTR [BX+SI+1h]
     IDIV WORD PTR [BX+SI+3891h]
@@ -722,7 +723,7 @@ START:
     NEG BP
     NEG CX
     NEG DX
-    NEG WORD PTR [BX+3456]
+    NEG WORD PTR [BX+3456h]
     NEG WORD PTR [BX+SI]
     NEG WORD PTR [BX+SI+1h]
     NEG WORD PTR [BX+SI+3891h]
@@ -749,7 +750,7 @@ START:
     NOT BP
     NOT CX
     NOT DX
-    NOT WORD PTR [BX+3456]
+    NOT WORD PTR [BX+3456h]
     NOT WORD PTR [BX+SI]
     NOT WORD PTR [BX+SI+1h]
     NOT WORD PTR [BX+SI+3891h]
@@ -978,7 +979,7 @@ START:
     AND BP, 1111h
     AND CX, [BX]
     AND DX, [BX+78]
-    AND BX, [BX+3456]
+    AND BX, [BX+3456h]
     AND SI, [BX+SI]
     AND DI, [BX+SI+1h]
     AND BP, [BX+SI+3891h]
@@ -997,7 +998,7 @@ START:
     AND AH, [DI+1h]
     AND BH, [DI+1111h]
     AND CL, [BP+00h]
-    AND BL, [BP+3456]
+    AND BL, [BP+3456h]
     AND CH, [BP+SI]
     AND [BP+SI+123h], AL
     AND [BP+SI+22h], AH
@@ -1018,10 +1019,10 @@ START:
     AND BYTE PTR [DI+2222h], 11h
     AND BYTE PTR [BX+12h], 11h
     AND BYTE PTR [SI], 11h
-    AND WORD PTR [BP+3456], 1234h
+    AND WORD PTR [BP+3456h], 1234h
     AND WORD PTR [BP+SI], 1231h
     AND WORD PTR [BP+SI+45], 3213h
-    AND WORD PTR [BP+SI+5678], 1231h
+    AND WORD PTR [BP+SI+5678h], 1231h
 
     OR AX, a
     OR AL, b
@@ -1036,8 +1037,8 @@ START:
     OR SP, 4222h
     OR BP, 1111h
     OR CX, [BX]
-    OR DX, [BX+78]
-    OR BX, [BX+3456]
+    OR DX, [BX+78h]
+    OR BX, [BX+3456h]
     OR SI, [BX+SI]
     OR DI, [BX+SI+1h]
     OR BP, [BX+SI+3891h]
@@ -1056,7 +1057,7 @@ START:
     OR AH, [DI+1h]
     OR BH, [DI+1111h]
     OR CL, [BP+00h]
-    OR BL, [BP+3456]
+    OR BL, [BP+3456h]
     OR CH, [BP+SI]
     OR [BP+SI+123h], AL
     OR [BP+SI+22h], AH
@@ -1077,10 +1078,10 @@ START:
     OR BYTE PTR [DI+2222h], 11h
     OR BYTE PTR [BX+12h], 11h
     OR BYTE PTR [SI], 11h
-    OR WORD PTR [BP+3456], 1234h
+    OR WORD PTR [BP+3456h], 1234h
     OR WORD PTR [BP+SI], 1231h
     OR WORD PTR [BP+SI+45], 3213h
-    OR WORD PTR [BP+SI+5678], 1231h
+    OR WORD PTR [BP+SI+5678h], 1231h
 
     XOR AX, a
     XOR AL, b
@@ -1095,8 +1096,8 @@ START:
     XOR SP, 4222h
     XOR BP, 1111h
     XOR CX, [BX]
-    XOR DX, [BX+78]
-    XOR BX, [BX+3456]
+    XOR DX, [BX+78h]
+    XOR BX, [BX+3456h]
     XOR SI, [BX+SI]
     XOR DI, [BX+SI+1h]
     XOR BP, [BX+SI+3891h]
@@ -1115,7 +1116,7 @@ START:
     XOR AH, [DI+1h]
     XOR BH, [DI+1111h]
     XOR CL, [BP+00h]
-    XOR BL, [BP+3456]
+    XOR BL, [BP+3456h]
     XOR CH, [BP+SI]
     XOR [BP+SI+123h], AL
     XOR [BP+SI+22h], AH
@@ -1136,10 +1137,10 @@ START:
     XOR BYTE PTR [DI+2222h], 11h
     XOR BYTE PTR [BX+12h], 11h
     XOR BYTE PTR [SI], 11h
-    XOR WORD PTR [BP+3456], 1234h
+    XOR WORD PTR [BP+3456h], 1234h
     XOR WORD PTR [BP+SI], 1231h
     XOR WORD PTR [BP+SI+45], 3213h
-    XOR WORD PTR [BP+SI+5678], 1231h
+    XOR WORD PTR [BP+SI+5678h], 1231h
 
     TEST AX, a
     TEST AL, b
@@ -1154,8 +1155,8 @@ START:
     TEST SP, 4222h
     TEST BP, 1111h
     TEST CX, [BX]
-    TEST DX, [BX+78]
-    TEST BX, [BX+3456]
+    TEST DX, [BX+78h]
+    TEST BX, [BX+3456h]
     TEST SI, [BX+SI]
     TEST DI, [BX+SI+1h]
     TEST BP, [BX+SI+3891h]
@@ -1174,7 +1175,7 @@ START:
     TEST AH, [DI+1h]
     TEST BH, [DI+1111h]
     TEST CL, [BP+00h]
-    TEST BL, [BP+3456]
+    TEST BL, [BP+3456h]
     TEST CH, [BP+SI]
     TEST [BP+SI+123h], AL
     TEST [BP+SI+22h], AH
@@ -1195,16 +1196,17 @@ START:
     TEST BYTE PTR [DI+2222h], 11h
     TEST BYTE PTR [BX+12h], 11h
     TEST BYTE PTR [SI], 11h
-    TEST WORD PTR [BP+3456], 1234h
+    TEST WORD PTR [BP+3456h], 1234h
     TEST WORD PTR [BP+SI], 1231h
     TEST WORD PTR [BP+SI+45], 3213h
-    TEST WORD PTR [BP+SI+5678], 1231h
+    TEST WORD PTR [BP+SI+5678h], 1231h
 
     CALL MY_LABEL2
     JMP MY_LABEL2
     MY_LABEL2:
     CALL MY_LABEL2
     JMP MY_LABEL2
+    
     CALL MY_PROC
     
     JMP AX
@@ -1225,7 +1227,9 @@ START:
     LOOP MY_LABEL3
     LOOPE MY_LABEL3
     LOOPNE MY_LABEL3
-    
+
+
+        
     PROC MY_PROC
     ENDP
     a dw ?
