@@ -2,14 +2,14 @@
 
 ## Overview
 
-Disassembler is designed to translate all machine code instructions from 16-bit x86 architecture into human-readable assembly language.
+Disassembler translates all machine code instructions from 16-bit x86 architecture into assembly language.
 
 ## Examples
 
-https://github.com/Dariusspr/8086-Disassembler/tree/main/tests/test2.asm#L0-L31
+https://github.com/Dariusspr/8086-Disassembler/blob/14f6a6b9e16133c80c4725a596b14b37d1e82720/tests/test2.asm#L10-L26
 
 Disassembling above file generates the following output:
-```asm
+```x86asm
 CS:0100:    1E                          PUSH DS
 CS:0101:    268B811332                  MOV AX, WORD PTR ES:[BX+DI+3213h]
 CS:0106:    BA3121                      MOV DX, 2131h
@@ -28,6 +28,7 @@ CS:011C:    E2FC                        LOOP 011Ah
 CS:011E:    5A                          POP DX
 ```
 More examples can be found in the [tests](https://github.com/Dariusspr/8086-Disassembler/tree/main/tests/) directory of this repository.
+
 ## Prerequisites
 
 - **Environment:** Ensure that you have a suitable environment for running 8086 assembly code(DOSBox, Emu8086, etc...).
@@ -41,9 +42,11 @@ git clone https://github.com/Dariusspr/8086-Disassembler.git
 ```
 
 ## Usage
+
 #### Notes
 - Place the disasm.asm file and other relevant files in the same directory as your assembler (such as TASM).
 - The following commands are executed within the DOSBox environment.
+
 #### Mount drive
 ```
 mount c c:/.../tasm/
@@ -51,6 +54,7 @@ mount c c:/.../tasm/
 ```
 c:
 ```
+
 #### Create .com file
 ```
 tasm fileName
@@ -66,6 +70,7 @@ tasm disasm
 ```
 tlink disasm
 ```
+
 #### Run disassembler
 ```
 disasm fileName.com outputFile
