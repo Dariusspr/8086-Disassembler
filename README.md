@@ -4,11 +4,9 @@
 
 Disassembler is designed to translate all machine code instructions from 16-bit x86 architecture into human-readable assembly language.
 
-ts all 8086 microprocessor instructions.
-
 ## Examples
 
-https://github.com/Dariusspr/8086-Disassembler/tree/main/tests/test2.asm
+https://github.com/Dariusspr/8086-Disassembler/tree/main/tests/test2.asm#L0-L31
 
 Disassembling above file generates the following output:
 ```asm
