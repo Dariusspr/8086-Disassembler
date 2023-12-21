@@ -6,7 +6,7 @@ Disassembler is designed to translate all machine code instructions from 16-bit 
 
 ## Examples
 
-https://github.com/Dariusspr/8086-Disassembler/tree/main/tests/test2.asm#L0-L31
+https://github.com/Dariusspr/8086-Disassembler/blob/678b01dce900619bafe7662adf9d52e70a181ff9/tests/test2.asm#L1-L30
 
 Disassembling above file generates the following output:
 ```asm
