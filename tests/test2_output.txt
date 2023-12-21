@@ -1,0 +1,16 @@
+CS:0100:    1E                          PUSH DS
+CS:0101:    268B811332                  MOV AX, WORD PTR ES:[BX+DI+3213h]
+CS:0106:    BA3121                      MOV DX, 2131h
+CS:0109:    92                          CXHG AX, DX
+CS:010A:    3F                          AAS
+CS:010B:    2BC2                        SUB AX, DX
+CS:010D:    F7D0                        NOT AX
+CS:010F:    8ACA                        MOV CL, DL
+CS:0111:    D3C0                        ROL AX, CL
+CS:0113:    F3                          REP
+CS:0114:    3BC2                        CMP AX, DX
+CS:0116:    7502                        JNE 011Ah
+CS:0118:    33C0                        XOR AX, AX
+CS:011A:    FEC0                        INC AL
+CS:011C:    E2FC                        LOOP 011Ah
+CS:011E:    5A                          POP DX
