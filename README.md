@@ -5,10 +5,9 @@
 Disassembler translates all machine code instructions from 16-bit x86 architecture into assembly language.
 
 ## Examples
-
 https://github.com/Dariusspr/8086-Disassembler/blob/14f6a6b9e16133c80c4725a596b14b37d1e82720/tests/test2.asm#L10-L26
 
-Disassembling above file generates the following output:
+Disassembling above code generates the following output:
 ```x86asm
 CS:0100:    1E                          PUSH DS
 CS:0101:    268B811332                  MOV AX, WORD PTR ES:[BX+DI+3213h]
